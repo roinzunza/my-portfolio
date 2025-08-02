@@ -51,17 +51,20 @@ export default function ResumePage() {
                             : "opacity-0 translate-y-8"
                             }`}
                     >
-                        <pre className="whitespace-pre-wrap text-sm">
-                            {`commit ${item.id} ${item.tag ? `(${item.tag})` : ""}
-Author: Rosendo Inzunza <rosendoinzunza@gmail.com.com>
-Date:   ${item.duration}
-${index === 0 ? "HEAD -> main" : ""}
+<div className="font-mono text-sm space-y-1">
+  <div>{`commit ${item.id}`}</div>
+  <div>{`Author: Rosendo Inzunza <rosendo@cloudflare.com>`}</div>
+  <div>{`Date:   ${item.duration}`}</div>
+  {index === 0 && <div>HEAD -&gt; main</div>}
+  <div>
+    <span className="text-orange-700">{item.role}</span>
+    {" @ "}
+    <span className="text-orange-700">{item.company}</span>
+  </div>
+  <div>{item.description}</div>
+</div>
 
-    ${item.role} @ ${item.company}
-    - ${item.description}
 
-`}
-                        </pre>
 
                         {/* Timeline dot and line */}
                         <div className="absolute left-0 top-0 h-full w-1 bg-green-700/30" />
