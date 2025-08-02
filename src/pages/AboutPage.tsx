@@ -4,12 +4,10 @@ import { Link } from "react-router-dom";
 const responses: Record<string, string | string[]> = {
   whoami: [
     "Rosendo Inzunza is a software engineer who loves solving real-world problems through thoughtful design and performant code.",
-    "He enjoys building beautiful user experiences, contributing to impactful projects, and sipping cold brew while learning new things.",
+    "I enjoy building beautiful user experiences, contributing to impactful projects, and sipping cold brew while learning new things.",
   ],
   projects: [
     "SideQuest (iOS/Flutter) – A local job discovery platform with swiping, messaging, and profile matching.",
-    "MTG Deck Tracker – A web-based Magic: The Gathering deck optimizer with interactive sideboard tools.",
-    "IronForm Extractor – A document parser that pulls steelwork sections from PDFs using ML and spaCy.",
   ],
   skills: [
     "Skills/Tools:",
