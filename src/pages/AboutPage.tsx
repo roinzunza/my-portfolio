@@ -101,7 +101,7 @@ export default function AboutPage() {
       {/* Blurred Background */}
       <div className="absolute inset-0 -z-10">
         <img
-          src="./public/ro.jpg"
+src={`${import.meta.env.BASE_URL}ro.jpg`}
           alt="Background"
           className="w-full h-full object-cover opacity-30 blur-lg scale-110"
         />

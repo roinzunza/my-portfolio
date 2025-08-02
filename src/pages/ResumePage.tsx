@@ -28,7 +28,7 @@ export default function ResumePage() {
             {/* Background */}
             <div className="absolute inset-0 -z-10">
                 <img
-          src="./public/ro.jpg"
+                    src={`${import.meta.env.BASE_URL}ro.jpg`}
                     alt="Background"
                     className="w-full h-full object-cover opacity-30 blur-lg scale-110"
                 />
@@ -47,8 +47,8 @@ export default function ResumePage() {
                             refs.current[index] = el;
                         }}
                         className={`bg-white/20 dark:bg-white/10 backdrop-blur-md border border-white/20 text-gray-800 dark:text-gray-100 rounded-lg p-4 shadow-lg relative overflow-hidden transform transition-all duration-700 ease-out ${visibleIndexes.includes(index)
-                                ? "opacity-100 translate-y-0"
-                                : "opacity-0 translate-y-8"
+                            ? "opacity-100 translate-y-0"
+                            : "opacity-0 translate-y-8"
                             }`}
                     >
                         <pre className="whitespace-pre-wrap text-sm">
