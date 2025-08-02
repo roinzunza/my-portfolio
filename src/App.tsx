@@ -165,6 +165,14 @@ src={`${import.meta.env.BASE_URL}ro.jpg`}
           Resume →
         </Link>
 
+        <Link
+          to="/projects"
+          className="inline-block px-4 py-2 mt-2 bg-white/30 dark:bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm hover:bg-white/50 dark:hover:bg-white/20 transition"
+        >
+          Projects →
+        </Link>
+
+
       </div>
     </main>
   );
