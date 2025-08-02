@@ -53,7 +53,7 @@ export default function ResumePage() {
                     >
 <div className="font-mono text-sm space-y-1">
   <div>{`commit ${item.id}`}</div>
-  <div>{`Author: Rosendo Inzunza <rosendo@cloudflare.com>`}</div>
+  <div>{`Author: Rosendo Inzunza <rosendoinzunza@gmail.com>`}</div>
   <div>{`Date:   ${item.duration}`}</div>
   {index === 0 && <div>HEAD -&gt; main</div>}
   <div>
