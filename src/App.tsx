@@ -5,7 +5,6 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import { FiCode } from "react-icons/fi";
 import { MdOutlineEmail } from "react-icons/md";
 import { Link } from "react-router-dom";
-import ResumePage from "./pages/ResumePage";
 
 function App() {
   const [displayedText, setDisplayedText] = useState("");
