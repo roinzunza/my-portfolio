@@ -28,7 +28,7 @@ export default function ResumePage() {
             {/* Background */}
             <div className="absolute inset-0 -z-10">
                 <img
-                    src="/ro.jpg"
+          src="./public/ro.jpg"
                     alt="Background"
                     className="w-full h-full object-cover opacity-30 blur-lg scale-110"
                 />
