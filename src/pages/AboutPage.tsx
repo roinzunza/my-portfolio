@@ -75,7 +75,7 @@ const handleCommand = (command: string) => {
   const normalizedCommand = command.trim().toLowerCase(); // normalize casing
   const rawOutput = responses[normalizedCommand];
   const outputLines =
-    typeof rawOutput === "string" ? [rawOutput] : rawOutput || [`zsh: command not found: ${command}`];
+    typeof rawOutput === "string" ? [rawOutput] : rawOutput || [`zsh: command not found: ${command} use help to view commands`];
 
   // animate line-by-line
   setTerminalLines((prev) => [...prev, `➜ ~ ${command}`]);
