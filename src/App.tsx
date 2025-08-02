@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
-import { LuCoffee } from "react-icons/lu";
+import { GiIceCube } from "react-icons/gi";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { FiCode } from "react-icons/fi";
 import { MdOutlineEmail } from "react-icons/md";
@@ -94,7 +94,7 @@ src={`${import.meta.env.BASE_URL}ro.jpg`}
             </div>
             <ul className="text-gray-700 dark:text-gray-300 text-md space-y-2">
               <li className="flex items-center gap-3">
-                <LuCoffee className="text-lg" />
+                <GiIceCube className="text-lg" />
                 Fueled by cold brew
               </li>
               <li className="flex items-center gap-3">

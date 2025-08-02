@@ -71,19 +71,20 @@ export default function AboutPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleCommand = (command: string) => {
-    const rawOutput = responses[command.trim()];
-    const outputLines =
-      typeof rawOutput === "string" ? [rawOutput] : rawOutput || [`zsh: command not found: ${command}`];
+const handleCommand = (command: string) => {
+  const normalizedCommand = command.trim().toLowerCase(); // normalize casing
+  const rawOutput = responses[normalizedCommand];
+  const outputLines =
+    typeof rawOutput === "string" ? [rawOutput] : rawOutput || [`zsh: command not found: ${command}`];
 
-    // animate line-by-line
-    setTerminalLines((prev) => [...prev, `➜ ~ ${command}`]);
-    outputLines.forEach((line, i) => {
-      setTimeout(() => {
-        setTerminalLines((prev) => [...prev, line]);
-      }, 200 * i);
-    });
-  };
+  // animate line-by-line
+  setTerminalLines((prev) => [...prev, `➜ ~ ${command}`]);
+  outputLines.forEach((line, i) => {
+    setTimeout(() => {
+      setTerminalLines((prev) => [...prev, line]);
+    }, 200 * i);
+  });
+};
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
