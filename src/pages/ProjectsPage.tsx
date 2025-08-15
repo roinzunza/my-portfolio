@@ -3,7 +3,13 @@ import { projectsData } from "../data/projectsData";
 import { useState } from "react";
 
 export default function ProjectsPage() {
-  const screenshots = ["listings.png", "profile.png", "apps.png", "edit.png"];
+  // All images should now be in /public
+  const screenshots = [
+    `${import.meta.env.BASE_URL}listings.png`,
+    `${import.meta.env.BASE_URL}profile.png`,
+    `${import.meta.env.BASE_URL}apps.png`,
+    `${import.meta.env.BASE_URL}edit.png`,
+  ];
 
   return (
     <main className="relative min-h-screen px-6 py-12 font-sans text-gray-900 dark:text-white bg-transparent z-10">
@@ -72,7 +78,7 @@ function Carousel({ images }: CarouselProps) {
     <>
       <div className="relative w-full overflow-hidden bg-black/10">
         <img
-          src={`${import.meta.env.BASE_URL}${images[index]}`}
+          src={images[index]}
           alt={`Screenshot ${index + 1}`}
           className="w-full max-h-[600px] object-contain cursor-pointer transition hover:opacity-80"
           onClick={() => setExpanded(true)}
@@ -98,7 +104,7 @@ function Carousel({ images }: CarouselProps) {
           onClick={() => setExpanded(false)}
         >
           <img
-            src={`${import.meta.env.BASE_URL}${images[index]}`}
+            src={images[index]}
             alt={`Expanded screenshot ${index + 1}`}
             className="max-w-full max-h-full object-contain rounded-lg shadow-lg"
           />
