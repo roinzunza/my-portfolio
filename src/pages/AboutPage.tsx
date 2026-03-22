@@ -7,7 +7,7 @@ const responses: Record<string, string | string[]> = {
     "I enjoy building beautiful user experiences, contributing to impactful projects, and sipping cold brew while learning new things.",
   ],
   projects: [
-    "SideQuest (iOS/Flutter) – A local job discovery platform with swiping, messaging, and profile matching.",
+    "SideQuest (iOS/Swift + Rust) – A local job discovery platform with swiping, messaging, and profile matching.",
   ],
   skills: [
     "Skills/Tools:",
@@ -22,37 +22,143 @@ const responses: Record<string, string | string[]> = {
   contact: [
     "📧 rosendoinzunza@gmail.com",
     "🔗 linkedin.com/in/rosendoinzunza",
-    "🐙 github.com/rosendoinzunza",
+    "🐙 github.com/roinzunza",
     "📍 Based in California, US",
   ],
   coffee: [
     "Between an oatmilk cortado and an iced latte with almond milk ☕",
   ],
-ascii: [
-  "    _______  ________  ________  ________ ",
-  "  ╱╱       ╲╱        ╲╱        ╲╱    ╱   ╲",
-  " ╱╱        ╱         _╱       ╱╱         ╱",
-  "╱        _╱         ╱         ╱         ╱ ",
-  "╲____╱___╱╲________╱╲________╱╲__╱_____╱   ",
-],
-
+  ascii: [
+    "    _______  ________  ________  ________ ",
+    "  ╱╱       ╲╱        ╲╱        ╲╱    ╱   ╲",
+    " ╱╱        ╱         _╱       ╱╱         ╱",
+    "╱        _╱         ╱         ╱         ╱ ",
+    "╲____╱___╱╲________╱╲________╱╲__╱_____╱  ",
+  ],
   help: [
     "Available commands:",
     "- whoami     → About Rosendo",
-    "- projects   → Rosendo's Projects",
-    "- skills     → Rosendo background",
+    "- projects   → Current projects",
+    "- skills     → Technical background",
     "- contact    → Contact information",
-    "- coffee     → Go to coffee order(s)",
-    "- ascii      → Show ASCII logo",
-    "- help       → Available commands",
+    "- coffee     → Coffee order",
+    "- ascii      → ASCII logo",
+    "- help       → This menu",
   ],
 };
+
+const styles = `
+  .about-page {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #0d0d0d;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+  }
+
+  .about-inner {
+    width: 100%;
+    max-width: 680px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .about-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #60CD8B;
+  }
+
+  .terminal {
+    background: #0d0d0d;
+    border: 1px solid #262626;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #262626;
+    background: #141414;
+  }
+
+  .terminal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .terminal-body {
+    padding: 16px;
+    max-height: 60vh;
+    overflow-y: auto;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .terminal-body::-webkit-scrollbar { width: 4px; }
+  .terminal-body::-webkit-scrollbar-track { background: transparent; }
+  .terminal-body::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+  .terminal-prompt { color: #60CD8B; }
+
+  .terminal-input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .terminal-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #f0f0f0;
+    font-family: inherit;
+    font-size: inherit;
+    flex: 1;
+    caret-color: #60CD8B;
+  }
+
+  .about-back {
+    font-size: 12px;
+    font-weight: 500;
+    color: #777;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #2e2e2e;
+    background: #141414;
+    transition: border-color 0.15s, color 0.15s;
+    align-self: flex-start;
+  }
+
+  .about-back:hover {
+    border-color: #60CD8B;
+    color: #60CD8B;
+  }
+`;
 
 export default function AboutPage() {
   const [terminalLines, setTerminalLines] = useState<string[]>([]);
   const [currentInput, setCurrentInput] = useState("");
   const [promptText, setPromptText] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
 
   const promptFull = "➜ ~ whoami";
 
@@ -69,99 +175,83 @@ export default function AboutPage() {
     return () => clearInterval(interval);
   }, []);
 
-const handleCommand = (command: string) => {
-  const normalizedCommand = command.trim().toLowerCase(); // normalize casing
-  const rawOutput = responses[normalizedCommand];
-  const outputLines =
-    typeof rawOutput === "string" ? [rawOutput] : rawOutput || [`zsh: command not found: ${command} use help to view commands`];
+  const handleCommand = (command: string) => {
+    const normalized = command.trim().toLowerCase();
+    const rawOutput = responses[normalized];
+    const outputLines =
+      typeof rawOutput === "string"
+        ? [rawOutput]
+        : rawOutput || [`zsh: command not found: ${command} — try 'help'`];
 
-  // animate line-by-line
-  setTerminalLines((prev) => [...prev, `➜ ~ ${command}`]);
-  outputLines.forEach((line, i) => {
-    setTimeout(() => {
-      setTerminalLines((prev) => [...prev, line]);
-    }, 200 * i);
-  });
-};
+    setTerminalLines((prev) => [...prev, `➜ ~ ${command}`]);
+    outputLines.forEach((line, i) => {
+      setTimeout(() => {
+        setTerminalLines((prev) => [...prev, line]);
+      }, 150 * i);
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (currentInput.trim() === "") return;
+    if (!currentInput.trim()) return;
     handleCommand(currentInput);
     setCurrentInput("");
   };
 
   useEffect(() => {
-    inputRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (bodyRef.current) {
+      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+    }
   }, [terminalLines]);
 
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-center px-6 py-12 font-sans text-gray-900 dark:text-white bg-transparent z-10">
-      {/* Blurred Background */}
-      <div className="absolute inset-0 -z-10">
-        <img
-src={`${import.meta.env.BASE_URL}ro.jpg`}
-          alt="Background"
-          className="w-full h-full object-cover opacity-30 blur-lg scale-110"
-        />
-        <div className="absolute inset-0 bg-white/30 dark:bg-black/40 backdrop-blur-sm" />
-      </div>
+    <>
+      <style>{styles}</style>
+      <div className="about-page">
+        <div className="about-inner">
+          <div className="about-title">About Me</div>
 
-      {/* Terminal Glass Card */}
-      <section className="w-full max-w-4xl px-4">
-        <h2 className="text-2xl font-bold mb-4 text-center md:text-left">About Me</h2>
-
-        <div className="bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/20 rounded-lg shadow-lg font-mono text-sm text-left text-gray-800 dark:text-gray-200 overflow-hidden">
-          {/* Terminal Header */}
-          <div className="flex items-center gap-2 px-4 py-2 border-b border-white/20 bg-white/20 dark:bg-white/5">
-            <span className="w-3 h-3 rounded-full bg-red-500" />
-            <span className="w-3 h-3 rounded-full bg-yellow-400" />
-            <span className="w-3 h-3 rounded-full bg-green-500" />
-          </div>
-
-          {/* Terminal Body */}
-          <div className="p-4 overflow-y-auto max-h-[60vh] space-y-4">
-            {/* Initial prompt typing */}
-            <div className="text-blue-500">
-              {promptText}
-              {promptText.length < promptFull.length && (
-                <span className="animate-blink ml-1">|</span>
-              )}
+          <div className="terminal">
+            <div className="terminal-bar">
+              <div className="terminal-dot" style={{ background: "#ff5f57" }} />
+              <div className="terminal-dot" style={{ background: "#febc2e" }} />
+              <div className="terminal-dot" style={{ background: "#28c840" }} />
             </div>
+            <div className="terminal-body" ref={bodyRef}>
+              {/* Typing animation */}
+              <div>
+                <span className="terminal-prompt">{promptText}</span>
+                {promptText.length < promptFull.length && (
+                  <span style={{ opacity: 0.6 }}>|</span>
+                )}
+              </div>
 
-            {/* Command responses */}
-            {terminalLines.map((line, i) => (
-              <pre key={i} className="whitespace-pre-wrap leading-relaxed">
-                {line}
-              </pre>
-            ))}
+              {terminalLines.map((line, i) => (
+                <pre key={i} style={{ margin: 0, whiteSpace: "pre-wrap" }}>
+                  {line.startsWith("➜ ~")
+                    ? <><span className="terminal-prompt">{line}</span></>
+                    : line}
+                </pre>
+              ))}
 
-            {/* Command Input */}
-            <form onSubmit={handleSubmit} className="flex items-center">
-              <span className="text-blue-500">➜ ~</span>
-              <input
-                type="text"
-                ref={inputRef}
-                autoFocus
-                value={currentInput}
-                onChange={(e) => setCurrentInput(e.target.value)}
-                className="bg-transparent border-none outline-none ml-2 w-full placeholder-gray-400 text-gray-800 dark:text-gray-100 caret-blue-500"
-                placeholder="Type a command (try 'help')..."
-              />
-            </form>
+              <form onSubmit={handleSubmit} className="terminal-input-row">
+                <span className="terminal-prompt">➜ ~</span>
+                <input
+                  type="text"
+                  ref={inputRef}
+                  autoFocus
+                  value={currentInput}
+                  onChange={(e) => setCurrentInput(e.target.value)}
+                  className="terminal-input"
+                  placeholder="type a command (try 'help')..."
+                />
+              </form>
+            </div>
           </div>
-        </div>
 
-        {/* Back to Home */}
-        <div className="mt-8 text-center">
-          <Link
-            to="/"
-            className="inline-block px-4 py-2 bg-white/30 dark:bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm hover:bg-white/50 dark:hover:bg-white/20 transition"
-          >
-            ← Back to Home
-          </Link>
+          <Link to="/" className="about-back">← Back to Home</Link>
         </div>
-      </section>
-    </main>
+      </div>
+    </>
   );
 }

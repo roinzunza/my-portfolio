@@ -1,86 +1,302 @@
-import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { resumeData } from "../data/resumeData";
 
+const { name, email, website, phone, experience, stack, project, education } = resumeData;
+
+const styles = `
+  .rv-page {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #0d0d0d;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 16px 80px;
+  }
+
+  .rv-inner {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .rv-card {
+    background: #141414;
+    border: 1px solid #262626;
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .rv-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: #f0f0f0;
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+  }
+
+  .rv-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+  }
+
+  .rv-contact a,
+  .rv-contact span {
+    font-size: 12px;
+    color: #777;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .rv-contact a:hover { color: #60CD8B; }
+
+  .rv-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #60CD8B;
+    margin-bottom: 16px;
+  }
+
+  .rv-divider {
+    height: 1px;
+    background: #262626;
+    margin: 4px 0;
+  }
+
+  /* Experience */
+  .rv-job {
+    background: #1a1a1a;
+    border: 1px solid #262626;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+
+  .rv-job:last-child { margin-bottom: 0; }
+
+  .rv-job-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+  }
+
+  .rv-job-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f0f0f0;
+  }
+
+  .rv-job-period {
+    font-size: 11px;
+    color: #555;
+    white-space: nowrap;
+  }
+
+  .rv-job-company {
+    font-size: 11px;
+    font-weight: 600;
+    color: #60CD8B;
+    margin-bottom: 10px;
+  }
+
+  .rv-job-summary {
+    font-size: 12px;
+    line-height: 1.65;
+    color: #888;
+    margin-bottom: 10px;
+  }
+
+  .rv-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .rv-bullets li {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    line-height: 1.65;
+    color: #777;
+  }
+
+  .rv-bullet-dash {
+    color: #333;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Stack chips */
+  .rv-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .rv-chip {
+    font-size: 11px;
+    font-weight: 500;
+    color: #aaa;
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* Project */
+  .rv-project-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+  }
+
+  .rv-project-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f0f0f0;
+  }
+
+  .rv-project-url {
+    font-size: 11px;
+    color: #60CD8B;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+
+  .rv-project-url:hover { opacity: 0.7; }
+
+  .rv-project-role {
+    font-size: 11px;
+    color: #555;
+    margin-bottom: 12px;
+  }
+
+  /* Education */
+  .rv-edu-degree {
+    font-size: 13px;
+    font-weight: 600;
+    color: #f0f0f0;
+    margin-bottom: 2px;
+  }
+
+  .rv-edu-school {
+    font-size: 12px;
+    color: #555;
+  }
+
+  /* Back link */
+  .rv-back {
+    font-size: 12px;
+    font-weight: 500;
+    color: #777;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #2e2e2e;
+    background: #141414;
+    transition: border-color 0.15s, color 0.15s;
+    align-self: flex-start;
+  }
+
+  .rv-back:hover {
+    border-color: #60CD8B;
+    color: #60CD8B;
+  }
+`;
+
 export default function ResumePage() {
-    const [visibleIndexes, setVisibleIndexes] = useState<number[]>([]);
-    const refs = useRef<(HTMLDivElement | null)[]>([]);
+  return (
+    <>
+      <style>{styles}</style>
+      <div className="rv-page">
+        <div className="rv-inner">
 
-    // Reveal on scroll
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry, idx) => {
-                    if (entry.isIntersecting) {
-                        setVisibleIndexes((prev) => [...new Set([...prev, idx])]);
-                    }
-                });
-            },
-            { threshold: 0.2 }
-        );
-
-        refs.current.forEach((el) => el && observer.observe(el));
-        return () => observer.disconnect();
-    }, []);
-
-    return (
-        <main className="relative min-h-screen px-6 py-12 font-mono text-gray-900 dark:text-white bg-transparent z-10">
-            {/* Background */}
-            <div className="absolute inset-0 -z-10">
-                <img
-                    src={`${import.meta.env.BASE_URL}ro.jpg`}
-                    alt="Background"
-                    className="w-full h-full object-cover opacity-30 blur-lg scale-110"
-                />
-                <div className="absolute inset-0 bg-white/30 dark:bg-black/40 backdrop-blur-sm" />
+          {/* Header */}
+          <div className="rv-card">
+            <div className="rv-name">{name}</div>
+            <div className="rv-contact">
+              <a href={`mailto:${email}`}>{email}</a>
+              <a href={`https://${website}`} target="_blank" rel="noopener noreferrer">{website}</a>
+              <span>{phone}</span>
             </div>
+          </div>
 
-            <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center">
-                Git Commit Resume
-            </h1>
+          {/* Experience */}
+          <div className="rv-card">
+            <div className="rv-section-label">Experience</div>
+            {experience.map((job, i) => (
+              <div key={i} className="rv-job">
+                <div className="rv-job-header">
+                  <div className="rv-job-title">{job.title}</div>
+                  <div className="rv-job-period">{job.period}</div>
+                </div>
+                <div className="rv-job-company">{job.company} · {job.location}</div>
+                {job.summary && <div className="rv-job-summary">{job.summary}</div>}
+                <ul className="rv-bullets">
+                  {job.bullets.map((b, j) => (
+                    <li key={j}>
+                      <span className="rv-bullet-dash">—</span>
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
 
-            <div className="max-w-3xl mx-auto space-y-10">
-                {resumeData.map((item, index) => (
-                    <div
-                        key={item.id}
-                        ref={(el) => {
-                            refs.current[index] = el;
-                        }}
-                        className={`bg-white/20 dark:bg-white/10 backdrop-blur-md border border-white/20 text-gray-800 dark:text-gray-100 rounded-lg p-4 shadow-lg relative overflow-hidden transform transition-all duration-700 ease-out ${visibleIndexes.includes(index)
-                            ? "opacity-100 translate-y-0"
-                            : "opacity-0 translate-y-8"
-                            }`}
-                    >
-<div className="font-mono text-sm space-y-1">
-  <div>{`commit ${item.id}`}</div>
-  <div>{`Author: Rosendo Inzunza <rosendoinzunza@gmail.com>`}</div>
-  <div>{`Date:   ${item.duration}`}</div>
-  {index === 0 && <div>HEAD -&gt; main</div>}
-  <div>
-    <span className="text-orange-700">{item.role}</span>
-    {" @ "}
-    <span className="text-orange-700">{item.company}</span>
-  </div>
-  <div>{item.description}</div>
-</div>
-
-
-
-                        {/* Timeline dot and line */}
-                        <div className="absolute left-0 top-0 h-full w-1 bg-green-700/30" />
-                        <div className="absolute left-[-0.4rem] top-6 w-3 h-3 bg-green-500 rounded-full shadow-md" />
-                    </div>
-                ))}
+          {/* Tech Stack */}
+          <div className="rv-card">
+            <div className="rv-section-label">Technical Stack</div>
+            <div className="rv-chips">
+              {stack.map((s) => <span key={s} className="rv-chip">{s}</span>)}
             </div>
+          </div>
 
-            <div className="mt-12 text-center">
-                <Link
-                    to="/"
-                    className="inline-block px-4 py-2 bg-white/30 dark:bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm hover:bg-white/50 dark:hover:bg-white/20 transition"
-                >
-                    ← Back to Home
-                </Link>
+          {/* Startup Project */}
+          <div className="rv-card">
+            <div className="rv-section-label">Startup Project</div>
+            <div className="rv-project-header">
+              <div className="rv-project-name">{project.name}</div>
+              <a href={project.url} target="_blank" rel="noopener noreferrer" className="rv-project-url">
+                {project.url.replace("https://", "")}
+              </a>
             </div>
-        </main>
-    );
+            <div className="rv-project-role">{project.role} · {project.tech}</div>
+            <ul className="rv-bullets">
+              {project.bullets.map((b, i) => (
+                <li key={i}>
+                  <span className="rv-bullet-dash">—</span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Education */}
+          <div className="rv-card">
+            <div className="rv-section-label">Education</div>
+            <div className="rv-edu-degree">{education.degree}</div>
+            <div className="rv-edu-school">{education.school}</div>
+          </div>
+
+          <Link to="/" className="rv-back">← Back to Home</Link>
+
+        </div>
+      </div>
+    </>
+  );
 }
