@@ -171,6 +171,26 @@ const styles = `
     .nf-hero-content { padding-bottom: 14%; }
   }
 
+  @media (max-width: 600px) {
+    .nf-hero { height: auto; min-height: 80vh; padding-top: 24px; }
+    .nf-hero-title { font-size: clamp(32px, 11vw, 56px); margin-bottom: 14px; }
+    .nf-hero-meta { gap: 8px; font-size: 13px; flex-wrap: wrap; row-gap: 6px; }
+    .nf-hero-desc {
+      font-size: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .nf-btn { padding: 10px 18px; font-size: 14px; }
+    .nf-card { flex: 0 0 220px; }
+    .nf-continue { flex: 0 0 280px; }
+    .nf-rows { margin-top: -60px; }
+    .nf-row-title { font-size: 18px; }
+    .nf-scroll-btn { display: none; }
+  }
+
   /* ====================== Row ====================== */
   .nf-rows {
     margin-top: -120px;
@@ -233,11 +253,22 @@ const styles = `
     box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
 
-  .nf-card:hover {
-    transform: scale(1.18);
-    z-index: 10;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.7);
-    transition: transform 0.3s, box-shadow 0.3s, z-index 0s;
+  @media (hover: hover) {
+    .nf-card:hover {
+      transform: scale(1.18);
+      z-index: 10;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+      transition: transform 0.3s, box-shadow 0.3s, z-index 0s;
+    }
+    .nf-card:hover .nf-card-overlay { opacity: 1; }
+  }
+
+  @media (hover: none) {
+    .nf-card-overlay {
+      opacity: 1;
+      background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.95) 100%);
+    }
+    .nf-card-overlay .nf-card-actions { display: none; }
   }
 
   .nf-card-cover {
@@ -300,8 +331,6 @@ const styles = `
     justify-content: flex-end;
     padding: 12px;
   }
-
-  .nf-card:hover .nf-card-overlay { opacity: 1; }
 
   .nf-card-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
   .nf-card-meta { font-size: 11px; color: #e5e5e5; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
@@ -518,6 +547,24 @@ const styles = `
     align-items: flex-end;
     padding: 24px 32px;
     color: #fff;
+    overflow: hidden;
+  }
+
+  .nf-modal-hero-logo {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    pointer-events: none;
+  }
+
+  .nf-modal-hero-logo img {
+    max-width: 60%;
+    max-height: 70%;
+    object-fit: contain;
+    opacity: 0.95;
   }
 
   .nf-modal-hero::after {
@@ -537,6 +584,16 @@ const styles = `
 
   @media (max-width: 720px) {
     .nf-modal-content { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .nf-modal-backdrop { padding: 0; align-items: stretch; }
+    .nf-modal { border-radius: 0; min-height: 100vh; }
+    .nf-modal-content { padding: 20px; gap: 20px; }
+    .nf-modal-hero { padding: 20px; min-height: 220px; }
+    .nf-modal-title { font-size: 26px; }
+    .nf-modal-title-stack { max-width: 100%; }
+    .nf-modal-close { top: 16px; right: 16px; }
   }
 
   .nf-modal-title-stack { position: relative; z-index: 2; max-width: 70%; }
@@ -943,6 +1000,11 @@ export default function NetflixPage() {
               <button className="nf-modal-close" onClick={() => setOpen(null)} aria-label="Close">✕</button>
 
               <div className="nf-modal-hero" style={{ background: open.cover }}>
+                {open.logo && (
+                  <div className="nf-modal-hero-logo">
+                    <img src={`${import.meta.env.BASE_URL}${open.logo}`} alt={open.artist} />
+                  </div>
+                )}
                 <div className="nf-modal-title-stack">
                   <h2 className="nf-modal-title">{open.title}</h2>
                   <div className="nf-modal-actions">

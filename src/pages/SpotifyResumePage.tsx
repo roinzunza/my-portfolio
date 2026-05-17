@@ -50,6 +50,78 @@ const styles = `
     .sp-sidebar { display: none; }
   }
 
+  /* Mobile nav strip (replaces sidebar on small screens) */
+  .sp-mobile-nav { display: none; }
+
+  @media (max-width: 768px) {
+    .sp-mobile-nav {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      margin: -8px -8px 0;
+    }
+    .sp-mobile-nav::-webkit-scrollbar { display: none; }
+  }
+
+  .sp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 6px;
+    background: #232323;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+
+  .sp-chip:hover { background: #2c2c2c; }
+  .sp-chip.active { background: #1ED760; color: #000; }
+
+  .sp-chip-cover {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    line-height: 1.05;
+    padding: 2px;
+    box-sizing: border-box;
+    text-transform: uppercase;
+  }
+
+  .sp-chip-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 3px;
+    box-sizing: border-box;
+  }
+
+  .sp-player {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
   /* ============ Sidebar ============ */
   .sp-sidebar {
     grid-area: sidebar;
@@ -290,9 +362,14 @@ const styles = `
     .sp-hero {
       flex-direction: column;
       align-items: flex-start;
-      padding: 88px 20px 20px;
+      padding: 32px 20px 20px;
+      min-height: auto;
+      margin-top: 0;
     }
-    .sp-hero-avatar { width: 160px; height: 160px; }
+    .sp-hero-avatar { width: 140px; height: 140px; }
+    .sp-hero-name { font-size: clamp(36px, 12vw, 56px); }
+    .sp-section { padding: 8px 20px 24px; }
+    .sp-action-bar { padding: 20px; gap: 16px; }
   }
 
   /* ============ Action Bar ============ */
@@ -926,6 +1003,41 @@ export default function SpotifyResumePage() {
 
         {/* ============ Main ============ */}
         <main className="sp-main">
+          <div className="sp-mobile-nav">
+            {experience.map((job, i) => (
+              <Link
+                key={`m-${job.company}`}
+                to={`/spotify/${slugify(job.company)}`}
+                className="sp-chip"
+              >
+                <div
+                  className="sp-chip-cover"
+                  style={{ background: job.coverBg ?? albumGradients[i % albumGradients.length] }}
+                >
+                  {job.logo ? (
+                    <img src={`${import.meta.env.BASE_URL}${job.logo}`} alt={job.company} />
+                  ) : (
+                    job.company.slice(0, 2)
+                  )}
+                </div>
+                {job.company}
+              </Link>
+            ))}
+            <Link to={`/spotify/${projectSlug}`} className="sp-chip">
+              <div
+                className="sp-chip-cover"
+                style={{ background: project.coverBg ?? playlistGradients[0] }}
+              >
+                {project.logo ? (
+                  <img src={`${import.meta.env.BASE_URL}${project.logo}`} alt={project.name} />
+                ) : (
+                  project.name.slice(0, 2)
+                )}
+              </div>
+              {project.name}
+            </Link>
+          </div>
+
           <div className="sp-topbar">
             <Link to="/" className="sp-back-btn">← Back to Home</Link>
             <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#1ED760", fontWeight: 700, fontSize: 14 }}>

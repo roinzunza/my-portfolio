@@ -123,6 +123,32 @@ const styles = `
     .sp-sidebar { display: none; }
   }
 
+  .sp-mobile-nav { display: none; }
+  @media (max-width: 768px) {
+    .sp-mobile-nav {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      margin: -8px -8px 0;
+    }
+    .sp-mobile-nav::-webkit-scrollbar { display: none; }
+  }
+  .sp-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; background: #232323; border-radius: 999px; text-decoration: none; color: #fff; font-size: 13px; font-weight: 600; white-space: nowrap; flex-shrink: 0; transition: background 0.15s; }
+  .sp-chip:hover { background: #2c2c2c; }
+  .sp-chip.active { background: #1ED760; color: #000; }
+  .sp-chip-cover { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: 800; color: #fff; text-align: center; line-height: 1.05; padding: 2px; box-sizing: border-box; text-transform: uppercase; }
+  .sp-chip-cover img { width: 100%; height: 100%; object-fit: contain; padding: 3px; box-sizing: border-box; }
+  .sp-player { padding-bottom: env(safe-area-inset-bottom, 0); }
+
   /* Sidebar */
   .sp-sidebar { grid-area: sidebar; background: #000; border-radius: 8px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
   .sp-sidebar-card { background: #121212; border-radius: 8px; padding: 8px 12px; }
@@ -164,8 +190,13 @@ const styles = `
   .sp-album-extra { font-size: 14px; color: #b3b3b3; }
 
   @media (max-width: 600px) {
-    .sp-album-hero { flex-direction: column; align-items: flex-start; padding: 88px 20px 20px; }
-    .sp-album-art { width: 180px; height: 180px; font-size: 48px; }
+    .sp-album-hero { flex-direction: column; align-items: flex-start; padding: 32px 20px 20px; min-height: auto; margin-top: 0; }
+    .sp-album-art { width: 170px; height: 170px; font-size: 28px; padding: 14px; }
+    .sp-album-title { font-size: clamp(28px, 10vw, 48px); }
+    .sp-album-byline { font-size: 12px; }
+    .sp-action-bar { padding: 16px 20px; gap: 16px; }
+    .sp-section { padding: 16px 20px; }
+    .sp-track-table { padding: 0 8px 24px; }
   }
 
   .sp-action-bar { background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, #121212 100%); padding: 24px 32px; display: flex; align-items: center; gap: 24px; }
@@ -367,6 +398,24 @@ export default function SpotifyAlbumPage() {
         {Sidebar}
 
         <main className="sp-main">
+          <div className="sp-mobile-nav">
+            {albums.map((a) => (
+              <Link
+                key={`m-${a.slug}`}
+                to={`/spotify/${a.slug}`}
+                className={`sp-chip ${a.slug === slug ? "active" : ""}`}
+              >
+                <div className="sp-chip-cover" style={{ background: a.cover }}>
+                  {a.logo ? (
+                    <img src={`${import.meta.env.BASE_URL}${a.logo}`} alt={a.artist} />
+                  ) : (
+                    a.initials.slice(0, 2)
+                  )}
+                </div>
+                {a.artist}
+              </Link>
+            ))}
+          </div>
           <div className="sp-topbar">
             <Link to="/spotify" className="sp-back-btn">← Back to Resume</Link>
             <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#1ED760", fontWeight: 700, fontSize: 14 }}>
