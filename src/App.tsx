@@ -192,7 +192,7 @@ function App() {
 
           {/* Info */}
           <div className="home-info">
-            <div className="home-info-item"><FiCode size={14} /> Software Engineer at Cloudflare</div>
+            <div className="home-info-item"><FiCode size={14} /> Systems Engineer</div>
             <div className="home-info-item"><HiOutlineLocationMarker size={14} /> Based in California, US</div>
             <div className="home-info-item"><MdOutlineEmail size={14} /> rosendoinzunza@gmail.com</div>
             <div className="home-info-item"><GiIceCube size={14} /> Fueled by coffee</div>
