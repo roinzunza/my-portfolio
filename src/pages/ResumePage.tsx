@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { resumeData } from "../data/resumeData";
 
-const { name, email, website, phone, experience, stack, project, education } = resumeData;
+const { name, email, website, phone, summary, experience, skills, project, education } = resumeData;
 
 const styles = `
   .rv-page {
@@ -137,6 +137,27 @@ const styles = `
     margin-top: 1px;
   }
 
+  /* Summary */
+  .rv-summary {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #aaa;
+  }
+
+  /* Skills (categorized) */
+  .rv-skill-group {
+    margin-bottom: 12px;
+  }
+
+  .rv-skill-group:last-child { margin-bottom: 0; }
+
+  .rv-skill-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    margin-bottom: 6px;
+  }
+
   /* Stack chips */
   .rv-chips {
     display: flex;
@@ -235,6 +256,12 @@ export default function ResumePage() {
             </div>
           </div>
 
+          {/* Summary */}
+          <div className="rv-card">
+            <div className="rv-section-label">Summary</div>
+            <div className="rv-summary">{summary}</div>
+          </div>
+
           {/* Experience */}
           <div className="rv-card">
             <div className="rv-section-label">Experience</div>
@@ -258,12 +285,17 @@ export default function ResumePage() {
             ))}
           </div>
 
-          {/* Tech Stack */}
+          {/* Technical Skills */}
           <div className="rv-card">
-            <div className="rv-section-label">Technical Stack</div>
-            <div className="rv-chips">
-              {stack.map((s) => <span key={s} className="rv-chip">{s}</span>)}
-            </div>
+            <div className="rv-section-label">Technical Skills</div>
+            {Object.entries(skills).map(([category, items]) => (
+              <div key={category} className="rv-skill-group">
+                <div className="rv-skill-label">{category}</div>
+                <div className="rv-chips">
+                  {items.map((s) => <span key={s} className="rv-chip">{s}</span>)}
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Startup Project */}

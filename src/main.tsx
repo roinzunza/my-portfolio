@@ -4,6 +4,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import ResumePage from "./pages/ResumePage.tsx";
+import SpotifyResumePage from "./pages/SpotifyResumePage.tsx";
+import SpotifyAlbumPage from "./pages/SpotifyAlbumPage.tsx";
+import NetflixPage from "./pages/NetflixPage.tsx";
 import ProjectsPage from "./pages/ProjectsPage.tsx";
 import "./index.css";
 
@@ -14,6 +17,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/" element={<App />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/resume" element={<ResumePage />} />
+        <Route path="/spotify" element={<SpotifyResumePage />} />
+        <Route path="/spotify/:slug" element={<SpotifyAlbumPage />} />
+        <Route path="/netflix" element={<NetflixPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
       </Routes>
     </BrowserRouter>
