@@ -44,10 +44,17 @@ const styles = `
 
   @media (max-width: 768px) {
     .sp-page {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       grid-template-areas: "main" "player";
+      width: 100%;
+      max-width: 100vw;
+      padding: 4px;
+      gap: 4px;
+      overflow-x: hidden;
     }
     .sp-sidebar { display: none; }
+    .sp-main { width: 100%; min-width: 0; max-width: 100%; }
+    .sp-topbar-pill { display: none; }
   }
 
   /* Mobile nav strip (replaces sidebar on small screens) */
@@ -67,7 +74,7 @@ const styles = `
       position: sticky;
       top: 0;
       z-index: 20;
-      margin: -8px -8px 0;
+      width: 100%;
     }
     .sp-mobile-nav::-webkit-scrollbar { display: none; }
   }
@@ -265,6 +272,7 @@ const styles = `
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
+    min-width: 0;
   }
 
   .sp-main::-webkit-scrollbar { width: 12px; }
@@ -568,6 +576,13 @@ const styles = `
   .sp-album-card:hover { background: #282828; }
   .sp-album-card:hover .sp-album-play { opacity: 1; transform: translateY(0); }
   a.sp-album-card { text-decoration: none; color: inherit; display: block; }
+  .sp-featured-card { grid-column: 1 / -1; }
+  .sp-featured-card .sp-featured-cover { width: 160px; height: 160px; flex-shrink: 0; }
+  @media (max-width: 600px) {
+    .sp-featured-card > a { flex-direction: column; }
+    .sp-featured-card { padding: 12px; }
+    .sp-featured-card .sp-featured-cover { width: 120px; height: 120px; }
+  }
 
   .sp-album-cover {
     width: 100%;
@@ -1040,7 +1055,7 @@ export default function SpotifyResumePage() {
 
           <div className="sp-topbar">
             <Link to="/" className="sp-back-btn">← Back to Home</Link>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#1ED760", fontWeight: 700, fontSize: 14 }}>
+            <div className="sp-topbar-pill" style={{ display: "flex", alignItems: "center", gap: 8, color: "#1ED760", fontWeight: 700, fontSize: 14 }}>
               <FaSpotify size={18} /> Open in Web Player
             </div>
           </div>
@@ -1162,18 +1177,15 @@ export default function SpotifyResumePage() {
           <section className="sp-section">
             <h2 className="sp-section-title">Featured Release</h2>
             <div className="sp-album-grid">
-              <div className="sp-album-card" style={{ background: "#1a1a1a", gridColumn: "span 2" }}>
+              <div className="sp-album-card sp-featured-card" style={{ background: "#1a1a1a" }}>
                 <Link
                   to={`/spotify/${projectSlug}`}
                   style={{ display: "flex", gap: 20, alignItems: "flex-start", textDecoration: "none", color: "inherit" }}
                 >
                   <div
-                    className="sp-album-cover"
+                    className="sp-album-cover sp-featured-cover"
                     style={{
                       background: project.coverBg ?? "linear-gradient(135deg, #1DB954 0%, #064E3B 100%)",
-                      width: 160,
-                      height: 160,
-                      flexShrink: 0,
                       marginBottom: 0,
                       position: "relative",
                       fontSize: 28,

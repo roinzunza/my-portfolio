@@ -119,8 +119,18 @@ const styles = `
   }
 
   @media (max-width: 768px) {
-    .sp-page { grid-template-columns: 1fr; grid-template-areas: "main" "player"; }
+    .sp-page {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "main" "player";
+      width: 100%;
+      max-width: 100vw;
+      padding: 4px;
+      gap: 4px;
+      overflow-x: hidden;
+    }
     .sp-sidebar { display: none; }
+    .sp-main { width: 100%; min-width: 0; max-width: 100%; }
+    .sp-topbar-pill { display: none; }
   }
 
   .sp-mobile-nav { display: none; }
@@ -138,7 +148,7 @@ const styles = `
       position: sticky;
       top: 0;
       z-index: 20;
-      margin: -8px -8px 0;
+      width: 100%;
     }
     .sp-mobile-nav::-webkit-scrollbar { display: none; }
   }
@@ -170,7 +180,7 @@ const styles = `
   .sp-playlist-sub { font-size: 12px; color: #b3b3b3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Main */
-  .sp-main { grid-area: main; background: #121212; border-radius: 8px; overflow-y: auto; overflow-x: hidden; position: relative; }
+  .sp-main { grid-area: main; background: #121212; border-radius: 8px; overflow-y: auto; overflow-x: hidden; position: relative; min-width: 0; }
   .sp-main::-webkit-scrollbar { width: 12px; }
   .sp-main::-webkit-scrollbar-thumb { background: #535353; border-radius: 6px; border: 3px solid #121212; }
 
@@ -418,7 +428,7 @@ export default function SpotifyAlbumPage() {
           </div>
           <div className="sp-topbar">
             <Link to="/spotify" className="sp-back-btn">← Back to Resume</Link>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#1ED760", fontWeight: 700, fontSize: 14 }}>
+            <div className="sp-topbar-pill" style={{ display: "flex", alignItems: "center", gap: 8, color: "#1ED760", fontWeight: 700, fontSize: 14 }}>
               <FaSpotify size={18} /> Open in Web Player
             </div>
           </div>

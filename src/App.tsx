@@ -218,6 +218,7 @@ function App() {
             <Link to="/about" className="home-nav-link">About Me →</Link>
             <Link to="/resume" className="home-nav-link">Resume →</Link>
             <Link to="/projects" className="home-nav-link">What I'm Building →</Link>
+            <Link to="/nvidia" className="home-nav-link" style={{ borderColor: '#76b900', color: '#76b900' }}>NVIDIA Dashboard →</Link>
           </div>
 
         </div>

@@ -7,6 +7,7 @@ import ResumePage from "./pages/ResumePage.tsx";
 import SpotifyResumePage from "./pages/SpotifyResumePage.tsx";
 import SpotifyAlbumPage from "./pages/SpotifyAlbumPage.tsx";
 import NetflixPage from "./pages/NetflixPage.tsx";
+import NvidiaPage from "./pages/NvidiaPage.tsx";
 import ProjectsPage from "./pages/ProjectsPage.tsx";
 import "./index.css";
 
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/spotify" element={<SpotifyResumePage />} />
         <Route path="/spotify/:slug" element={<SpotifyAlbumPage />} />
         <Route path="/netflix" element={<NetflixPage />} />
+        <Route path="/nvidia" element={<NvidiaPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
       </Routes>
     </BrowserRouter>
