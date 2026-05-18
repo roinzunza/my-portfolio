@@ -120,16 +120,38 @@ const styles = `
 
   @media (max-width: 768px) {
     .sp-page {
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-areas: "main" "player";
+      display: block;
+      grid-template-columns: none;
+      grid-template-rows: none;
+      grid-template-areas: none;
       width: 100%;
       max-width: 100vw;
-      padding: 4px;
-      gap: 4px;
+      padding: 0;
+      gap: 0;
       overflow-x: hidden;
+      min-height: 100vh;
     }
     .sp-sidebar { display: none; }
-    .sp-main { width: 100%; min-width: 0; max-width: 100%; }
+    .sp-main {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      border-radius: 0;
+      overflow: visible;
+      padding-bottom: 88px;
+      background: #121212;
+    }
+    .sp-player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-width: 100vw;
+      z-index: 30;
+      height: 64px;
+      border-top: 1px solid #181818;
+    }
     .sp-topbar-pill { display: none; }
   }
 
