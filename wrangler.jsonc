@@ -1,14 +1,11 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "my-portfolio",
   "compatibility_date": "2026-06-18",
   "observability": {
     "enabled": true
   },
   "assets": {
-    // SPA fallback: any path that doesn't map to a real built asset
-    // (e.g. /resume, /netflix, deep links from search engines) serves
-    // index.html with status 200 so React Router takes over.
+    "directory": "./dist",
     "not_found_handling": "single-page-application"
   },
   "compatibility_flags": [
