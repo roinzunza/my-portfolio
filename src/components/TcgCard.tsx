@@ -142,44 +142,39 @@ const styles = `
     pointer-events: none;
   }
 
-  /* Vertical extruded navy name running up the left edge — same palette
-     as the back of the card. Lighter steel-blue highlights at the top
-     and bottom of the gradient give the letters dimension against the
-     dark photo tint; deep-navy extrusion grounds them. */
+  /* Vertical name reading bottom-to-top up the left edge of the card.
+     Each letter is its own span (see JSX) stacked top-down via flex —
+     no writing-mode, no rotate transform — so the lettering stays in
+     the same paint layer as the front face and gets culled correctly
+     when the card flips on iOS. The previous transform: rotate(180deg)
+     was promoting the lettering to its own GPU compositing layer that
+     escaped the parent's backface-visibility. */
   .tcg-name-vertical {
     position: absolute;
-    left: 4px;
-    top: 14px;
-    bottom: 14px;
-    width: 84px;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    font-family: 'Bebas Neue', 'Inter', system-ui, sans-serif;
-    font-size: clamp(72px, 17vw, 124px);
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    line-height: 0.9;
-    background: none;
-    -webkit-background-clip: initial;
-    background-clip: initial;
-    -webkit-text-fill-color: initial;
-    color: #ffffff;
-    text-shadow:
-      /* soft ambient drop shadow + thin outline — separates the white
-         from the photo without the heavy dark extrusion that was
-         visually averaging the letters to grey. */
-      0 0 1px rgba(0, 0, 0, 0.45),
-      0 2px 6px rgba(0, 0, 0, 0.55),
-      0 4px 14px rgba(0, 0, 0, 0.4);
+    left: 6px;
+    top: 12px;
+    bottom: 12px;
+    width: 78px;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     pointer-events: none;
     user-select: none;
-    /* Defense-in-depth for the iOS flip bug: explicitly hide the back
-       face of the lettering element so it can't bleed through. */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+  }
+  .tcg-name-char {
+    font-family: 'Bebas Neue', 'Inter', system-ui, sans-serif;
+    font-size: clamp(52px, 13.5vw, 78px);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    color: #ffffff;
+    text-shadow:
+      0 0 1px rgba(0, 0, 0, 0.5),
+      0 2px 5px rgba(0, 0, 0, 0.55),
+      0 3px 10px rgba(0, 0, 0, 0.4);
   }
 
   /* ====== HOLO FOIL ====== */
@@ -681,10 +676,16 @@ export default function TcgCard(props: TcgCardProps) {
                 <div className="tcg-foil tcg-foil-rainbow" />
                 <div className="tcg-foil tcg-foil-glare" />
                 {/* Name rendered LAST so it paints on top of the foil layers
-                    without needing z-index (z-index inside preserve-3d breaks
-                    backface-visibility on iOS Safari → front text bleeds
-                    through to the back during flip). */}
-                <div className="tcg-name-vertical">{name}</div>
+                    without needing z-index. Each letter is its own span
+                    stacked in a flex column — no writing-mode, no rotate
+                    transform — so the lettering can't be promoted to its
+                    own GPU layer and bleed through during the iOS flip.
+                    The name is reversed so it reads bottom-to-top. */}
+                <div className="tcg-name-vertical" aria-label={name}>
+                  {Array.from(name).reverse().map((ch, i) => (
+                    <span key={i} className="tcg-name-char">{ch}</span>
+                  ))}
+                </div>
               </div>
             </div>
 
