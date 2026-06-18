@@ -176,10 +176,10 @@ const styles = `
     justify-content: center;
     pointer-events: none;
     user-select: none;
-    /* z-index 3 keeps the white face above the foil layers so the
-       soft-light blends don't tint it. The holo still rides on the
-       photo and the foil border around the letters. */
-    z-index: 3;
+    /* Defense-in-depth for the iOS flip bug: explicitly hide the back
+       face of the lettering element so it can't bleed through. */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   /* ====== HOLO FOIL ====== */
@@ -283,10 +283,10 @@ const styles = `
       radial-gradient(ellipse at 80% 100%, #0a1430 0%, transparent 60%),
       linear-gradient(160deg, #1e2a4a 0%, #142048 50%, #0a1430 100%);
     color: #f5f1e8;
-    padding: 18px 18px 16px;
+    padding: 16px 16px 14px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 9px;
     font-family: 'Inter', system-ui, sans-serif;
   }
 
@@ -677,10 +677,14 @@ export default function TcgCard(props: TcgCardProps) {
               <div className="tcg-front-inner">
                 <img src={photoUrl} alt={`${displayName} portrait`} className="tcg-photo" />
                 <div className="tcg-photo-vignette" />
-                <div className="tcg-name-vertical">{name}</div>
                 <div className="tcg-foil tcg-foil-pattern" />
                 <div className="tcg-foil tcg-foil-rainbow" />
                 <div className="tcg-foil tcg-foil-glare" />
+                {/* Name rendered LAST so it paints on top of the foil layers
+                    without needing z-index (z-index inside preserve-3d breaks
+                    backface-visibility on iOS Safari → front text bleeds
+                    through to the back during flip). */}
+                <div className="tcg-name-vertical">{name}</div>
               </div>
             </div>
 
