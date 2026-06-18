@@ -1,13 +1,17 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "my-portfolio",
-  "compatibility_date": "2025-06-01",
-  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-06-18",
+  "observability": {
+    "enabled": true
+  },
   "assets": {
-    // Serve index.html for any path that isn't a real asset — standard
-    // client-side router fallback. Replaces the `_redirects` `/* /index.html 200`
-    // rule, which Cloudflare's new asset pipeline rejected as a loop.
-    "not_found_handling": "single-page-application",
-    "html_handling": "auto-trailing-slash"
-  }
+    // SPA fallback: any path that doesn't map to a real built asset
+    // (e.g. /resume, /netflix, deep links from search engines) serves
+    // index.html with status 200 so React Router takes over.
+    "not_found_handling": "single-page-application"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
 }
