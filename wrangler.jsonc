@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-portfolio",
+  "compatibility_date": "2025-06-01",
+  "pages_build_output_dir": "./dist",
+  "assets": {
+    // Serve index.html for any path that isn't a real asset — standard
+    // client-side router fallback. Replaces the `_redirects` `/* /index.html 200`
+    // rule, which Cloudflare's new asset pipeline rejected as a loop.
+    "not_found_handling": "single-page-application",
+    "html_handling": "auto-trailing-slash"
+  }
+}
