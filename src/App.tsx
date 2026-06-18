@@ -1,229 +1,113 @@
-import { useEffect, useState } from "react";
-import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
-import { GiIceCube } from "react-icons/gi";
-import { HiOutlineLocationMarker } from "react-icons/hi";
-import { FiCode } from "react-icons/fi";
-import { MdOutlineEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
-import CodeRain from "./components/CodeRain";
+import { useEffect } from "react";
+import TcgCard, { type TcgCardProps } from "./components/TcgCard";
 
-const styles = `
-  .home-page {
-    font-family: 'Inter', system-ui, sans-serif;
-    background: #0d0d0d;
+const base = import.meta.env.BASE_URL;
+
+// Single source of truth for the card content. Edit me to swap text/numbers/logos
+// without touching the component layout.
+const cardConfig: TcgCardProps = {
+  name: "ROSENDO",
+  photoUrl: `${base}me.png`,
+  profilePicUrl: `${base}ro.jpg`,
+
+  displayName: "Rosendo Inzunza",
+  subtitle: "Systems Engineer",
+
+  github: "https://github.com/roinzunza",
+
+  stats: [
+    { label: "Based In", value: "California, US" },
+    { label: "Builds With", value: "Rust + Python" },
+    { label: "Fuel", value: "Oat milk cortado" },
+    { label: "Hobbies", value: "MTG · Gaming · Running", wide: true },
+  ],
+
+  bio:
+    "Systems engineer with 6 years in infrastructure and systems engineering, most recently at Cloudflare and TikTok. Set technical direction for control planes, ML training systems, and distributed tooling at global scale. Strength is driving architectural changes that span multiple teams, from RFC and stakeholder alignment through production delivery, and unblocking initiatives stalled by scale or blast-radius risk. Also founded and shipped SideQuest, a live iOS marketplace, solo.",
+
+  metrics: [
+    { value: "6", label: "Years Shipping" },
+    { value: "10×", label: "Faster APIs" },
+    { value: "1", label: "iOS App Live" },
+  ],
+
+  project: {
+    name: "SideQuest",
+    url: "https://www.sidequestapp.io",
+    logoUrl: `${base}icons/wordmark.png`,
+  },
+
+  logosHeading: "Built At",
+  logos: [
+    { name: "Cloudflare", src: `${base}Cloudflare.png` },
+    { name: "TikTok", src: `${base}icons/tiktok-logo-tikok-icon-transparent-tikok-app-logo-free-png.webp` },
+    { name: "DFT", src: `${base}digital_force_technologies.jpg` },
+    { name: "CoreLogic", src: `${base}icons/CoreLogic_logo.svg.png` },
+  ],
+
+  contact: "rosendoinzunza@gmail.com",
+
+  rarity: "★ Mythic",
+  collectorNumber: "001 / 001 · Founders",
+};
+
+const landingStyles = `
+  .tcg-landing {
+    position: relative;
     min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 48px 16px;
+    background: #0a0a0c;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
-  .home-card {
-    width: 100%;
-    max-width: 640px;
-    background: #141414;
-    border: 1px solid #262626;
-    border-radius: 16px;
-    padding: 36px;
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
+  /* cold navy glow behind the card — pulls from the back palette so the
+     stage and the card read as the same world. */
+  .tcg-landing::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(58, 78, 128, 0.22) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(30, 42, 74, 0.18) 0%, transparent 50%),
+      linear-gradient(180deg, #050608 0%, #0a0c14 100%);
+    pointer-events: none;
   }
 
-  .home-profile {
-    display: flex;
-    align-items: center;
-    gap: 24px;
+  .tcg-landing::after {
+    /* subtle noise — pure SVG so no asset to load */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+    pointer-events: none;
   }
 
-  .home-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid #262626;
-    flex-shrink: 0;
-  }
-
-  .home-name {
-    font-size: 22px;
-    font-weight: 800;
-    color: #f0f0f0;
-    letter-spacing: -0.3px;
-  }
-
-  .home-typewriter {
-    font-size: 14px;
-    color: #60CD8B;
-    min-height: 22px;
-    font-weight: 500;
-  }
-
-  .home-divider {
-    height: 1px;
-    background: #262626;
-  }
-
-  .home-info {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .home-info-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: #aaa;
-  }
-
-  .home-info-item svg {
-    color: #60CD8B;
-    flex-shrink: 0;
-  }
-
-  .home-socials {
-    display: flex;
-    gap: 10px;
-  }
-
-  .home-social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: #1e1e1e;
-    border: 1px solid #2e2e2e;
-    color: #aaa;
-    font-size: 16px;
-    text-decoration: none;
-    transition: border-color 0.15s, color 0.15s;
-  }
-
-  .home-social-btn:hover {
-    border-color: #60CD8B;
-    color: #60CD8B;
-  }
-
-  .home-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .home-nav-link {
-    font-size: 12px;
-    font-weight: 500;
-    color: #aaa;
-    text-decoration: none;
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1px solid #2e2e2e;
-    background: #1e1e1e;
-    transition: border-color 0.15s, color 0.15s;
-  }
-
-  .home-nav-link:hover {
-    border-color: #60CD8B;
-    color: #60CD8B;
+  .tcg-landing-card-wrap {
+    position: relative;
+    z-index: 1;
   }
 `;
 
-const titles = ["Software Engineer", "Gamer", "Coffee Connoisseur", "Frenchie dad"];
-
-function App() {
-  const [displayedText, setDisplayedText] = useState("");
-  const [loopIndex, setLoopIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
+export default function App() {
   useEffect(() => {
     document.title = "Rosendo Inzunza | Portfolio";
-    document.documentElement.classList.add("dark");
   }, []);
-
-  useEffect(() => {
-    const currentTitle = titles[loopIndex % titles.length];
-    const timeout = setTimeout(() => {
-      if (isDeleting) {
-        setDisplayedText(currentTitle.slice(0, charIndex - 1));
-        setCharIndex(charIndex - 1);
-      } else {
-        setDisplayedText(currentTitle.slice(0, charIndex + 1));
-        setCharIndex(charIndex + 1);
-      }
-      if (!isDeleting && charIndex === currentTitle.length) {
-        setTimeout(() => setIsDeleting(true), 1000);
-      } else if (isDeleting && charIndex === 0) {
-        setIsDeleting(false);
-        setLoopIndex(loopIndex + 1);
-      }
-    }, isDeleting ? 50 : 100);
-    return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, loopIndex]);
 
   return (
     <>
-      <style>{styles}</style>
-      <div className="home-page">
-        <CodeRain />
-        <div className="home-card" style={{ position: "relative", zIndex: 1 }}>
-
-          {/* Profile */}
-          <div className="home-profile">
-            <img
-              src={`${import.meta.env.BASE_URL}ro.jpg`}
-              alt="Rosendo Inzunza"
-              className="home-avatar"
-            />
-            <div>
-              <div className="home-name">Rosendo Inzunza</div>
-              <div className="home-typewriter">
-                {displayedText}<span style={{ opacity: 0.6 }}>|</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="home-divider" />
-
-          {/* Info */}
-          <div className="home-info">
-            <div className="home-info-item"><FiCode size={14} /> Systems Engineer</div>
-            <div className="home-info-item"><HiOutlineLocationMarker size={14} /> Based in California, US</div>
-            <div className="home-info-item"><MdOutlineEmail size={14} /> rosendoinzunza@gmail.com</div>
-            <div className="home-info-item"><GiIceCube size={14} /> Fueled by coffee</div>
-          </div>
-
-          <div className="home-divider" />
-
-          {/* Socials */}
-          <div className="home-socials">
-            <a href="https://github.com/roinzunza" target="_blank" rel="noopener noreferrer" className="home-social-btn">
-              <FaGithub />
-            </a>
-            <a href="https://www.linkedin.com/in/rosendoinzunza" target="_blank" rel="noopener noreferrer" className="home-social-btn">
-              <FaLinkedin />
-            </a>
-            <a href="https://instagram.com/ro.inzunza" target="_blank" rel="noopener noreferrer" className="home-social-btn">
-              <FaInstagram />
-            </a>
-          </div>
-
-          {/* Nav */}
-          <div className="home-nav">
-            <Link to="/about" className="home-nav-link">About Me →</Link>
-            <Link to="/resume" className="home-nav-link">Resume →</Link>
-            <Link to="/projects" className="home-nav-link">What I'm Building →</Link>
-          </div>
-
+      <style>{landingStyles}</style>
+      <div className="tcg-landing">
+        <div className="tcg-landing-card-wrap">
+          <TcgCard {...cardConfig} />
         </div>
       </div>
     </>
   );
 }
-
-export default App;
