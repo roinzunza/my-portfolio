@@ -142,40 +142,43 @@ const styles = `
     pointer-events: none;
   }
 
-  /* Vertical name reading bottom-to-top up the left edge of the card.
-     Each letter is its own span (see JSX) stacked top-down via flex —
-     no writing-mode, no rotate transform — so the lettering stays in
-     the same paint layer as the front face and gets culled correctly
-     when the card flips on iOS. The previous transform: rotate(180deg)
-     was promoting the lettering to its own GPU compositing layer that
-     escaped the parent's backface-visibility. */
+  /* Vertical name running up the left edge — sideways-lr does the
+     "vertical sign" layout entirely via writing-mode (no rotate
+     transform), so the lettering stays in the same paint layer as
+     the front face. backface-visibility is hidden as defense-in-depth
+     against iOS flip-bleed; the opacity snap at 50% of the flip
+     duration is the *actual* fix — iOS Safari sometimes keeps the
+     front content rendered for a frame past 90° rotation, so we
+     instantly hide it at the moment the back becomes visible. */
   .tcg-name-vertical {
     position: absolute;
-    left: 6px;
-    top: 12px;
-    bottom: 12px;
-    width: 78px;
+    left: 4px;
+    top: 14px;
+    bottom: 14px;
+    width: 84px;
+    writing-mode: sideways-lr;
+    font-family: 'Bebas Neue', 'Inter', system-ui, sans-serif;
+    font-size: clamp(72px, 17vw, 124px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 0.9;
+    color: #ffffff;
+    text-shadow:
+      0 0 1px rgba(0, 0, 0, 0.5),
+      0 2px 6px rgba(0, 0, 0, 0.55),
+      0 4px 14px rgba(0, 0, 0, 0.4);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     pointer-events: none;
     user-select: none;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    opacity: 1;
+    /* Instant opacity flip at 50% of the 600ms card flip — no fade. */
+    transition: opacity 0s linear 0.3s;
   }
-  .tcg-name-char {
-    font-family: 'Bebas Neue', 'Inter', system-ui, sans-serif;
-    font-size: clamp(52px, 13.5vw, 78px);
-    font-weight: 400;
-    line-height: 1;
-    letter-spacing: 0;
-    color: #ffffff;
-    text-shadow:
-      0 0 1px rgba(0, 0, 0, 0.5),
-      0 2px 5px rgba(0, 0, 0, 0.55),
-      0 3px 10px rgba(0, 0, 0, 0.4);
-  }
+  .tcg-stage.flipped .tcg-name-vertical { opacity: 0; }
 
   /* ====== HOLO FOIL ====== */
   .tcg-foil {
@@ -278,10 +281,10 @@ const styles = `
       radial-gradient(ellipse at 80% 100%, #0a1430 0%, transparent 60%),
       linear-gradient(160deg, #1e2a4a 0%, #142048 50%, #0a1430 100%);
     color: #f5f1e8;
-    padding: 16px 16px 14px;
+    padding: 14px 14px 12px;
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 7px;
     font-family: 'Inter', system-ui, sans-serif;
   }
 
@@ -303,14 +306,14 @@ const styles = `
   /* HEADER row: profile pic + display name */
   .tcg-header {
     display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 14px;
+    grid-template-columns: 46px 1fr;
+    gap: 12px;
     align-items: center;
   }
 
   .tcg-profile-pic {
-    width: 56px;
-    height: 56px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #f5d65a;
@@ -321,7 +324,7 @@ const styles = `
     min-width: 0;
     display: flex;
     align-items: center;
-    height: 56px;
+    height: 46px;
   }
 
   /* No more @handle row — the display name takes the prominent slot */
@@ -371,8 +374,8 @@ const styles = `
 
   /* Bio */
   .tcg-bio {
-    font-size: 10.5px;
-    line-height: 1.45;
+    font-size: 9.5px;
+    line-height: 1.4;
     color: #c4c8d4;
     font-weight: 400;
   }
@@ -390,7 +393,7 @@ const styles = `
     align-items: flex-start;
   }
   .tcg-metric-value {
-    font-size: 30px;
+    font-size: 24px;
     font-weight: 800;
     line-height: 0.95;
     color: #f5f1e8;
@@ -676,16 +679,11 @@ export default function TcgCard(props: TcgCardProps) {
                 <div className="tcg-foil tcg-foil-rainbow" />
                 <div className="tcg-foil tcg-foil-glare" />
                 {/* Name rendered LAST so it paints on top of the foil layers
-                    without needing z-index. Each letter is its own span
-                    stacked in a flex column — no writing-mode, no rotate
-                    transform — so the lettering can't be promoted to its
-                    own GPU layer and bleed through during the iOS flip.
-                    The name is reversed so it reads bottom-to-top. */}
-                <div className="tcg-name-vertical" aria-label={name}>
-                  {Array.from(name).reverse().map((ch, i) => (
-                    <span key={i} className="tcg-name-char">{ch}</span>
-                  ))}
-                </div>
+                    without needing z-index. writing-mode: sideways-lr does
+                    the vertical sideways layout in pure CSS without any
+                    rotate transform, so there's no separate compositing
+                    layer that can bleed through on iOS during the flip. */}
+                <div className="tcg-name-vertical">{name}</div>
               </div>
             </div>
 
