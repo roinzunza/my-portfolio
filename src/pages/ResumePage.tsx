@@ -1,331 +1,401 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { resumeData } from "../data/resumeData";
 
-const { name, email, website, phone, summary, experience, skills, project, education } = resumeData;
-
 const styles = `
-  .rv-page {
+  :root {
+    --rp-bg: #0a0c14;
+    --rp-card: rgba(20, 32, 72, 0.55);
+    --rp-border: rgba(245, 214, 90, 0.22);
+    --rp-text: #f5f1e8;
+    --rp-text-2: #c4c8d4;
+    --rp-text-3: rgba(196, 200, 212, 0.6);
+    --rp-gold: #f5d65a;
+    --rp-gold-2: #c9971a;
+    --rp-navy: #1e2a4a;
+  }
+
+  .rp-page {
+    min-height: 100svh;
+    min-height: 100dvh;
+    background:
+      radial-gradient(circle at 30% 10%, rgba(58, 78, 128, 0.22) 0%, transparent 50%),
+      radial-gradient(circle at 70% 90%, rgba(30, 42, 74, 0.18) 0%, transparent 50%),
+      linear-gradient(180deg, #050608 0%, #0a0c14 100%);
+    color: var(--rp-text);
     font-family: 'Inter', system-ui, sans-serif;
-    background: #0d0d0d;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 48px 16px 80px;
+    /* Top padding small (no top nav); bottom clears the floating bottom
+       nav + iOS home indicator. */
+    padding:
+      max(40px, env(safe-area-inset-top, 0px))
+      20px
+      calc(120px + env(safe-area-inset-bottom, 0px));
+    position: relative;
+    overflow-x: hidden;
   }
 
-  .rv-inner {
-    width: 100%;
-    max-width: 640px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  @media (max-width: 520px) {
+    .rp-page { padding-left: 16px; padding-right: 16px; }
   }
 
-  .rv-card {
-    background: #141414;
-    border: 1px solid #262626;
-    border-radius: 16px;
-    padding: 24px;
+  .rp-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: 0.3;
+    mix-blend-mode: overlay;
   }
 
-  .rv-name {
-    font-size: 20px;
-    font-weight: 800;
-    color: #f0f0f0;
-    letter-spacing: -0.3px;
-    margin-bottom: 6px;
+  .rp-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    position: relative;
   }
 
-  .rv-contact {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 16px;
+  /* ===== HEADER ===== */
+  .rp-header {
+    text-align: center;
+    margin-bottom: 56px;
   }
-
-  .rv-contact a,
-  .rv-contact span {
-    font-size: 12px;
-    color: #777;
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-
-  .rv-contact a:hover { color: #60CD8B; }
-
-  .rv-section-label {
-    font-size: 10px;
+  .rp-eyebrow {
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.4em;
+    color: var(--rp-gold);
     text-transform: uppercase;
-    color: #60CD8B;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+  }
+  .rp-name {
+    font-family: 'Bebas Neue', 'Inter', sans-serif;
+    font-size: clamp(48px, 9vw, 88px);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    margin: 0 0 10px;
+    color: #ffffff;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+  }
+  .rp-role {
+    font-size: 14px;
+    color: var(--rp-text-2);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .rp-contact-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    font-size: 13px;
+    color: var(--rp-text-2);
+  }
+  .rp-contact-row a {
+    color: var(--rp-text-2);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(245, 214, 90, 0.35);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .rp-contact-row a:hover {
+    color: var(--rp-gold);
+    border-bottom-color: var(--rp-gold);
   }
 
-  .rv-divider {
+  /* ===== SECTION ===== */
+  .rp-section { margin-bottom: 48px; }
+  .rp-section-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .rp-section-title {
+    font-family: 'Bebas Neue', 'Inter', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    color: var(--rp-gold);
+    margin: 0;
+  }
+  .rp-section-rule {
+    flex: 1;
     height: 1px;
-    background: #262626;
-    margin: 4px 0;
+    background: linear-gradient(90deg, rgba(245, 214, 90, 0.4) 0%, transparent 100%);
   }
 
-  /* Experience */
-  .rv-job {
-    background: #1a1a1a;
-    border: 1px solid #262626;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 10px;
+  .rp-bio {
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--rp-text-2);
+    margin: 0;
   }
 
-  .rv-job:last-child { margin-bottom: 0; }
-
-  .rv-job-header {
+  /* ===== JOB ===== */
+  .rp-job {
+    background: var(--rp-card);
+    border: 1px solid var(--rp-border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .rp-job-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 8px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
   }
-
-  .rv-job-title {
-    font-size: 13px;
+  .rp-job-title {
+    margin: 0;
+    font-size: 16px;
     font-weight: 700;
-    color: #f0f0f0;
+    color: var(--rp-text);
+    letter-spacing: -0.01em;
   }
-
-  .rv-job-period {
-    font-size: 11px;
-    color: #555;
+  .rp-job-title em {
+    color: var(--rp-gold);
+    font-style: normal;
+  }
+  .rp-job-meta {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--rp-text-3);
+    text-transform: uppercase;
     white-space: nowrap;
   }
-
-  .rv-job-company {
-    font-size: 11px;
-    font-weight: 600;
-    color: #60CD8B;
-    margin-bottom: 10px;
-  }
-
-  .rv-job-summary {
+  .rp-job-location {
     font-size: 12px;
-    line-height: 1.65;
-    color: #888;
-    margin-bottom: 10px;
+    color: var(--rp-text-3);
+    margin: 0 0 12px;
   }
-
-  .rv-bullets {
+  .rp-job-summary {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--rp-text-2);
+    margin: 0 0 12px;
+    font-style: italic;
+  }
+  .rp-bullets {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-  }
-
-  .rv-bullets li {
-    display: flex;
     gap: 8px;
-    font-size: 12px;
-    line-height: 1.65;
-    color: #777;
   }
-
-  .rv-bullet-dash {
-    color: #333;
-    flex-shrink: 0;
-    margin-top: 1px;
+  .rp-bullets li {
+    position: relative;
+    padding-left: 20px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--rp-text-2);
   }
-
-  /* Summary */
-  .rv-summary {
-    font-size: 13px;
-    line-height: 1.7;
-    color: #aaa;
-  }
-
-  /* Skills (categorized) */
-  .rv-skill-group {
-    margin-bottom: 12px;
-  }
-
-  .rv-skill-group:last-child { margin-bottom: 0; }
-
-  .rv-skill-label {
+  .rp-bullets li::before {
+    content: "✦";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--rp-gold);
     font-size: 11px;
-    font-weight: 600;
-    color: #888;
+    line-height: 1.55;
+  }
+
+  /* ===== SKILLS ===== */
+  .rp-skill-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  @media (min-width: 600px) {
+    .rp-skill-grid { grid-template-columns: 160px 1fr; row-gap: 14px; column-gap: 18px; }
+  }
+  .rp-skill-cat {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: var(--rp-gold);
+    text-transform: uppercase;
+    align-self: start;
+    padding-top: 4px;
+  }
+  .rp-skill-list {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--rp-text-2);
+    margin: 0 0 8px;
+  }
+
+  /* ===== PROJECT ===== */
+  .rp-project {
+    background: var(--rp-card);
+    border: 1px solid var(--rp-border);
+    border-radius: 14px;
+    padding: 22px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .rp-project-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
     margin-bottom: 6px;
   }
-
-  /* Stack chips */
-  .rv-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .rv-chip {
-    font-size: 11px;
-    font-weight: 500;
-    color: #aaa;
-    background: #1a1a1a;
-    border: 1px solid #2e2e2e;
-    padding: 4px 10px;
-    border-radius: 20px;
-  }
-
-  /* Project */
-  .rv-project-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 2px;
-  }
-
-  .rv-project-name {
-    font-size: 13px;
+  .rp-project-name {
+    margin: 0;
+    font-size: 18px;
     font-weight: 700;
-    color: #f0f0f0;
+    color: var(--rp-text);
   }
-
-  .rv-project-url {
-    font-size: 11px;
-    color: #60CD8B;
+  .rp-project-url {
+    color: var(--rp-gold);
     text-decoration: none;
-    transition: opacity 0.15s;
-  }
-
-  .rv-project-url:hover { opacity: 0.7; }
-
-  .rv-project-role {
-    font-size: 11px;
-    color: #555;
-    margin-bottom: 12px;
-  }
-
-  /* Education */
-  .rv-edu-degree {
     font-size: 13px;
     font-weight: 600;
-    color: #f0f0f0;
-    margin-bottom: 2px;
   }
-
-  .rv-edu-school {
+  .rp-project-url:hover { text-decoration: underline; }
+  .rp-project-role {
     font-size: 12px;
-    color: #555;
+    color: var(--rp-text-3);
+    margin: 0 0 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
-  /* Back link */
-  .rv-back {
-    font-size: 12px;
-    font-weight: 500;
-    color: #777;
-    text-decoration: none;
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1px solid #2e2e2e;
-    background: #141414;
-    transition: border-color 0.15s, color 0.15s;
-    align-self: flex-start;
+  /* ===== EDUCATION ===== */
+  .rp-edu {
+    background: var(--rp-card);
+    border: 1px solid var(--rp-border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
-
-  .rv-back:hover {
-    border-color: #60CD8B;
-    color: #60CD8B;
+  .rp-edu-degree {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--rp-text);
+  }
+  .rp-edu-school {
+    margin: 0;
+    font-size: 13px;
+    color: var(--rp-text-2);
   }
 `;
 
 export default function ResumePage() {
+  useEffect(() => {
+    document.title = "Resume · Rosendo Inzunza";
+  }, []);
+
+  const { summary, experience, skills, project, education } = resumeData;
+
   return (
     <>
       <style>{styles}</style>
-      <div className="rv-page">
-        <div className="rv-inner">
+      <div className="rp-page">
+        <div className="rp-inner">
 
-          {/* Header */}
-          <div className="rv-card">
-            <div className="rv-name">{name}</div>
-            <div className="rv-contact">
-              <a href={`mailto:${email}`}>{email}</a>
-              <a href={`https://${website}`} target="_blank" rel="noopener noreferrer">{website}</a>
-              <span>{phone}</span>
+          {/* HEADER */}
+          <header className="rp-header">
+            <div className="rp-eyebrow">Resume · Founders Edition</div>
+            <h1 className="rp-name">Rosendo Inzunza</h1>
+            <div className="rp-role">Systems Engineer</div>
+            <div className="rp-contact-row">
+              <a href="mailto:rosendoinzunza@gmail.com">rosendoinzunza@gmail.com</a>
+              <a href="tel:+17143427492">714-342-7492</a>
+              <a href="https://github.com/roinzunza" target="_blank" rel="noopener noreferrer">github.com/roinzunza</a>
+              <a href="https://www.linkedin.com/in/rosendoinzunza" target="_blank" rel="noopener noreferrer">linkedin.com/in/rosendoinzunza</a>
+              <span>La Habra, CA</span>
             </div>
-          </div>
+          </header>
 
-          {/* Summary */}
-          <div className="rv-card">
-            <div className="rv-section-label">Summary</div>
-            <div className="rv-summary">{summary}</div>
-          </div>
+          {/* SUMMARY */}
+          <section className="rp-section">
+            <div className="rp-section-head">
+              <h2 className="rp-section-title">Summary</h2>
+              <div className="rp-section-rule" />
+            </div>
+            <p className="rp-bio">{summary}</p>
+          </section>
 
-          {/* Experience */}
-          <div className="rv-card">
-            <div className="rv-section-label">Experience</div>
+          {/* EXPERIENCE */}
+          <section className="rp-section">
+            <div className="rp-section-head">
+              <h2 className="rp-section-title">Experience</h2>
+              <div className="rp-section-rule" />
+            </div>
             {experience.map((job, i) => (
-              <div key={i} className="rv-job">
-                <div className="rv-job-header">
-                  <div className="rv-job-title">{job.title}</div>
-                  <div className="rv-job-period">{job.period}</div>
+              <article key={i} className="rp-job">
+                <div className="rp-job-head">
+                  <h3 className="rp-job-title">
+                    {job.title} <em>· {job.company}</em>
+                  </h3>
+                  <div className="rp-job-meta">{job.period}</div>
                 </div>
-                <div className="rv-job-company">{job.company} · {job.location}</div>
-                {job.summary && <div className="rv-job-summary">{job.summary}</div>}
-                <ul className="rv-bullets">
-                  {job.bullets.map((b, j) => (
-                    <li key={j}>
-                      <span className="rv-bullet-dash">—</span>
-                      <span>{b}</span>
-                    </li>
-                  ))}
+                <p className="rp-job-location">{job.location}</p>
+                {job.summary && <p className="rp-job-summary">{job.summary}</p>}
+                <ul className="rp-bullets">
+                  {job.bullets.map((b, j) => <li key={j}>{b}</li>)}
                 </ul>
-              </div>
+              </article>
             ))}
-          </div>
+          </section>
 
-          {/* Technical Skills */}
-          <div className="rv-card">
-            <div className="rv-section-label">Technical Skills</div>
-            {Object.entries(skills).map(([category, items]) => (
-              <div key={category} className="rv-skill-group">
-                <div className="rv-skill-label">{category}</div>
-                <div className="rv-chips">
-                  {items.map((s) => <span key={s} className="rv-chip">{s}</span>)}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Startup Project */}
-          <div className="rv-card">
-            <div className="rv-section-label">Startup Project</div>
-            <div className="rv-project-header">
-              <div className="rv-project-name">{project.name}</div>
-              <a href={project.url} target="_blank" rel="noopener noreferrer" className="rv-project-url">
-                {project.url.replace("https://", "")}
-              </a>
+          {/* SKILLS */}
+          <section className="rp-section">
+            <div className="rp-section-head">
+              <h2 className="rp-section-title">Technical Skills</h2>
+              <div className="rp-section-rule" />
             </div>
-            <div className="rv-project-role">{project.role} · {project.tech}</div>
-            <ul className="rv-bullets">
-              {project.bullets.map((b, i) => (
-                <li key={i}>
-                  <span className="rv-bullet-dash">—</span>
-                  <span>{b}</span>
-                </li>
+            <div className="rp-skill-grid">
+              {Object.entries(skills).map(([cat, items]) => (
+                <div key={cat} style={{ display: "contents" }}>
+                  <div className="rp-skill-cat">{cat}</div>
+                  <div className="rp-skill-list">{items.join(" · ")}</div>
+                </div>
               ))}
-            </ul>
-          </div>
+            </div>
+          </section>
 
-          {/* Education */}
-          <div className="rv-card">
-            <div className="rv-section-label">Education</div>
-            <div className="rv-edu-degree">{education.degree}</div>
-            <div className="rv-edu-school">{education.school}</div>
-          </div>
+          {/* PROJECTS */}
+          <section className="rp-section">
+            <div className="rp-section-head">
+              <h2 className="rp-section-title">Projects</h2>
+              <div className="rp-section-rule" />
+            </div>
+            <div className="rp-project">
+              <div className="rp-project-head">
+                <h3 className="rp-project-name">{project.name}</h3>
+                <a href={project.url} target="_blank" rel="noopener noreferrer" className="rp-project-url">
+                  {project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗
+                </a>
+              </div>
+              <p className="rp-project-role">{project.role} · {project.tech}</p>
+              <ul className="rp-bullets">
+                {project.bullets.map((b, i) => <li key={i}>{b}</li>)}
+              </ul>
+            </div>
+          </section>
 
-          <Link to="/" className="rv-back">← Back to Home</Link>
+          {/* EDUCATION */}
+          <section className="rp-section">
+            <div className="rp-section-head">
+              <h2 className="rp-section-title">Education</h2>
+              <div className="rp-section-rule" />
+            </div>
+            <div className="rp-edu">
+              <h3 className="rp-edu-degree">{education.degree}</h3>
+              <p className="rp-edu-school">{education.school}</p>
+            </div>
+          </section>
 
         </div>
       </div>

@@ -70,7 +70,7 @@ export const resumeData = {
     Languages: ["Rust", "Python", "Go", "TypeScript", "Swift", "C++", "Java"],
     "Frameworks / Libraries": ["Axum", "Actix", "SeaORM", "Diesel", "FastAPI", "Flask", "Spring", "React"],
     Infrastructure: ["Terraform", "Helm", "Kubernetes", "Docker", "SaltStack", "gRPC", "Protobuf", "PostgreSQL", "Redis"],
-    Cloud: ["AWS (S3, EC2)", "Cloudflare R2"],
+    Cloud: ["AWS (S3, EC2, DynamoDB, RDS, Athena, Glue, Firehose, Kinesis, SageMaker)", "Cloudflare R2"],
     Observability: ["Prometheus", "Grafana", "Splunk", "Sentry"],
     "Machine Learning": ["TensorFlow", "PyTorch"],
   },

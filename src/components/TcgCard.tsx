@@ -46,6 +46,25 @@ const styles = `
     aspect-ratio: 5 / 7;
     cursor: pointer;
     position: relative;
+    /* Mobile UX: no native double-tap zoom on the card; no blue/grey tap
+       highlight flashing on flip; touch tilt doesn't trigger pull-to-refresh. */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    /* Ambient floating idle. Uses the standalone translate + rotate
+       properties so they compose with the perspective transform AND the
+       JS-driven tilt on the inner .tcg-tilt layer without overriding
+       either. */
+    animation: tcg-float 5.5s ease-in-out infinite;
+  }
+
+  @keyframes tcg-float {
+    0%   { translate: 0 0px;   rotate: -0.7deg; }
+    50%  { translate: 0 -10px; rotate: 0.7deg; }
+    100% { translate: 0 0px;   rotate: -0.7deg; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tcg-stage { animation: none; }
   }
 
   .tcg-stage:focus-visible {
@@ -98,28 +117,18 @@ const styles = `
   }
 
   /* ====== FRONT ====== */
+  /* No metallic frame — the photo runs edge-to-edge so the lettering
+     has the whole card width to breathe. */
   .tcg-front {
-    /* metallic gold foil frame — alternating bright/dark gold stops
-       give the gilded shimmer; ties to the lettering and the back's
-       pale-gold accents. */
-    background:
-      linear-gradient(
-        135deg,
-        #f5d65a 0%,
-        #fff3a8 18%,
-        #c9971a 42%,
-        #fff3a8 60%,
-        #8a6d0f 82%,
-        #f5d65a 100%
-      );
-    padding: 11px;
+    background: #1a1a1a;
+    padding: 0;
   }
 
   .tcg-front-inner {
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 9px;
+    border-radius: inherit;
     overflow: hidden;
     background: #1a1a1a;
   }
@@ -152,9 +161,9 @@ const styles = `
      instantly hide it at the moment the back becomes visible. */
   .tcg-name-vertical {
     position: absolute;
-    left: 4px;
-    top: 14px;
-    bottom: 14px;
+    left: 26px;
+    top: 22px;
+    bottom: 22px;
     width: 84px;
     writing-mode: sideways-lr;
     font-family: 'Bebas Neue', 'Inter', system-ui, sans-serif;
