@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import ResumePage from "./pages/ResumePage";
+import RosendoOriginsPage from "./pages/RosendoOriginsPage";
 import NetflixPage from "./pages/NetflixPage";
 import SpotifyResumePage from "./pages/SpotifyResumePage";
 import SpotifyAlbumPage from "./pages/SpotifyAlbumPage";
@@ -23,6 +24,7 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/rosendo" element={<RosendoOriginsPage />} />
         <Route path="/resume" element={<ResumePage />} />
         <Route
           path="/forge"

@@ -1,55 +1,6 @@
 import { useEffect, useRef } from "react";
-import TcgCard, { type TcgCardProps } from "../components/TcgCard";
-
-const base = import.meta.env.BASE_URL;
-
-// Single source of truth for the card content. Edit me to swap text/numbers/logos
-// without touching the component layout.
-const cardConfig: TcgCardProps = {
-  name: "ROSENDO",
-  photoUrl: `${base}me.png`,
-  profilePicUrl: `${base}ro.jpg`,
-
-  displayName: "Rosendo Inzunza",
-  subtitle: "Systems Engineer",
-
-  github: "https://github.com/roinzunza",
-
-  stats: [
-    { label: "Based In", value: "California, US" },
-    { label: "Builds With", value: "Rust + Python" },
-    { label: "Fuel", value: "Oat milk cortado" },
-    { label: "Hobbies", value: "MTG · Gaming · Running", wide: true },
-  ],
-
-  bio:
-    "Systems engineer with 6 years in infrastructure and systems engineering, most recently at Cloudflare and TikTok. Set technical direction for control planes, ML training systems, and distributed tooling at global scale. Strength is driving architectural changes that span multiple teams, from RFC and stakeholder alignment through production delivery, and unblocking initiatives stalled by scale or blast-radius risk. Also founded and shipped SideQuest, a live iOS marketplace, solo.",
-
-  metrics: [
-    { value: "6", label: "Years Shipping" },
-    { value: "10×", label: "Faster APIs" },
-    { value: "1", label: "iOS App Live" },
-  ],
-
-  project: {
-    name: "SideQuest",
-    url: "https://www.sidequestapp.io",
-    logoUrl: `${base}icons/wordmark.png`,
-  },
-
-  logosHeading: "Built At",
-  logos: [
-    { name: "Cloudflare", src: `${base}Cloudflare.png` },
-    { name: "TikTok", src: `${base}icons/tiktok-logo-tikok-icon-transparent-tikok-app-logo-free-png.webp` },
-    { name: "DFT", src: `${base}digital_force_technologies.jpg` },
-    { name: "CoreLogic", src: `${base}icons/CoreLogic_logo.svg.png` },
-  ],
-
-  contact: "rosendoinzunza@gmail.com",
-
-  rarity: "★ Mythic",
-  collectorNumber: "001 / 001 · Founders",
-};
+import { Link } from "react-router-dom";
+import RosendoOriginsCard from "../components/RosendoOriginsCard";
 
 const landingStyles = `
   .tcg-landing {
@@ -59,8 +10,10 @@ const landingStyles = `
     width: 100%;
     overflow: hidden;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 22px;
     /* Top padding small (no top nav). Bottom padding clears the floating
        bottom nav + iOS home indicator. */
     padding:
@@ -158,6 +111,80 @@ const landingStyles = `
     .tcg-landing-card-wrap,
     .tcg-card-shadow { animation: none; }
   }
+
+  /* === Recruiter framing: eyebrow + action row =============== */
+  .tcg-eyebrow {
+    position: relative;
+    z-index: 1;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: #f5d65a;
+    text-shadow: 0 0 12px rgba(245, 214, 90, 0.35);
+    text-align: center;
+    /* breathe in slightly after the card drops */
+    animation: tcg-fade-up 900ms 200ms ease-out backwards;
+  }
+  .tcg-subhead {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgba(245, 241, 232, 0.65);
+    margin-top: 6px;
+    text-transform: none;
+  }
+
+  .tcg-actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: tcg-fade-up 900ms 400ms ease-out backwards;
+  }
+  @keyframes tcg-fade-up {
+    0%   { opacity: 0; translate: 0 10px; }
+    100% { opacity: 1; translate: 0 0; }
+  }
+  .tcg-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+    transition: background 0.18s, transform 0.12s, border-color 0.18s;
+  }
+  .tcg-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255,255,255,0.28);
+  }
+  .tcg-btn:active { transform: scale(0.97); }
+  .tcg-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .tcg-btn.primary {
+    background: linear-gradient(180deg, #f7df72 0%, #e8c14a 100%);
+    color: #0a1430;
+    border-color: rgba(0,0,0,0.18);
+  }
+  .tcg-btn.primary:hover { background: linear-gradient(180deg, #f9e388 0%, #ecc855 100%); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tcg-eyebrow,
+    .tcg-actions { animation: none; }
+  }
 `;
 
 export default function HomePage() {
@@ -185,11 +212,42 @@ export default function HomePage() {
       <style>{landingStyles}</style>
       <div className="tcg-landing" ref={landingRef} onPointerMove={onPointerMove}>
         <div className="tcg-spotlight" />
+
+        <div className="tcg-eyebrow">
+          Interactive Resume
+          <div className="tcg-subhead">Tap the card to flip</div>
+        </div>
+
         <div className="tcg-landing-card-wrap">
           <div className="tcg-card-shadow" />
-          <TcgCard {...cardConfig} />
+          <RosendoOriginsCard />
+        </div>
+
+        <div className="tcg-actions">
+          <Link to="/resume" className="tcg-btn primary">
+            <DocIcon /> View full resume
+          </Link>
         </div>
       </div>
     </>
+  );
+}
+
+function DocIcon() {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6M8 13h8M8 17h5" />
+    </svg>
   );
 }
