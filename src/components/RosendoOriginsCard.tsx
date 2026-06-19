@@ -74,11 +74,22 @@ const styles = `
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     border-radius: 18px;
-    box-shadow:
-      0 30px 60px -20px rgba(0,0,0,0.7),
-      0 18px 36px -18px rgba(0,0,0,0.55);
+    overflow: hidden;
+    /* Safari (and some Chromium versions on iOS) don't reliably honor
+       backface-visibility when a face has compositing children — the
+       back's content can bleed through the front during/around the
+       flip. Belt-and-suspenders: snap the *non-visible* face to opacity 0
+       with a delayed step transition (no fade), swapping exactly at the
+       flip midpoint (50% of 600ms = 300ms). Same pattern TcgCard uses
+       on the vertical name. */
+    opacity: 1;
+    transition: opacity 0s linear 0.3s;
+    /* Force its own compositing layer so Safari isolates rendering. */
+    transform: translateZ(0);
   }
-  .roc-face.back { transform: rotateY(180deg); }
+  .roc-face.back { transform: rotateY(180deg) translateZ(0); }
+  .roc-stage:not(.flipped) .roc-face.back { opacity: 0; }
+  .roc-stage.flipped .roc-face:not(.back) { opacity: 0; }
 
   /* ============================================================
      The frame + inner — shared by front, back, and hidden export
@@ -482,15 +493,31 @@ const styles = `
   /* ============================================================
      Off-screen export copies — same DOM/CSS, no flip transform,
      rendered as full-sized blocks the parent can pass to
-     html-to-image. position:fixed keeps them out of layout.
+     html-to-image.
+
+     Hidden via a 0x0 overflow:hidden container at (0,0) (see the
+     .roc-export-stash wrapper in markup) instead of negative-offset
+     positioning. html-to-image reads getBoundingClientRect to size
+     the foreignObject; off-screen positioning (top: -10000px) was
+     producing zero-content PNGs. The wrappers themselves are laid
+     out at full 360x504 in their own coordinate frame and get
+     clipped visually by the 0x0 ancestor.
      ============================================================ */
-  .roc-export {
+  .roc-export-stash {
     position: fixed;
-    top: -10000px;
+    top: 0;
     left: 0;
-    ${CARD_SIZE_CSS}
+    width: 0;
+    height: 0;
+    overflow: hidden;
     pointer-events: none;
     z-index: -1;
+  }
+  .roc-export {
+    position: relative;
+    width: 360px;
+    height: 504px;
+    pointer-events: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -821,12 +848,17 @@ export default function RosendoOriginsCard({
 
       {/* Off-screen full-size copies for clean PNG export. Same DOM as
           the visible faces — html-to-image captures these without
-          needing to fight the rotateY(180deg) backface. */}
-      <div className="roc-export" ref={frontExportRef}>
-        <CardFrontInner />
-      </div>
-      <div className="roc-export" ref={backExportRef}>
-        <CardBackInner />
+          needing to fight the rotateY(180deg) backface. They sit in a
+          0×0 overflow:hidden stash at (0,0) so the exports themselves
+          have positive, in-viewport bounding rects (which html-to-image
+          uses to size the canvas) while staying visually invisible. */}
+      <div className="roc-export-stash" aria-hidden>
+        <div className="roc-export" ref={frontExportRef}>
+          <CardFrontInner />
+        </div>
+        <div className="roc-export" ref={backExportRef}>
+          <CardBackInner />
+        </div>
       </div>
     </>
   );
