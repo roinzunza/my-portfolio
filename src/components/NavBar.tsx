@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 const links: { to: string; label: string; end?: boolean }[] = [
   { to: "/", label: "Home", end: true },
   { to: "/resume", label: "Resume" },
+  { to: "/forge", label: "Forge" },
   // Add future routes here — the pill expands automatically.
 ];
 

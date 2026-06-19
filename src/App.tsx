@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
@@ -7,6 +8,8 @@ import SpotifyResumePage from "./pages/SpotifyResumePage";
 import SpotifyAlbumPage from "./pages/SpotifyAlbumPage";
 import MetaPage from "./pages/MetaPage";
 import NvidiaPage from "./pages/NvidiaPage";
+
+const ForgePage = lazy(() => import("./forge/ForgePage"));
 
 /**
  * Route table.
@@ -21,6 +24,14 @@ export default function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/resume" element={<ResumePage />} />
+        <Route
+          path="/forge"
+          element={
+            <Suspense fallback={<RouteFallback />}>
+              <ForgePage />
+            </Suspense>
+          }
+        />
       </Route>
 
       <Route path="/netflix" element={<NetflixPage />} />
@@ -31,5 +42,26 @@ export default function App() {
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+  );
+}
+
+function RouteFallback() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#08090d",
+        color: "#727a8d",
+        fontFamily: "Inter, system-ui, sans-serif",
+        fontSize: 13,
+        letterSpacing: "0.12em",
+        textTransform: "uppercase",
+      }}
+    >
+      Loading…
+    </div>
   );
 }
