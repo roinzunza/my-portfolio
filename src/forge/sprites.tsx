@@ -562,41 +562,91 @@ function CustomEevee() {
 }
 
 function CustomJuana() {
+  // Juana on a Megaformer mid-Lagree set: feet on the carriage,
+  // hands gripping the overhead cables. Athletic gear, ponytail,
+  // game face.
+  const TOP    = "#3a7a4e"; // sports top (green keeps her color identity)
+  const PANTS  = "#1a1a26"; // leggings
+  const FRAME  = "#2a2a36"; // megaformer chassis
+  const GRIP   = "#f9b400"; // handgrips
   return (
     <g>
-      {/* herb bundle in right hand */}
-      <path d="M158,80 L168,140 L150,160" stroke="#5a3a1e" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M156,82 Q150,72 156,62 Q162,72 156,82 Z" fill="#3aa05e" stroke={OUTLINE} strokeWidth="2" />
-      <path d="M162,86 Q170,80 168,66 Q172,80 168,90 Z" fill="#3aa05e" stroke={OUTLINE} strokeWidth="2" />
-      <path d="M148,90 Q142,82 144,70 Q150,82 152,92 Z" fill="#5bd97a" stroke={OUTLINE} strokeWidth="2" />
-      {/* potion bottle on left */}
-      <rect x="36" y="118" width="14" height="20" rx="2" fill="#8aa0d4" stroke={OUTLINE} strokeWidth="2" opacity="0.85" />
-      <rect x="38" y="112" width="10" height="8" fill="#8aa0d4" stroke={OUTLINE} strokeWidth="2" />
-      <rect x="36" y="108" width="14" height="6" fill="#7a4a2a" stroke={OUTLINE} strokeWidth="2" />
-      <rect x="38" y="124" width="10" height="12" fill="#b46bdc" />
-      <circle cx="43" cy="120" r="1.5" fill="#d8c4f0" />
-      {/* hair (long flowing) */}
-      <path d="M68,70 Q56,80 60,140 L74,140 L78,118 Q78,84 100,76 Q122,84 122,118 L126,140 L140,140 Q144,80 132,70 Q116,46 100,46 Q84,46 68,70 Z"
-        fill="#3a1f12" stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
-      <circle cx="100" cy="92" r="22" fill={SKIN} stroke={OUTLINE} strokeWidth="3" />
-      {/* bangs */}
-      <path d="M80,82 Q90,72 100,76 Q110,72 120,82 Q110,78 100,80 Q90,78 80,82 Z" fill="#3a1f12" stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
-      <circle cx="91" cy="92" r="2.5" fill={OUTLINE} />
-      <circle cx="109" cy="92" r="2.5" fill={OUTLINE} />
-      {/* lashes */}
-      <path d="M86,89 L89,87 M93,88 L94,86" stroke={OUTLINE} strokeWidth="1" strokeLinecap="round" />
-      <path d="M114,89 L111,87 M107,88 L106,86" stroke={OUTLINE} strokeWidth="1" strokeLinecap="round" />
-      <path d="M93,102 Q100,108 107,102" stroke={OUTLINE} strokeWidth="2" fill="none" strokeLinecap="round" />
-      {/* blush */}
-      <circle cx="84" cy="100" r="3" fill="#e08a8a" opacity="0.5" />
-      <circle cx="116" cy="100" r="3" fill="#e08a8a" opacity="0.5" />
-      {/* robe */}
-      <path d="M68,118 L132,118 L142,180 L58,180 Z" fill="#3a7a4e" stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
-      <path d="M88,150 Q92,144 96,150 Q92,156 88,150 Z" fill="#5bd97a" />
-      <path d="M104,158 Q108,152 112,158 Q108,164 104,158 Z" fill="#5bd97a" />
-      <rect x="62" y="138" width="76" height="6" fill="#7a4a2a" stroke={OUTLINE} strokeWidth="2" />
-      <circle cx="158" cy="92" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
-      <circle cx="42" cy="142" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      {/* shadow under machine */}
+      <ellipse cx="100" cy="186" rx="80" ry="5" fill="rgba(0,0,0,0.35)" />
+
+      {/* Megaformer chassis (base rail) */}
+      <rect x="22" y="150" width="156" height="14" rx="3" fill={FRAME} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* track grooves */}
+      <line x1="26" y1="155" x2="174" y2="155" stroke="#0a0a14" strokeWidth="1" opacity="0.6" />
+      <line x1="26" y1="160" x2="174" y2="160" stroke="#0a0a14" strokeWidth="1" opacity="0.6" />
+      {/* machine legs */}
+      <rect x="28" y="164" width="14" height="14" fill="#161620" stroke={OUTLINE} strokeWidth="2" />
+      <rect x="158" y="164" width="14" height="14" fill="#161620" stroke={OUTLINE} strokeWidth="2" />
+      {/* carriage (moveable platform) */}
+      <rect x="68" y="143" width="64" height="11" rx="2" fill="#4a4a5e" stroke={OUTLINE} strokeWidth="2" />
+      <circle cx="76" cy="160" r="3" fill="#888" stroke={OUTLINE} strokeWidth="1" />
+      <circle cx="124" cy="160" r="3" fill="#888" stroke={OUTLINE} strokeWidth="1" />
+      {/* springs on the right end */}
+      <path d="M132,151 L140,154 L132,157 L140,160 L132,163" stroke="#888" strokeWidth="2" fill="none" />
+      <path d="M140,151 L148,154 L140,157 L148,160 L140,163" stroke="#888" strokeWidth="2" fill="none" />
+      <line x1="148" y1="157" x2="174" y2="157" stroke={OUTLINE} strokeWidth="1.5" />
+
+      {/* upright posts (handlebar towers) */}
+      <line x1="40" y1="150" x2="40" y2="40" stroke={OUTLINE} strokeWidth="3" />
+      <line x1="160" y1="150" x2="160" y2="40" stroke={OUTLINE} strokeWidth="3" />
+      {/* overhead crossbar */}
+      <line x1="38" y1="40" x2="162" y2="40" stroke={OUTLINE} strokeWidth="3" />
+      {/* hanging cables + grips */}
+      <line x1="72" y1="40" x2="72" y2="62" stroke="#666" strokeWidth="1.5" />
+      <line x1="128" y1="40" x2="128" y2="62" stroke="#666" strokeWidth="1.5" />
+      <rect x="68" y="60" width="8" height="14" rx="2" fill={GRIP} stroke={OUTLINE} strokeWidth="1.5" />
+      <rect x="124" y="60" width="8" height="14" rx="2" fill={GRIP} stroke={OUTLINE} strokeWidth="1.5" />
+
+      {/* === JUANA in lunge === */}
+      {/* back leg planted on rail */}
+      <path d="M108,108 L130,142 L130,150 L120,150 L108,128 Z" fill={PANTS} stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      {/* front leg bent on carriage */}
+      <path d="M92,108 L74,140 L74,150 L84,150 L96,130 Z" fill={PANTS} stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      {/* training shoes */}
+      <ellipse cx="79" cy="148" rx="9" ry="4" fill="#f5ecd8" stroke={OUTLINE} strokeWidth="2" />
+      <ellipse cx="125" cy="148" rx="9" ry="4" fill="#f5ecd8" stroke={OUTLINE} strokeWidth="2" />
+      {/* leggings stripes */}
+      <line x1="84" y1="120" x2="80" y2="140" stroke="#3a3a4e" strokeWidth="2" opacity="0.5" />
+      <line x1="116" y1="120" x2="122" y2="140" stroke="#3a3a4e" strokeWidth="2" opacity="0.5" />
+      {/* leggings waistband */}
+      <rect x="84" y="112" width="32" height="4" fill="#0a0a14" stroke={OUTLINE} strokeWidth="2" />
+      {/* exposed waist */}
+      <rect x="86" y="106" width="28" height="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      {/* sports top */}
+      <path d="M82,86 L118,86 L116,108 L84,108 Z" fill={TOP} stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      {/* straps */}
+      <line x1="88" y1="86" x2="90" y2="74" stroke={TOP} strokeWidth="3" strokeLinecap="round" />
+      <line x1="112" y1="86" x2="110" y2="74" stroke={TOP} strokeWidth="3" strokeLinecap="round" />
+      {/* arms reaching up + forward to the cables */}
+      <path d="M88,88 L74,64" stroke={SKIN} strokeWidth="9" strokeLinecap="round" />
+      <path d="M88,88 L74,64" stroke={OUTLINE} strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M112,88 L126,64" stroke={SKIN} strokeWidth="9" strokeLinecap="round" />
+      <path d="M112,88 L126,64" stroke={OUTLINE} strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      {/* hands gripping handles */}
+      <circle cx="72" cy="62" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      <circle cx="128" cy="62" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+
+      {/* head */}
+      <circle cx="100" cy="56" r="18" fill={SKIN} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* high ponytail back */}
+      <ellipse cx="100" cy="44" rx="20" ry="10" fill="#3a1f12" stroke={OUTLINE} strokeWidth="2" />
+      <path d="M118,42 Q128,32 130,44 Q130,56 122,56 Q116,48 118,42 Z" fill="#3a1f12" stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      <path d="M130,44 Q140,36 144,52 Q146,62 134,56" fill="#3a1f12" stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      {/* focused eyes */}
+      <path d="M88,55 L96,54" stroke={OUTLINE} strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M104,54 L112,55" stroke={OUTLINE} strokeWidth="1.8" strokeLinecap="round" />
+      <circle cx="93" cy="58" r="2" fill={OUTLINE} />
+      <circle cx="107" cy="58" r="2" fill={OUTLINE} />
+      {/* mouth set, breathing through it */}
+      <ellipse cx="100" cy="66" rx="3.5" ry="2" fill={OUTLINE} />
+      {/* sweat */}
+      <path d="M115,52 L117,58 L113,58 Z" fill="#5b9adf" stroke={OUTLINE} strokeWidth="1" strokeLinejoin="round" />
+      <path d="M84,50 L86,55 L82,55 Z" fill="#5b9adf" stroke={OUTLINE} strokeWidth="1" strokeLinejoin="round" />
     </g>
   );
 }

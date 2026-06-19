@@ -197,13 +197,144 @@ function PoseCelebrate({ primary, secondary, accent, jerseyNumber = 7 }: PosePro
   );
 }
 
-export type PoseId = "standing" | "kicking" | "keeper" | "celebrate";
+// === Pose 4: Coach (suited, with clipboard) ===
+function PoseCoach({ primary, accent }: PoseProps) {
+  // Coach wears a charcoal suit — too odd to dress them in jersey colors.
+  // Team primary becomes the tie + pocket square accent so the team identity
+  // still reads.
+  const jacket = "#252a36";
+  const slacks = "#1b1f29";
+  return (
+    <g>
+      <ellipse cx="100" cy="184" rx="42" ry="5" fill="rgba(0,0,0,0.35)" />
+      {/* dress shoes */}
+      <ellipse cx="86" cy="176" rx="12" ry="5" fill="#0a0a0a" stroke={OUTLINE} strokeWidth="2" />
+      <ellipse cx="114" cy="176" rx="12" ry="5" fill="#0a0a0a" stroke={OUTLINE} strokeWidth="2" />
+      {/* slacks */}
+      <rect x="80" y="148" width="16" height="28" fill={slacks} stroke={OUTLINE} strokeWidth="2.5" />
+      <rect x="104" y="148" width="16" height="28" fill={slacks} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* suit jacket body */}
+      <path d="M62,84 L138,84 L134,150 L66,150 Z" fill={jacket} stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      {/* sleeves */}
+      <rect x="52" y="86" width="14" height="42" rx="3" fill={jacket} stroke={OUTLINE} strokeWidth="2.5" />
+      <rect x="134" y="86" width="14" height="42" rx="3" fill={jacket} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* lapels */}
+      <path d="M82,84 L96,108 L96,138 L78,150 Z" fill={jacket} stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      <path d="M118,84 L104,108 L104,138 L122,150 Z" fill={jacket} stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      {/* white dress shirt visible at neck */}
+      <path d="M92,84 L108,84 L108,118 L92,118 Z" fill="#f5ede0" stroke={OUTLINE} strokeWidth="2" />
+      {/* tie knot */}
+      <rect x="95" y="84" width="10" height="6" fill={primary} stroke={OUTLINE} strokeWidth="2" />
+      {/* tie body */}
+      <path d="M95,90 L105,90 L107,128 L100,140 L93,128 Z" fill={primary} stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      {/* pocket square */}
+      <path d="M118,116 L130,116 L128,124 L120,124 Z" fill={accent} stroke={OUTLINE} strokeWidth="1.5" strokeLinejoin="round" />
+      {/* clipboard in left hand */}
+      <rect x="32" y="120" width="22" height="30" rx="2" fill="#8a6a3e" stroke={OUTLINE} strokeWidth="2.5" />
+      <rect x="34" y="124" width="18" height="3" fill="#d4c0a0" />
+      <line x1="36" y1="132" x2="50" y2="132" stroke="#1a1612" strokeWidth="0.8" />
+      <line x1="36" y1="136" x2="50" y2="136" stroke="#1a1612" strokeWidth="0.8" />
+      <line x1="36" y1="140" x2="48" y2="140" stroke="#1a1612" strokeWidth="0.8" />
+      <rect x="40" y="117" width="6" height="4" fill="#9a9aa6" stroke={OUTLINE} strokeWidth="1" />
+      {/* hands */}
+      <circle cx="48" cy="128" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      <circle cx="148" cy="130" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      {/* head */}
+      <circle cx="100" cy="60" r="20" fill={SKIN} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* salt-and-pepper hair */}
+      <path d="M82,56 Q88,38 100,42 Q112,38 118,56 Q110,48 100,50 Q90,48 82,56 Z" fill="#5a5048" stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      <path d="M82,58 Q85,52 88,54 M118,58 Q115,52 112,54" stroke="#a09690" strokeWidth="1.5" fill="none" />
+      {/* eyebrows */}
+      <path d="M86,55 L96,53" stroke={OUTLINE} strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M104,53 L114,55" stroke={OUTLINE} strokeWidth="1.8" strokeLinecap="round" />
+      {/* focused eyes */}
+      <path d="M88,61 L96,61" stroke={OUTLINE} strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M104,61 L112,61" stroke={OUTLINE} strokeWidth="2.5" strokeLinecap="round" />
+      {/* stern mouth */}
+      <line x1="92" y1="71" x2="108" y2="71" stroke={OUTLINE} strokeWidth="2" strokeLinecap="round" />
+      {/* jaw stubble */}
+      <path d="M86,72 Q100,76 114,72" stroke={OUTLINE} strokeWidth="0.8" fill="none" opacity="0.45" />
+    </g>
+  );
+}
+
+// === Pose 5: Referee (yellow card raised) ===
+function PoseReferee(_: PoseProps) {
+  // Refs wear standard kit — black + yellow trim, independent of team colors.
+  const refBlack = "#141416";
+  const refYellow = "#f9e74c";
+  return (
+    <g>
+      <ellipse cx="100" cy="184" rx="42" ry="5" fill="rgba(0,0,0,0.35)" />
+      {/* boots */}
+      <ellipse cx="86" cy="174" rx="12" ry="6" fill="#0a0a0a" stroke={OUTLINE} strokeWidth="2" />
+      <ellipse cx="114" cy="174" rx="12" ry="6" fill="#0a0a0a" stroke={OUTLINE} strokeWidth="2" />
+      {/* socks (black with yellow band) */}
+      <rect x="80" y="152" width="14" height="22" fill={refBlack} stroke={OUTLINE} strokeWidth="2" />
+      <rect x="106" y="152" width="14" height="22" fill={refBlack} stroke={OUTLINE} strokeWidth="2" />
+      <rect x="80" y="155" width="14" height="3" fill={refYellow} />
+      <rect x="106" y="155" width="14" height="3" fill={refYellow} />
+      {/* legs (skin) */}
+      <rect x="83" y="132" width="8" height="22" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      <rect x="109" y="132" width="8" height="22" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      {/* shorts */}
+      <path d="M74,118 L126,118 L122,138 L78,138 Z" fill={refBlack} stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      {/* jersey */}
+      <path d="M66,82 L134,82 L130,122 L70,122 Z" fill={refBlack} stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      {/* yellow chest stripe */}
+      <rect x="66" y="98" width="68" height="4" fill={refYellow} opacity="0.85" />
+      {/* collar trim */}
+      <path d="M92,82 L100,90 L108,82" stroke={refYellow} strokeWidth="2.5" fill="none" />
+      {/* sleeves */}
+      <rect x="56" y="86" width="14" height="22" rx="2" fill={refBlack} stroke={OUTLINE} strokeWidth="2" />
+      <rect x="56" y="86" width="14" height="4" fill={refYellow} />
+      {/* arm on side (down) */}
+      <ellipse cx="53" cy="116" rx="5" ry="10" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      {/* ref badge */}
+      <circle cx="84" cy="108" r="5" fill={refYellow} stroke={OUTLINE} strokeWidth="1.5" />
+      <text x="84" y="110.5" textAnchor="middle" fontSize="5" fontWeight="900" fill={refBlack} fontFamily="Inter, sans-serif">R</text>
+      {/* whistle around neck */}
+      <path d="M92,84 L96,108" stroke="#aaa" strokeWidth="1.2" />
+      <path d="M108,84 L104,108" stroke="#aaa" strokeWidth="1.2" />
+      <rect x="92" y="106" width="14" height="6" rx="1" fill="#bbb" stroke={OUTLINE} strokeWidth="1.5" />
+      <circle cx="105" cy="109" r="1.2" fill={OUTLINE} />
+      {/* raised arm with YELLOW CARD */}
+      {/* sleeve */}
+      <path d="M132,86 L156,40 L162,38 L158,52 L142,98 Z" fill={refBlack} stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      {/* upper arm yellow band */}
+      <path d="M132,86 L139,72 L135,88 Z" fill={refYellow} />
+      {/* hand */}
+      <circle cx="158" cy="42" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      {/* yellow card */}
+      <rect x="148" y="14" width="22" height="32" rx="2" fill={refYellow} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* card creases */}
+      <line x1="150" y1="20" x2="168" y2="20" stroke={OUTLINE} strokeWidth="0.6" opacity="0.4" />
+      <line x1="150" y1="40" x2="168" y2="40" stroke={OUTLINE} strokeWidth="0.6" opacity="0.4" />
+      {/* head */}
+      <circle cx="100" cy="60" r="20" fill={SKIN} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* short hair */}
+      <path d="M82,56 Q88,40 100,44 Q112,40 118,56 Q110,50 100,52 Q90,50 82,56 Z" fill="#3a2818" stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      {/* stern eyebrows */}
+      <path d="M86,55 L96,56" stroke={OUTLINE} strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M104,56 L114,55" stroke={OUTLINE} strokeWidth="1.8" strokeLinecap="round" />
+      {/* eyes */}
+      <circle cx="92" cy="61" r="2" fill={OUTLINE} />
+      <circle cx="108" cy="61" r="2" fill={OUTLINE} />
+      {/* set mouth */}
+      <line x1="92" y1="71" x2="108" y2="71" stroke={OUTLINE} strokeWidth="2" strokeLinecap="round" />
+    </g>
+  );
+}
+
+export type PoseId = "standing" | "kicking" | "keeper" | "celebrate" | "coach" | "referee";
 
 const POSES = {
   standing: PoseStanding,
   kicking: PoseKicking,
   keeper: PoseKeeper,
   celebrate: PoseCelebrate,
+  coach: PoseCoach,
+  referee: PoseReferee,
 } as const;
 
 interface PlayerSpriteProps {

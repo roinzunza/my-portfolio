@@ -92,7 +92,7 @@ const ORIGINS_EASTER_EGGS: EasterEgg[] = [
   { name: "Alfonso", klass: "Pro Gamer",          realm: "The Latency Realm",   flavor: "Hasn't slept since the patch dropped." },
   { name: "Ro",      klass: "Coffee Connoisseur", realm: "Roasters' Quarter",   flavor: "Won't drink anything pulled more than ninety seconds ago." },
   { name: "Eevee",   klass: "Loyal Frenchie",     realm: "The Sunlit Yard",     flavor: "Will trade a nap for a treat — but only the good kind." },
-  { name: "Juana",   klass: "Apothecary",         realm: "Hollow Garden",       flavor: "Brews remedies the doctors won't admit work." },
+  { name: "Juana",   klass: "Lagree Instructor",  realm: "The Megaformer Floor", flavor: "Forty-five seconds feels like a lifetime. By design." },
   { name: "Marlo",   klass: "Bicyclist",          realm: "The Long Road",       flavor: "Has summited every climb in the canton. Twice, on a Sunday." },
 ];
 
@@ -148,6 +148,26 @@ export const FOIL_STRENGTH_BY_RARITY: Record<string, number> = {
   Legendary: 0.85,
   Mythic:    1.0,
 };
+
+/**
+ * Stat ranges per rarity. Higher tiers float the minimum up so a Mythic
+ * always feels stronger than a Common, even if both got a bad roll.
+ * Overlapping ceilings keep some variance in each tier ("a great Uncommon").
+ */
+const STAT_RANGE_BY_RARITY: Record<string, { min: number; max: number }> = {
+  Common:    { min: 25, max: 65 },  // ~135 total avg
+  Uncommon:  { min: 38, max: 78 },  // ~174
+  Rare:      { min: 52, max: 86 },  // ~207
+  Epic:      { min: 65, max: 93 },  // ~237
+  Legendary: { min: 78, max: 98 },  // ~264
+  Mythic:    { min: 88, max: 99 },  // ~280
+};
+
+/** Scale a 0-1 base roll into a final stat using the rarity's range. */
+function scaleStat(base: number, rarity: Rarity): number {
+  const range = STAT_RANGE_BY_RARITY[rarity.label] ?? { min: 30, max: 99 };
+  return Math.floor(range.min + base * (range.max - range.min + 1));
+}
 
 // ============================================================
 // Card type — unified across sets via setId + optional fields.
@@ -245,13 +265,16 @@ function generateOrigins(seed: number): GeneratedCard {
   const background = pick(rng, ORIGINS_BACKGROUNDS);
   let flavor = pick(rng, ORIGINS_FLAVORS);
 
-  const power = 30 + Math.floor(rng() * 70);
-  const speed = 30 + Math.floor(rng() * 70);
-  const skill = 30 + Math.floor(rng() * 70);
+  // Roll base stat values 0-1; scale to a real stat after rarity is known.
+  const baseStats = [rng(), rng(), rng()];
 
   const rarity = pickRarity(rng);
   const cardNumber = Math.floor(rng() * 9999) + 1;
   const { hasFoil, foilStrength } = rollFoil(rng, rarity);
+
+  const power = scaleStat(baseStats[0], rarity);
+  const speed = scaleStat(baseStats[1], rarity);
+  const skill = scaleStat(baseStats[2], rarity);
 
   let customSpriteIdx: number | null = null;
   if (rarity.label === "Legendary" || rarity.label === "Mythic") {
@@ -303,13 +326,15 @@ function generateWc26(seed: number): GeneratedCard {
   let flavor = pick(rng, WC26_FLAVORS);
   const jerseyNumber = 1 + Math.floor(rng() * 23);
 
-  const power = 30 + Math.floor(rng() * 70);
-  const speed = 30 + Math.floor(rng() * 70);
-  const skill = 30 + Math.floor(rng() * 70);
+  const baseStats = [rng(), rng(), rng()];
 
   const rarity = pickRarity(rng);
   const cardNumber = Math.floor(rng() * 9999) + 1;
   const { hasFoil, foilStrength } = rollFoil(rng, rarity);
+
+  const power = scaleStat(baseStats[0], rarity);
+  const speed = scaleStat(baseStats[1], rarity);
+  const skill = scaleStat(baseStats[2], rarity);
 
   // Legend override on Legendary / Mythic.
   let customSpriteIdx: number | null = null;

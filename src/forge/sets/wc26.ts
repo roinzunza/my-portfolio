@@ -80,6 +80,7 @@ export const TEAMS: Team[] = [
 export const POSITIONS = [
   "Goalkeeper", "Centre-Back", "Full-Back", "Defensive Mid",
   "Playmaker", "Winger", "Striker", "Captain",
+  "Head Coach", "Referee",
 ];
 
 export const FLAVORS = [
@@ -115,15 +116,19 @@ export const LEGENDS = [
   { name: "The Phantom",   klass: "Striker",      flavor: "Always free in the six-yard box." },
   { name: "El Muro",       klass: "Centre-Back",  flavor: "They didn't make it past him. Anyone." },
   { name: "The Closer",    klass: "Late Sub",     flavor: "Brought on when the match needs to end." },
+  { name: "The Gaffer",    klass: "Head Coach",   flavor: "Won the cup before social media existed." },
+  { name: "The Whistle",   klass: "Referee",      flavor: "Hasn't taken a bad call in twelve years. Allegedly." },
 ];
 
 /** Soccer player pose used by the sprite renderer. */
-export type PoseId = "standing" | "kicking" | "keeper" | "celebrate";
+export type PoseId = "standing" | "kicking" | "keeper" | "celebrate" | "coach" | "referee";
 
 /** Return a pose given a position string. */
 export function poseForPosition(position: string): PoseId {
   if (position === "Goalkeeper") return "keeper";
   if (position === "Striker" || position === "Winger") return "kicking";
   if (position === "Captain") return "celebrate";
+  if (position === "Head Coach") return "coach";
+  if (position === "Referee") return "referee";
   return "standing";
 }
