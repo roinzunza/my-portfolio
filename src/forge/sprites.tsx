@@ -415,31 +415,94 @@ function CustomMike() {
 }
 
 function CustomDaniel() {
+  // Banking manager behind his desk: navy suit, red tie, stack of cash,
+  // calculator, papers, and a briefcase by his side.
+  const SUIT = "#1f2a40";
+  const SHIRT = "#f5ecd8";
+  const TIE = "#a02830";
+  const DESK = "#5a3a1e";
   return (
     <g>
-      {/* hammer */}
-      <rect x="158" y="60" width="6" height="60" fill="#7a5230" stroke={OUTLINE} strokeWidth="2" />
-      <rect x="150" y="55" width="22" height="14" rx="2" fill="#888" stroke={OUTLINE} strokeWidth="2.5" />
-      <rect x="170" y="58" width="4" height="8" fill="#aaa" />
-      {/* hard hat */}
-      <path d="M60,68 Q60,40 100,38 Q140,40 140,68 Z" fill="#f5b820" stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
-      <path d="M82,46 Q100,42 118,46" stroke={OUTLINE} strokeWidth="2.5" fill="none" />
-      <rect x="52" y="66" width="96" height="6" rx="2" fill="#d49810" stroke={OUTLINE} strokeWidth="2.5" />
+      <ellipse cx="100" cy="186" rx="78" ry="4" fill="rgba(0,0,0,0.3)" />
+
+      {/* desk */}
+      <rect x="14" y="158" width="172" height="18" rx="2" fill={DESK} stroke={OUTLINE} strokeWidth="2.5" />
+      <line x1="16" y1="174" x2="184" y2="174" stroke="#1f1410" strokeWidth="0.8" opacity="0.45" />
+
+      {/* stack of cash on the right of desk */}
+      <rect x="116" y="148" width="38" height="10" rx="1" fill="#2a7a4a" stroke={OUTLINE} strokeWidth="2" />
+      <rect x="118" y="150" width="34" height="6" fill="#5bd97a" />
+      <rect x="118" y="146" width="38" height="3" fill="#3aa05e" stroke={OUTLINE} strokeWidth="1.5" />
+      <circle cx="135" cy="153" r="3" fill="#fcd116" stroke={OUTLINE} strokeWidth="1.2" />
+      <text x="135" y="155.5" textAnchor="middle" fontSize="5" fontWeight="900" fill="#1f3a1e" fontFamily="Inter, sans-serif">$</text>
+
+      {/* calculator on the left of desk */}
+      <rect x="32" y="148" width="26" height="10" rx="1.5" fill="#1a1a26" stroke={OUTLINE} strokeWidth="2" />
+      <rect x="34" y="150" width="22" height="3" fill="#a0d4ff" />
+      <text x="50" y="153" textAnchor="end" fontSize="3.5" fontWeight="800" fill="#0a2a4a" fontFamily="Inter, sans-serif">100K</text>
+      <rect x="34" y="155" width="3" height="2" fill="#5bd97a" />
+      <rect x="38" y="155" width="3" height="2" fill="#5bd97a" />
+      <rect x="42" y="155" width="3" height="2" fill="#5bd97a" />
+      <rect x="46" y="155" width="3" height="2" fill="#5bd97a" />
+      <rect x="50" y="155" width="3" height="2" fill="#e0344b" />
+
+      {/* contract / papers center-front */}
+      <rect x="68" y="150" width="46" height="9" fill={SHIRT} stroke={OUTLINE} strokeWidth="1.5" />
+      <line x1="70" y1="153" x2="112" y2="153" stroke={OUTLINE} strokeWidth="0.6" />
+      <line x1="70" y1="155" x2="100" y2="155" stroke={OUTLINE} strokeWidth="0.6" />
+      <line x1="70" y1="157" x2="106" y2="157" stroke={OUTLINE} strokeWidth="0.6" />
+      <path d="M88,156 L98,150 L96,156 Z" fill="#a02830" />
+
+      {/* briefcase set down on the right edge of the desk */}
+      <rect x="160" y="160" width="22" height="14" rx="2" fill="#1f1410" stroke={OUTLINE} strokeWidth="2.5" />
+      <rect x="166" y="155" width="10" height="5" rx="1.5" fill="none" stroke={OUTLINE} strokeWidth="2" />
+      <rect x="168" y="165" width="6" height="3" fill="#bba668" stroke={OUTLINE} strokeWidth="1" />
+
+      {/* === Daniel === */}
+      {/* suit jacket */}
+      <path d="M60,96 L140,96 L136,158 L64,158 Z" fill={SUIT} stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
+      {/* sleeves */}
+      <rect x="48" y="98" width="14" height="42" rx="3" fill={SUIT} stroke={OUTLINE} strokeWidth="2.5" />
+      <rect x="138" y="98" width="14" height="42" rx="3" fill={SUIT} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* lapels */}
+      <path d="M80,96 L96,118 L96,150 L78,158 Z" fill={SUIT} stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      <path d="M120,96 L104,118 L104,150 L122,158 Z" fill={SUIT} stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      {/* white shirt */}
+      <path d="M92,96 L108,96 L108,128 L92,128 Z" fill={SHIRT} stroke={OUTLINE} strokeWidth="2" />
+      {/* tie knot */}
+      <rect x="95" y="96" width="10" height="6" fill={TIE} stroke={OUTLINE} strokeWidth="2" />
+      {/* tie body */}
+      <path d="M95,102 L105,102 L107,140 L100,150 L93,140 Z" fill={TIE} stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      {/* tie diagonal stripes */}
+      <line x1="95" y1="112" x2="105" y2="122" stroke="#6a1418" strokeWidth="1.4" opacity="0.7" />
+      <line x1="96" y1="126" x2="106" y2="136" stroke="#6a1418" strokeWidth="1.4" opacity="0.7" />
+      {/* pocket square */}
+      <path d="M120,118 L132,118 L130,126 L122,126 Z" fill={SHIRT} stroke={OUTLINE} strokeWidth="1.5" strokeLinejoin="round" />
+      {/* pocket square fold lines */}
+      <line x1="124" y1="120" x2="125" y2="125" stroke={OUTLINE} strokeWidth="0.6" opacity="0.5" />
+      <line x1="128" y1="120" x2="127" y2="125" stroke={OUTLINE} strokeWidth="0.6" opacity="0.5" />
+
+      {/* hands resting on desk paperwork */}
+      <circle cx="50" cy="142" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      <circle cx="152" cy="142" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+
       {/* head */}
-      <circle cx="100" cy="92" r="22" fill={SKIN} stroke={OUTLINE} strokeWidth="3" />
-      <circle cx="91" cy="90" r="2.5" fill={OUTLINE} />
-      <circle cx="109" cy="90" r="2.5" fill={OUTLINE} />
-      {/* mustache */}
-      <path d="M86,104 Q92,108 100,106 Q108,108 114,104 Q108,110 100,110 Q92,110 86,104 Z"
-        fill="#3a2418" stroke={OUTLINE} strokeWidth="1.5" />
-      {/* body shirt */}
-      <rect x="68" y="118" width="64" height="62" rx="6" fill="#2a3a5a" stroke={OUTLINE} strokeWidth="3" />
-      {/* hi-vis vest panels */}
-      <path d="M70,120 L92,120 L92,178 L70,178 Z" fill="#f06a1e" stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
-      <path d="M130,120 L108,120 L108,178 L130,178 Z" fill="#f06a1e" stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
-      <rect x="68" y="138" width="64" height="3" fill="#e8e8e8" opacity="0.8" />
-      <rect x="68" y="156" width="64" height="3" fill="#e8e8e8" opacity="0.8" />
-      <circle cx="160" cy="80" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      <circle cx="100" cy="68" r="20" fill={SKIN} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* side-parted hair */}
+      <path d="M82,64 Q80,42 100,40 Q120,42 118,64 Q112,52 100,52 Q86,52 82,64 Z" fill="#2a1a12" stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M84,52 Q88,46 96,48" stroke="#1a0a05" strokeWidth="1.2" fill="none" opacity="0.7" />
+      {/* glasses */}
+      <circle cx="91" cy="68" r="7" fill="rgba(255,255,255,0.2)" stroke={OUTLINE} strokeWidth="2.5" />
+      <circle cx="109" cy="68" r="7" fill="rgba(255,255,255,0.2)" stroke={OUTLINE} strokeWidth="2.5" />
+      <line x1="98" y1="68" x2="102" y2="68" stroke={OUTLINE} strokeWidth="2" />
+      <circle cx="91" cy="68" r="1.5" fill={OUTLINE} />
+      <circle cx="109" cy="68" r="1.5" fill={OUTLINE} />
+      {/* eyebrows */}
+      <path d="M84,60 L92,59 M108,59 L116,60" stroke={OUTLINE} strokeWidth="1.5" strokeLinecap="round" />
+      {/* approving smile */}
+      <path d="M93,80 Q100,84 107,80" stroke={OUTLINE} strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* chin shadow */}
+      <path d="M88,84 Q100,90 112,84" stroke={OUTLINE} strokeWidth="1" fill="none" opacity="0.4" />
     </g>
   );
 }
@@ -484,35 +547,111 @@ function CustomAlfonso() {
 }
 
 function CustomRo() {
+  // Barista at his espresso machine, steaming milk for a pour.
+  // Machine on the right, Ro on the left, milk pitcher centered with
+  // the steam wand engaged.
+  const MACHINE_BODY = "#cfcfd4";    // brushed stainless body
+  const MACHINE_DARK = "#3a3a44";    // accents / drip tray
+  const APRON  = "#3a2418";          // dark espresso brown
+  const SHIRT  = "#f5ecd8";          // cream tee
+  const HAIR   = "#1f1410";
   return (
     <g>
-      {/* coffee cup */}
-      <path d="M40,108 L40,138 Q40,148 50,148 L66,148 Q76,148 76,138 L76,108 Z"
-        fill="#f5ede0" stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
-      <path d="M44,114 L72,114 L70,124 L46,124 Z" fill="#4a2818" />
-      <path d="M76,116 Q88,116 88,128 Q88,140 76,140" fill="none" stroke={OUTLINE} strokeWidth="3" />
-      {/* steam */}
-      <path d="M50,98 Q46,90 52,82 Q56,90 50,98 Z" fill="#e0e0e0" opacity="0.7" />
-      <path d="M62,98 Q58,88 64,78 Q68,88 62,98 Z" fill="#e0e0e0" opacity="0.7" />
-      {/* hair */}
-      <path d="M76,80 Q72,52 100,52 Q128,52 124,80 Q120,72 100,72 Q80,72 76,80 Z"
-        fill="#1f1410" stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
-      <circle cx="100" cy="92" r="22" fill={SKIN} stroke={OUTLINE} strokeWidth="3" />
+      {/* counter top */}
+      <rect x="14" y="166" width="172" height="14" rx="2" fill="#6a4a2a" stroke={OUTLINE} strokeWidth="2.5" />
+      <line x1="16" y1="170" x2="184" y2="170" stroke="#1f1410" strokeWidth="0.8" opacity="0.4" />
+      <ellipse cx="100" cy="184" rx="74" ry="4" fill="rgba(0,0,0,0.35)" />
+
+      {/* === ESPRESSO MACHINE === */}
+      {/* main body */}
+      <rect x="118" y="74" width="64" height="92" rx="4" fill={MACHINE_BODY} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* top hopper */}
+      <rect x="124" y="62" width="52" height="14" rx="2" fill={MACHINE_DARK} stroke={OUTLINE} strokeWidth="2" />
+      <rect x="128" y="58" width="44" height="6" fill="#6a6a7a" stroke={OUTLINE} strokeWidth="2" />
+      {/* brand stripe */}
+      <rect x="122" y="80" width="56" height="6" fill={MACHINE_DARK} />
+      <text x="150" y="85" textAnchor="middle" fontSize="5" fontWeight="800" fill="#f5d65a" fontFamily="Inter, sans-serif">CAFFEINE</text>
+      {/* pressure gauge */}
+      <circle cx="135" cy="106" r="11" fill="#f5ede0" stroke={OUTLINE} strokeWidth="2.5" />
+      <circle cx="135" cy="106" r="9" fill="none" stroke={OUTLINE} strokeWidth="0.6" opacity="0.4" />
+      <line x1="135" y1="106" x2="142" y2="100" stroke="#d04a4a" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="135" cy="106" r="1.5" fill={OUTLINE} />
+      {/* tiny tick marks on gauge */}
+      <path d="M128,106 L130,106 M140,106 L142,106 M135,99 L135,101 M135,111 L135,113" stroke={OUTLINE} strokeWidth="0.8" />
+      {/* shot button + steam knob */}
+      <circle cx="158" cy="100" r="4" fill="#d04a4a" stroke={OUTLINE} strokeWidth="2" />
+      <circle cx="170" cy="108" r="4" fill="#1f1410" stroke={OUTLINE} strokeWidth="2" />
+      <line x1="170" y1="108" x2="174" y2="104" stroke="#888" strokeWidth="1.5" strokeLinecap="round" />
+      {/* group head */}
+      <rect x="138" y="124" width="24" height="14" rx="2" fill={MACHINE_DARK} stroke={OUTLINE} strokeWidth="2.5" />
+      <circle cx="150" cy="131" r="5" fill="#1f1410" stroke={OUTLINE} strokeWidth="1.5" />
+      {/* portafilter handle (wood) */}
+      <rect x="160" y="129" width="20" height="6" rx="2" fill="#5a3a1e" stroke={OUTLINE} strokeWidth="2" />
+      <rect x="178" y="128" width="4" height="8" rx="1" fill={MACHINE_DARK} stroke={OUTLINE} strokeWidth="1.5" />
+      {/* espresso pour into cup */}
+      <line x1="148" y1="136" x2="148" y2="148" stroke="#3a1a0e" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="152" y1="136" x2="152" y2="148" stroke="#3a1a0e" strokeWidth="1.5" strokeLinecap="round" />
+      {/* drip tray + cup */}
+      <rect x="122" y="148" width="56" height="14" rx="2" fill={MACHINE_DARK} stroke={OUTLINE} strokeWidth="2.5" />
+      <path d="M142,148 L158,148 L156,162 L144,162 Z" fill="#f5ede0" stroke={OUTLINE} strokeWidth="2" />
+      <ellipse cx="150" cy="150" rx="7" ry="2" fill="#5a2a14" />
+
+      {/* steam wand swinging left toward Ro's pitcher */}
+      <path d="M122,114 L82,128" stroke={OUTLINE} strokeWidth="4" strokeLinecap="round" />
+      <path d="M122,114 L82,128" stroke="#aaa" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="84" cy="128" r="2.5" fill={MACHINE_DARK} />
+
+      {/* === STEAM === */}
+      <path d="M76,108 Q70,98 76,86 Q82,98 76,108 Z" fill="#e8e8ec" opacity="0.7" />
+      <path d="M90,104 Q86,92 92,80 Q98,92 90,104 Z" fill="#e8e8ec" opacity="0.7" />
+      <path d="M104,100 Q100,90 106,80 Q110,90 104,100 Z" fill="#e8e8ec" opacity="0.55" />
+      <path d="M158,76 Q154,66 160,56 Q164,66 158,76 Z" fill="#e8e8ec" opacity="0.5" />
+
+      {/* === RO === */}
+      {/* body / apron */}
+      <path d="M40,128 L92,128 L98,166 L34,166 Z" fill={APRON} stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
+      {/* apron neck strap */}
+      <line x1="56" y1="128" x2="58" y2="100" stroke={APRON} strokeWidth="3" strokeLinecap="round" />
+      <line x1="76" y1="128" x2="74" y2="100" stroke={APRON} strokeWidth="3" strokeLinecap="round" />
+      {/* shirt collar visible */}
+      <path d="M52,128 L66,140 L80,128" fill={SHIRT} stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      {/* shirt sleeves visible at sides */}
+      <rect x="32" y="116" width="10" height="20" rx="2" fill={SHIRT} stroke={OUTLINE} strokeWidth="2" />
+      <rect x="86" y="118" width="10" height="18" rx="2" fill={SHIRT} stroke={OUTLINE} strokeWidth="2" />
+      {/* arms (skin) */}
+      <ellipse cx="30" cy="138" rx="5" ry="10" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      <ellipse cx="98" cy="136" rx="5" ry="10" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      {/* far hand on shot button */}
+      <circle cx="98" cy="146" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+
+      {/* milk pitcher in his right hand, steam wand inserted */}
+      <path d="M62,116 L86,116 L88,142 L60,142 Z" fill="#dddde2" stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M58,114 L62,114 L62,118 L58,118 Z" fill="#dddde2" stroke={OUTLINE} strokeWidth="2" />
+      {/* pitcher handle */}
+      <path d="M86,118 Q96,118 96,128 Q96,138 86,138" fill="none" stroke={OUTLINE} strokeWidth="3" />
+      {/* milk in pitcher */}
+      <rect x="64" y="122" width="22" height="12" fill="#fafaf0" />
+      <ellipse cx="75" cy="122" rx="11" ry="2" fill="#fafaf0" stroke={OUTLINE} strokeWidth="1" />
+      {/* hand holding pitcher */}
+      <circle cx="92" cy="130" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+
+      {/* head */}
+      <circle cx="56" cy="92" r="20" fill={SKIN} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* slicked-back hair */}
+      <path d="M40,84 Q36,58 56,56 Q76,58 72,84 Q68,74 56,74 Q44,74 40,84 Z" fill={HAIR} stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
       {/* round glasses */}
-      <circle cx="91" cy="91" r="7" fill="rgba(255,255,255,0.18)" stroke={OUTLINE} strokeWidth="2.5" />
-      <circle cx="109" cy="91" r="7" fill="rgba(255,255,255,0.18)" stroke={OUTLINE} strokeWidth="2.5" />
-      <line x1="98" y1="91" x2="102" y2="91" stroke={OUTLINE} strokeWidth="2" />
-      <circle cx="91" cy="91" r="1.5" fill={OUTLINE} />
-      <circle cx="109" cy="91" r="1.5" fill={OUTLINE} />
+      <circle cx="49" cy="92" r="7" fill="rgba(255,255,255,0.22)" stroke={OUTLINE} strokeWidth="2.5" />
+      <circle cx="65" cy="92" r="7" fill="rgba(255,255,255,0.22)" stroke={OUTLINE} strokeWidth="2.5" />
+      <line x1="56" y1="92" x2="58" y2="92" stroke={OUTLINE} strokeWidth="2" />
+      <circle cx="49" cy="92" r="1.5" fill={OUTLINE} />
+      <circle cx="65" cy="92" r="1.5" fill={OUTLINE} />
       {/* beard */}
-      <path d="M82,100 Q100,116 118,100 Q116,112 100,116 Q84,112 82,100 Z" fill="#3a2418" stroke={OUTLINE} strokeWidth="2" />
-      <path d="M93,104 Q100,108 107,104" stroke={OUTLINE} strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      {/* apron */}
-      <path d="M76,118 L124,118 L132,178 L68,178 Z" fill="#7a4a2a" stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
-      <line x1="80" y1="115" x2="78" y2="92" stroke="#7a4a2a" strokeWidth="3" strokeLinecap="round" />
-      <line x1="120" y1="115" x2="122" y2="92" stroke="#7a4a2a" strokeWidth="3" strokeLinecap="round" />
-      <path d="M88,118 L100,128 L112,118" stroke={OUTLINE} strokeWidth="2.5" fill="none" />
-      <circle cx="62" cy="142" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      <path d="M40,102 Q56,116 72,102 Q70,112 56,116 Q42,112 40,102 Z" fill={HAIR} stroke={OUTLINE} strokeWidth="2" />
+      <path d="M50,106 Q56,109 62,106" stroke={OUTLINE} strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      {/* focused brow */}
+      <path d="M42,84 L52,86 M60,86 L70,84" stroke={OUTLINE} strokeWidth="1.5" strokeLinecap="round" />
+      {/* ear (subtle) */}
+      <ellipse cx="76" cy="94" rx="3" ry="5" fill={SKIN} stroke={OUTLINE} strokeWidth="1.5" />
     </g>
   );
 }
@@ -714,9 +853,254 @@ function CustomMarlo() {
   );
 }
 
+function CustomKayla() {
+  // Pastry chef with a piping bag and a tray of cupcakes on the counter.
+  const APRON_PINK = "#f0b6c8";
+  const APRON_TRIM = "#d885a0";
+  const COUNTER   = "#6a4a2a";
+  const HAT_WHITE = "#f8f6f0";
+  return (
+    <g>
+      <ellipse cx="100" cy="186" rx="70" ry="4" fill="rgba(0,0,0,0.3)" />
+      {/* counter */}
+      <rect x="14" y="168" width="172" height="14" rx="2" fill={COUNTER} stroke={OUTLINE} strokeWidth="2.5" />
+      <line x1="16" y1="172" x2="184" y2="172" stroke="#1f1410" strokeWidth="0.8" opacity="0.4" />
+      {/* tray of cupcakes on the right side */}
+      <rect x="118" y="156" width="60" height="12" rx="2" fill="#bfb09a" stroke={OUTLINE} strokeWidth="2" />
+      {/* 3 cupcakes */}
+      {[126, 148, 170].map((cx, i) => (
+        <g key={i}>
+          <path d={`M${cx - 8},154 L${cx + 8},154 L${cx + 6},164 L${cx - 6},164 Z`} fill="#d4a062" stroke={OUTLINE} strokeWidth="1.5" />
+          <path d={`M${cx - 9},152 L${cx + 9},152 L${cx + 9},148 Q${cx},134 ${cx - 9},148 Z`}
+            fill={i === 0 ? "#f5b1c4" : i === 1 ? "#f5ede0" : "#a06b4a"}
+            stroke={OUTLINE} strokeWidth="1.8" strokeLinejoin="round" />
+          {/* cherry / sprinkle */}
+          <circle cx={cx} cy={138} r="2" fill="#e0344b" stroke={OUTLINE} strokeWidth="1" />
+        </g>
+      ))}
+      {/* floating sprinkles */}
+      <rect x="40" y="118" width="2" height="6" rx="1" fill="#e0344b" transform="rotate(20 41 121)" />
+      <rect x="158" y="124" width="2" height="6" rx="1" fill="#3a8aef" transform="rotate(-30 159 127)" />
+      <rect x="32" y="142" width="2" height="6" rx="1" fill="#5bd97a" transform="rotate(40 33 145)" />
+
+      {/* Kayla body — apron */}
+      <path d="M58,120 L102,120 L106,168 L52,168 Z" fill={APRON_PINK} stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
+      {/* apron bow / straps */}
+      <line x1="68" y1="120" x2="70" y2="98" stroke={APRON_PINK} strokeWidth="3" strokeLinecap="round" />
+      <line x1="90" y1="120" x2="88" y2="98" stroke={APRON_PINK} strokeWidth="3" strokeLinecap="round" />
+      <rect x="74" y="140" width="14" height="6" rx="1" fill={APRON_TRIM} stroke={OUTLINE} strokeWidth="2" />
+      {/* shirt collar */}
+      <path d="M68,120 L80,134 L92,120" fill="#f5ecd8" stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      {/* flour smudge on apron */}
+      <ellipse cx="80" cy="154" rx="6" ry="3" fill="#fafaf0" opacity="0.7" />
+
+      {/* arm holding piping bag */}
+      <ellipse cx="108" cy="124" rx="5" ry="10" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      {/* piping bag */}
+      <path d="M118,108 L132,108 L138,128 L130,140 L122,128 Z" fill="#f5ecd8" stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M130,140 L132,148 L128,148 Z" fill="#bfb09a" stroke={OUTLINE} strokeWidth="2" />
+      {/* piped frosting squiggle */}
+      <path d="M130,150 Q126,154 130,158 Q134,162 130,166" stroke={APRON_PINK} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      {/* hand on piping bag */}
+      <circle cx="124" cy="118" r="5" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+
+      {/* far arm down */}
+      <ellipse cx="50" cy="130" rx="5" ry="10" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+
+      {/* head */}
+      <circle cx="78" cy="86" r="20" fill={SKIN} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* hair — wavy with ponytail */}
+      <path d="M60,86 Q54,52 78,52 Q102,52 96,86 Q92,70 78,72 Q64,70 60,86 Z" fill="#8a5a3a" stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M96,80 Q108,82 110,92 Q104,90 96,86" fill="#8a5a3a" stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      {/* chef's hat */}
+      <path d="M62,52 Q56,40 62,32 Q66,42 70,38 Q74,28 78,38 Q82,28 86,38 Q92,32 94,40 Q98,52 92,52 Z"
+        fill={HAT_WHITE} stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      <rect x="60" y="50" width="36" height="6" fill={HAT_WHITE} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* eyes happy */}
+      <path d="M70,86 Q72,82 74,86" stroke={OUTLINE} strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M82,86 Q84,82 86,86" stroke={OUTLINE} strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* blush */}
+      <circle cx="68" cy="94" r="2.5" fill="#e08a8a" opacity="0.6" />
+      <circle cx="88" cy="94" r="2.5" fill="#e08a8a" opacity="0.6" />
+      {/* smile */}
+      <path d="M72,96 Q78,102 84,96" stroke={OUTLINE} strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* flour smudge on cheek */}
+      <ellipse cx="64" cy="92" rx="3" ry="1.5" fill="#fafaf0" opacity="0.85" />
+    </g>
+  );
+}
+
+function CustomMiranda() {
+  // Sourdough maker holding a scored boule, with a starter jar bubbling beside her.
+  const APRON  = "#7a5a3a";
+  const SHIRT  = "#f5ecd8";
+  const BREAD  = "#c89060";
+  const BREAD_CRUST = "#8a5230";
+  const COUNTER = "#6a4a2a";
+  return (
+    <g>
+      <ellipse cx="100" cy="186" rx="74" ry="4" fill="rgba(0,0,0,0.3)" />
+      {/* counter */}
+      <rect x="14" y="168" width="172" height="14" rx="2" fill={COUNTER} stroke={OUTLINE} strokeWidth="2.5" />
+      <line x1="16" y1="172" x2="184" y2="172" stroke="#1f1410" strokeWidth="0.8" opacity="0.4" />
+      {/* flour dust on counter */}
+      <ellipse cx="100" cy="172" rx="44" ry="2" fill="#fafaf0" opacity="0.7" />
+      <ellipse cx="142" cy="173" rx="14" ry="1.5" fill="#fafaf0" opacity="0.6" />
+
+      {/* sourdough starter jar on the right */}
+      <rect x="148" y="132" width="22" height="32" rx="2" fill="#dde0e6" stroke={OUTLINE} strokeWidth="2.5" opacity="0.85" />
+      {/* jar lid (rubber band marking the level) */}
+      <rect x="146" y="126" width="26" height="8" rx="2" fill="#7a4a2a" stroke={OUTLINE} strokeWidth="2" />
+      <rect x="146" y="146" width="26" height="2" fill="#e0344b" />
+      {/* starter contents */}
+      <rect x="150" y="148" width="18" height="14" fill="#dcc89a" />
+      {/* bubbles */}
+      <circle cx="155" cy="151" r="1.5" fill="rgba(255,255,255,0.7)" />
+      <circle cx="162" cy="154" r="1.2" fill="rgba(255,255,255,0.7)" />
+      <circle cx="158" cy="158" r="2" fill="rgba(255,255,255,0.7)" />
+      <circle cx="164" cy="160" r="1" fill="rgba(255,255,255,0.7)" />
+      <line x1="148" y1="146" x2="170" y2="146" stroke={OUTLINE} strokeWidth="0.8" opacity="0.4" />
+
+      {/* wooden board on counter */}
+      <ellipse cx="78" cy="170" rx="36" ry="6" fill="#9a6e3e" stroke={OUTLINE} strokeWidth="2.5" />
+      <line x1="46" y1="170" x2="110" y2="170" stroke={OUTLINE} strokeWidth="0.8" opacity="0.4" />
+
+      {/* Miranda body — apron */}
+      <path d="M56,118 L102,118 L106,168 L50,168 Z" fill={APRON} stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
+      <line x1="64" y1="118" x2="66" y2="96" stroke={APRON} strokeWidth="3" strokeLinecap="round" />
+      <line x1="92" y1="118" x2="90" y2="96" stroke={APRON} strokeWidth="3" strokeLinecap="round" />
+      {/* apron pocket */}
+      <rect x="62" y="138" width="30" height="14" rx="2" fill="none" stroke={OUTLINE} strokeWidth="2" opacity="0.55" />
+      {/* shirt collar */}
+      <path d="M66,118 L80,132 L94,118" fill={SHIRT} stroke={OUTLINE} strokeWidth="2" strokeLinejoin="round" />
+      {/* flour smudges */}
+      <ellipse cx="76" cy="150" rx="6" ry="2" fill="#fafaf0" opacity="0.7" />
+      <ellipse cx="92" cy="158" rx="4" ry="1.5" fill="#fafaf0" opacity="0.55" />
+
+      {/* arms holding boule */}
+      <ellipse cx="46" cy="128" rx="5" ry="10" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      <ellipse cx="110" cy="128" rx="5" ry="10" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+
+      {/* boule — round bread held in hands */}
+      <ellipse cx="78" cy="146" rx="30" ry="20" fill={BREAD} stroke={OUTLINE} strokeWidth="3" />
+      {/* crust shading */}
+      <path d="M52,146 Q55,128 78,128 Q101,128 104,146" stroke={BREAD_CRUST} strokeWidth="3" fill="none" opacity="0.7" />
+      {/* scored top */}
+      <path d="M60,138 Q78,128 96,138" stroke={BREAD_CRUST} strokeWidth="2" fill="none" />
+      <path d="M64,142 Q78,134 92,142" stroke={BREAD_CRUST} strokeWidth="2" fill="none" />
+      <path d="M68,146 Q78,140 88,146" stroke={BREAD_CRUST} strokeWidth="2" fill="none" />
+      {/* flour dust on top */}
+      <circle cx="74" cy="132" r="1.5" fill="#fafaf0" opacity="0.7" />
+      <circle cx="82" cy="130" r="1.5" fill="#fafaf0" opacity="0.7" />
+      {/* hands gripping the boule */}
+      <circle cx="50" cy="146" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+      <circle cx="106" cy="146" r="6" fill={SKIN} stroke={OUTLINE} strokeWidth="2" />
+
+      {/* head */}
+      <circle cx="78" cy="86" r="20" fill={SKIN} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* hair (low bun) */}
+      <path d="M60,86 Q56,56 78,52 Q100,56 96,86 Q92,72 78,74 Q64,72 60,86 Z" fill="#3a2418" stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      {/* bun behind */}
+      <circle cx="96" cy="80" r="9" fill="#3a2418" stroke={OUTLINE} strokeWidth="2.5" />
+      <line x1="92" y1="76" x2="94" y2="84" stroke="#5a3a2a" strokeWidth="1" opacity="0.5" />
+      {/* eyes */}
+      <circle cx="72" cy="86" r="2" fill={OUTLINE} />
+      <circle cx="84" cy="86" r="2" fill={OUTLINE} />
+      {/* gentle smile */}
+      <path d="M72,96 Q78,100 84,96" stroke={OUTLINE} strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* eyebrows soft */}
+      <path d="M68,80 L75,80 M81,80 L88,80" stroke={OUTLINE} strokeWidth="1.5" strokeLinecap="round" />
+      {/* flour smudge on cheek */}
+      <ellipse cx="66" cy="92" rx="3" ry="1.5" fill="#fafaf0" opacity="0.7" />
+    </g>
+  );
+}
+
+function CustomJames() {
+  // Steel foreman in welder's gear with a torch, sparks flying off a beam.
+  const APRON   = "#5a4030";    // leather apron
+  const HELMET  = "#3a3a44";    // welder's helmet
+  const VISOR   = "#1a1a26";
+  const MOLTEN  = "#f7651a";    // hot steel orange
+  const HOT     = "#ffc24a";
+  const ANVIL   = "#3a3a44";
+  return (
+    <g>
+      <ellipse cx="100" cy="186" rx="80" ry="4" fill="rgba(0,0,0,0.3)" />
+      {/* heat glow on the ground */}
+      <ellipse cx="140" cy="170" rx="40" ry="8" fill={MOLTEN} opacity="0.25" />
+
+      {/* anvil + workbench on the right */}
+      <rect x="118" y="150" width="60" height="18" rx="3" fill={ANVIL} stroke={OUTLINE} strokeWidth="2.5" />
+      <rect x="128" y="168" width="12" height="14" fill="#1a1a26" stroke={OUTLINE} strokeWidth="2" />
+      <rect x="158" y="168" width="12" height="14" fill="#1a1a26" stroke={OUTLINE} strokeWidth="2" />
+      {/* hot steel beam on workbench */}
+      <rect x="126" y="142" width="44" height="10" rx="2" fill={MOLTEN} stroke={OUTLINE} strokeWidth="2.5" />
+      <rect x="128" y="143" width="40" height="4" fill={HOT} opacity="0.85" />
+      {/* heat haze lines above the beam */}
+      <path d="M130,138 Q132,134 130,130 M142,138 Q144,134 142,130 M156,138 Q158,134 156,130 M166,138 Q168,134 166,130"
+        stroke={MOLTEN} strokeWidth="1.5" fill="none" opacity="0.6" />
+
+      {/* James body — leather apron */}
+      <path d="M40,108 L98,108 L104,168 L34,168 Z" fill={APRON} stroke={OUTLINE} strokeWidth="3" strokeLinejoin="round" />
+      {/* apron seams */}
+      <line x1="44" y1="118" x2="100" y2="118" stroke={OUTLINE} strokeWidth="1.5" opacity="0.5" />
+      <line x1="48" y1="148" x2="96" y2="148" stroke={OUTLINE} strokeWidth="1.5" opacity="0.5" />
+      {/* apron strap */}
+      <line x1="58" y1="108" x2="60" y2="86" stroke={APRON} strokeWidth="3" strokeLinecap="round" />
+      <line x1="82" y1="108" x2="80" y2="86" stroke={APRON} strokeWidth="3" strokeLinecap="round" />
+      {/* belt buckle */}
+      <rect x="64" y="138" width="12" height="6" fill="#bba668" stroke={OUTLINE} strokeWidth="1.5" />
+      {/* thick work boots */}
+      <rect x="46" y="166" width="22" height="16" rx="3" fill="#1f1410" stroke={OUTLINE} strokeWidth="2.5" />
+      <rect x="74" y="166" width="22" height="16" rx="3" fill="#1f1410" stroke={OUTLINE} strokeWidth="2.5" />
+
+      {/* far arm holding welding torch */}
+      <ellipse cx="106" cy="114" rx="5" ry="11" fill={APRON} stroke={OUTLINE} strokeWidth="2" />
+      {/* gloved hand */}
+      <circle cx="108" cy="126" r="6" fill={APRON} stroke={OUTLINE} strokeWidth="2" />
+      {/* welding torch handle */}
+      <rect x="110" y="124" width="20" height="6" rx="1.5" fill="#1a1a26" stroke={OUTLINE} strokeWidth="2" />
+      <rect x="130" y="125" width="14" height="4" fill="#6a6a7a" stroke={OUTLINE} strokeWidth="1.5" />
+      {/* torch flame / arc tip */}
+      <path d="M142,123 L156,118 L154,128 L142,131 Z" fill={HOT} stroke={OUTLINE} strokeWidth="1.5" />
+      <circle cx="146" cy="126" r="3" fill="#ffffff" />
+      {/* sparks flying */}
+      {[[156, 110], [160, 130], [148, 100], [164, 122], [152, 138]].map(([x, y], i) => (
+        <path key={i} d={`M${x},${y} L${x + 4},${y + 4} M${x + 2},${y + 1} L${x - 1},${y + 5}`}
+          stroke={HOT} strokeWidth="1.5" strokeLinecap="round" opacity="0.85" />
+      ))}
+
+      {/* near arm down */}
+      <ellipse cx="34" cy="130" rx="5" ry="11" fill={APRON} stroke={OUTLINE} strokeWidth="2" />
+      <circle cx="34" cy="142" r="6" fill={APRON} stroke={OUTLINE} strokeWidth="2" />
+
+      {/* head */}
+      <circle cx="70" cy="76" r="18" fill={SKIN} stroke={OUTLINE} strokeWidth="2.5" />
+      {/* welder helmet (flipped up on top) */}
+      <path d="M50,68 Q50,42 70,38 Q90,42 90,68 L90,52 Q70,46 50,52 Z"
+        fill={HELMET} stroke={OUTLINE} strokeWidth="2.5" strokeLinejoin="round" />
+      <rect x="56" y="44" width="28" height="10" rx="2" fill={VISOR} stroke={OUTLINE} strokeWidth="2" />
+      {/* helmet logo */}
+      <text x="70" y="51.5" textAnchor="middle" fontSize="6" fontWeight="800" fill="#f7651a" fontFamily="Inter, sans-serif">FORGE</text>
+      {/* short stubble / beard */}
+      <path d="M56,82 Q70,98 84,82 Q82,92 70,94 Q58,92 56,82 Z" fill="#1f1410" stroke={OUTLINE} strokeWidth="2" />
+      <path d="M62,86 Q70,90 78,86" stroke={OUTLINE} strokeWidth="1.2" fill="none" opacity="0.4" />
+      {/* eyes squinting at the work */}
+      <path d="M58,76 L66,76" stroke={OUTLINE} strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M74,76 L82,76" stroke={OUTLINE} strokeWidth="2.5" strokeLinecap="round" />
+      {/* eyebrows */}
+      <path d="M58,72 L66,71 M74,71 L82,72" stroke={OUTLINE} strokeWidth="1.5" strokeLinecap="round" />
+      {/* hot reflection in eyes / on face from torch glow */}
+      <ellipse cx="84" cy="84" rx="5" ry="3" fill={MOLTEN} opacity="0.18" />
+    </g>
+  );
+}
+
 const CUSTOM_SPRITES = [
   CustomMike, CustomDaniel, CustomAlfonso,
   CustomRo, CustomEevee, CustomJuana, CustomMarlo,
+  CustomKayla, CustomMiranda, CustomJames,
 ];
 
 export const CUSTOM_SPRITES_COUNT = CUSTOM_SPRITES.length;

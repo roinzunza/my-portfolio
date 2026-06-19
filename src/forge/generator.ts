@@ -1,5 +1,5 @@
 import { PALETTES, type Palette } from "./palettes";
-import { CUSTOM_SPRITES_COUNT, SPRITE_LAYER_COUNTS, type SpriteIndices } from "./sprites";
+import { SPRITE_LAYER_COUNTS, type SpriteIndices } from "./sprites";
 import {
   TEAMS,
   POSITIONS,
@@ -79,22 +79,37 @@ const ORIGINS_FLAVORS = [
   "Carries an heirloom no one remembers gifting.",
 ];
 
+type EasterTier = "legendary" | "mythic";
+
 interface EasterEgg {
   name: string;
   klass: string;
   realm: string;
   flavor: string;
+  tier: EasterTier;
 }
 
 const ORIGINS_EASTER_EGGS: EasterEgg[] = [
-  { name: "Mike",    klass: "Fisherman",          realm: "The Lone Shore",      flavor: "Knows every lake by the smell of its mornings." },
-  { name: "Daniel",  klass: "Foreman",            realm: "Steelworks District", flavor: "Built half the skyline before anyone noticed." },
-  { name: "Alfonso", klass: "Pro Gamer",          realm: "The Latency Realm",   flavor: "Hasn't slept since the patch dropped." },
-  { name: "Ro",      klass: "Coffee Connoisseur", realm: "Roasters' Quarter",   flavor: "Won't drink anything pulled more than ninety seconds ago." },
-  { name: "Eevee",   klass: "Loyal Frenchie",     realm: "The Sunlit Yard",     flavor: "Will trade a nap for a treat — but only the good kind." },
-  { name: "Juana",   klass: "Lagree Instructor",  realm: "The Megaformer Floor", flavor: "Forty-five seconds feels like a lifetime. By design." },
-  { name: "Marlo",   klass: "Bicyclist",          realm: "The Long Road",       flavor: "Has summited every climb in the canton. Twice, on a Sunday." },
+  { name: "Mike",    klass: "Fisherman",          realm: "The Lone Shore",       flavor: "Knows every lake by the smell of its mornings.",                          tier: "legendary" },
+  { name: "Daniel",  klass: "Banking Manager",    realm: "Downtown Financial",   flavor: "Approves three loans before lunch. Declines four with a smile.",          tier: "legendary" },
+  { name: "Alfonso", klass: "Pro Gamer",          realm: "The Latency Realm",    flavor: "Hasn't slept since the patch dropped.",                                   tier: "legendary" },
+  { name: "Ro",      klass: "Barista",            realm: "Roasters' Quarter",    flavor: "Won't pour a shot if the grind isn't dialed in by the second second.",   tier: "mythic" },
+  { name: "Eevee",   klass: "Loyal Frenchie",     realm: "The Sunlit Yard",      flavor: "Will trade a nap for a treat — but only the good kind.",                  tier: "legendary" },
+  { name: "Juana",   klass: "Lagree Instructor",  realm: "The Megaformer Floor", flavor: "Forty-five seconds feels like a lifetime. By design.",                    tier: "mythic" },
+  { name: "Marlo",   klass: "Bicyclist",          realm: "The Long Road",        flavor: "Has summited every climb in the canton. Twice, on a Sunday.",             tier: "legendary" },
+  { name: "Kayla",   klass: "Baker",              realm: "The Buttercream Bakery", flavor: "If it doesn't have buttercream on it, she doesn't want anything to do with it.", tier: "legendary" },
+  { name: "Miranda", klass: "Sourdough Maker",    realm: "The Slow Levain",      flavor: "Her starter is older than most of her friendships. And needier.",         tier: "legendary" },
+  { name: "James",   klass: "Steel Foreman",      realm: "Hot Steel Bay",        flavor: "Reads the heat of the steel by its color. Always knows when to strike.", tier: "legendary" },
 ];
+
+/** Precomputed indices into ORIGINS_EASTER_EGGS for each tier, kept in sync
+ *  with the per-egg `tier` field so the picker can stay a single line. */
+const ORIGINS_LEGENDARY_INDICES = ORIGINS_EASTER_EGGS
+  .map((e, i) => (e.tier === "legendary" ? i : -1))
+  .filter((i) => i >= 0);
+const ORIGINS_MYTHIC_INDICES = ORIGINS_EASTER_EGGS
+  .map((e, i) => (e.tier === "mythic" ? i : -1))
+  .filter((i) => i >= 0);
 
 // ============================================================
 // Backgrounds (Origins) — frame gradient that fills the card art panel.
@@ -278,7 +293,12 @@ function generateOrigins(seed: number): GeneratedCard {
 
   let customSpriteIdx: number | null = null;
   if (rarity.label === "Legendary" || rarity.label === "Mythic") {
-    customSpriteIdx = Math.floor(rng() * CUSTOM_SPRITES_COUNT);
+    // Mythic and Legendary draw from separate pools — Ro and Juana are
+    // mythic-exclusive, everyone else is legendary-exclusive.
+    const pool = rarity.label === "Mythic"
+      ? ORIGINS_MYTHIC_INDICES
+      : ORIGINS_LEGENDARY_INDICES;
+    customSpriteIdx = pool[Math.floor(rng() * pool.length)];
     const egg = ORIGINS_EASTER_EGGS[customSpriteIdx];
     name = egg.name;
     klass = egg.klass;
