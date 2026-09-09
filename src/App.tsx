@@ -3,12 +3,6 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import ResumePage from "./pages/ResumePage";
-import RosendoOriginsPage from "./pages/RosendoOriginsPage";
-import NetflixPage from "./pages/NetflixPage";
-import SpotifyResumePage from "./pages/SpotifyResumePage";
-import SpotifyAlbumPage from "./pages/SpotifyAlbumPage";
-import MetaPage from "./pages/MetaPage";
-import NvidiaPage from "./pages/NvidiaPage";
 
 const ForgePage = lazy(() => import("./forge/ForgePage"));
 
@@ -24,7 +18,6 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/rosendo" element={<RosendoOriginsPage />} />
         <Route path="/resume" element={<ResumePage />} />
         <Route
           path="/forge"
@@ -35,12 +28,6 @@ export default function App() {
           }
         />
       </Route>
-
-      <Route path="/netflix" element={<NetflixPage />} />
-      <Route path="/spotify" element={<SpotifyResumePage />} />
-      <Route path="/spotify/:slug" element={<SpotifyAlbumPage />} />
-      <Route path="/meta" element={<MetaPage />} />
-      <Route path="/nvidia" element={<NvidiaPage />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

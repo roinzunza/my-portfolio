@@ -1,115 +1,32 @@
-import { NavLink } from "react-router-dom";
-
-const links: { to: string; label: string; end?: boolean }[] = [
-  { to: "/", label: "Home", end: true },
-  { to: "/forge", label: "Forge" },
-  // Add future routes here — the pill expands automatically.
-];
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 const styles = `
-  .nav-shell {
-    position: fixed;
-    /* Sits 18px above the iOS home indicator (or screen bottom on non-notch). */
-    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    z-index: 100;
-    pointer-events: none;
-    font-family: 'Inter', system-ui, sans-serif;
-    padding: 0 12px;
-  }
-
-  /* Liquid glass pill — heavy blur + saturation boost picks up the
-     background colors and smears them, white inset highlights at the
-     top edge fake the refractive lip of a glass surface. */
-  .nav-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 999px;
-    padding: 5px;
-    box-shadow:
-      /* depth shadows below the pill */
-      0 12px 36px rgba(0, 0, 0, 0.45),
-      0 2px 8px rgba(0, 0, 0, 0.3),
-      /* refractive top edge */
-      inset 0 1px 0 rgba(255, 255, 255, 0.22),
-      /* darker bottom edge for the rounded "glass" look */
-      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-    pointer-events: auto;
-  }
-
-  .nav-link {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    padding: 9px 20px;
-    border-radius: 999px;
-    line-height: 1;
-    transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-    white-space: nowrap;
-    position: relative;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .nav-link:hover {
-    color: rgba(255, 255, 255, 0.95);
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  /* Active = a brighter glass droplet sitting on top of the base pill.
-     Radial highlight on the top simulates light catching the curved
-     surface; layered insets give it depth without any saturated color. */
-  .nav-link.active {
-    color: rgba(255, 255, 255, 1);
-    background:
-      radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.22) 0%, transparent 65%),
-      rgba(255, 255, 255, 0.12);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.3),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.12),
-      0 2px 8px rgba(0, 0, 0, 0.2);
-  }
-  .nav-link.active:hover {
-    background:
-      radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.28) 0%, transparent 65%),
-      rgba(255, 255, 255, 0.16);
-  }
-
-  /* Mobile keeps the same touch target size (~38px) — only the side
-     padding tightens so a 3+ link bar can fit on small phones. */
-  @media (max-width: 420px) {
-    .nav-link { padding: 10px 16px; font-size: 12.5px; }
-    .nav-shell { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
-  }
+  .site-nav { position: absolute; top: 0; left: 0; right: 0; z-index: 100; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+  .site-nav-inner { width: min(1180px, calc(100% - 48px)); height: 88px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.09); }
+  .site-mark { display: flex; align-items: center; gap: 12px; color: #171713; text-decoration: none; font-size: .92rem; font-weight: 680; letter-spacing: -.02em; }
+  .site-mark-icon { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #aaa9a1; border-radius: 50%; color: #5368c7; font: 700 .72rem ui-monospace, monospace; }
+  .site-links { display: flex; align-items: center; gap: 30px; }
+  .site-link { color: #68675f; text-decoration: none; font-size: .82rem; font-weight: 550; transition: color .2s; }
+  .site-link:hover, .site-link.active { color: #171713; }
+  .site-contact { border: 1px solid #aaa9a1; padding: 10px 14px; border-radius: 999px; color: #171713; }
+  .site-nav.on-dark .site-nav-inner { border-bottom-color: rgba(255,255,255,.09); }
+  .site-nav.on-dark .site-mark, .site-nav.on-dark .site-link:hover, .site-nav.on-dark .site-link.active { color: #f2f4f7; }
+  .site-nav.on-dark .site-mark-icon { border-color: #303641; color: #8c9bff; }
+  .site-nav.on-dark .site-link { color: #929aa7; }
+  .site-nav.on-dark .site-contact { border-color: #303641; color: #e8eaf0; }
+  @media (max-width: 760px) { .site-nav-inner { width: calc(100% - 32px); height: 72px; } .site-links { gap: 17px; } .site-link.hide-mobile { display: none; } .site-contact { padding: 9px 11px; } }
 `;
 
 export default function NavBar() {
-  return (
-    <>
-      <style>{styles}</style>
-      <nav className="nav-shell" aria-label="Primary">
-        <div className="nav-pill">
-          {links.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              end={l.end}
-              className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
-            >
-              {l.label}
-            </NavLink>
-          ))}
-        </div>
-      </nav>
-    </>
-  );
+  const { pathname } = useLocation();
+  if (pathname === "/") return null;
+  return <><style>{styles}</style><nav className={`site-nav ${pathname === "/" ? "" : "on-dark"}`} aria-label="Primary"><div className="site-nav-inner">
+    <Link className="site-mark" to="/"><span className="site-mark-icon">RI</span><span>Rosendo Inzunza</span></Link>
+    <div className="site-links">
+      <NavLink className="site-link" to="/" end>Work</NavLink>
+      <a className="site-link hide-mobile" href="/#about">About</a>
+      <NavLink className="site-link hide-mobile" to="/resume">Resume</NavLink>
+      <a className="site-link site-contact" href="mailto:RosendoInzunza@gmail.com">Contact</a>
+    </div>
+  </div></nav></>;
 }

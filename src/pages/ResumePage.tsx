@@ -2,419 +2,55 @@ import { useEffect } from "react";
 import { resumeData } from "../data/resumeData";
 
 const styles = `
-  :root {
-    --rp-bg: #0a0c14;
-    --rp-card: rgba(20, 32, 72, 0.55);
-    --rp-border: rgba(245, 214, 90, 0.22);
-    --rp-text: #f5f1e8;
-    --rp-text-2: #c4c8d4;
-    --rp-text-3: rgba(196, 200, 212, 0.6);
-    --rp-gold: #f5d65a;
-    --rp-gold-2: #c9971a;
-    --rp-navy: #1e2a4a;
-  }
-
-  .rp-page {
-    min-height: 100svh;
-    min-height: 100dvh;
-    background:
-      radial-gradient(circle at 30% 10%, rgba(58, 78, 128, 0.22) 0%, transparent 50%),
-      radial-gradient(circle at 70% 90%, rgba(30, 42, 74, 0.18) 0%, transparent 50%),
-      linear-gradient(180deg, #050608 0%, #0a0c14 100%);
-    color: var(--rp-text);
-    font-family: 'Inter', system-ui, sans-serif;
-    /* Top padding small (no top nav); bottom clears the floating bottom
-       nav + iOS home indicator. */
-    padding:
-      max(40px, env(safe-area-inset-top, 0px))
-      20px
-      calc(120px + env(safe-area-inset-bottom, 0px));
-    position: relative;
-    overflow-x: hidden;
-  }
-
-  @media (max-width: 520px) {
-    .rp-page { padding-left: 16px; padding-right: 16px; }
-  }
-
-  .rp-page::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    opacity: 0.3;
-    mix-blend-mode: overlay;
-  }
-
-  .rp-inner {
-    max-width: 760px;
-    margin: 0 auto;
-    position: relative;
-  }
-
-  /* ===== HEADER ===== */
-  .rp-header {
-    text-align: center;
-    margin-bottom: 56px;
-  }
-  .rp-eyebrow {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.4em;
-    color: var(--rp-gold);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-  .rp-name {
-    font-family: 'Bebas Neue', 'Inter', sans-serif;
-    font-size: clamp(48px, 9vw, 88px);
-    font-weight: 400;
-    letter-spacing: 0.04em;
-    line-height: 1;
-    margin: 0 0 10px;
-    color: #ffffff;
-    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
-  }
-  .rp-role {
-    font-size: 14px;
-    color: var(--rp-text-2);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    margin-bottom: 22px;
-  }
-  .rp-contact-row {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px 18px;
-    font-size: 13px;
-    color: var(--rp-text-2);
-  }
-  .rp-contact-row a {
-    color: var(--rp-text-2);
-    text-decoration: none;
-    border-bottom: 1px dashed rgba(245, 214, 90, 0.35);
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .rp-contact-row a:hover {
-    color: var(--rp-gold);
-    border-bottom-color: var(--rp-gold);
-  }
-
-  /* ===== SECTION ===== */
-  .rp-section { margin-bottom: 48px; }
-  .rp-section-head {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 18px;
-  }
-  .rp-section-title {
-    font-family: 'Bebas Neue', 'Inter', sans-serif;
-    font-size: 26px;
-    letter-spacing: 0.12em;
-    line-height: 1;
-    color: var(--rp-gold);
-    margin: 0;
-  }
-  .rp-section-rule {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(245, 214, 90, 0.4) 0%, transparent 100%);
-  }
-
-  .rp-bio {
-    font-size: 14.5px;
-    line-height: 1.7;
-    color: var(--rp-text-2);
-    margin: 0;
-  }
-
-  .rp-competencies {
-    font-size: 13.5px;
-    line-height: 1.75;
-    color: var(--rp-text-2);
-    margin: 0;
-  }
-
-  /* ===== JOB ===== */
-  .rp-job {
-    background: var(--rp-card);
-    border: 1px solid var(--rp-border);
-    border-radius: 14px;
-    padding: 20px 22px;
-    margin-bottom: 14px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  .rp-job-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 4px;
-  }
-  .rp-job-title {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--rp-text);
-    letter-spacing: -0.01em;
-  }
-  .rp-job-title em {
-    color: var(--rp-gold);
-    font-style: normal;
-  }
-  .rp-job-meta {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    color: var(--rp-text-3);
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .rp-job-location {
-    font-size: 12px;
-    color: var(--rp-text-3);
-    margin: 0 0 12px;
-  }
-  .rp-job-summary {
-    font-size: 13.5px;
-    line-height: 1.6;
-    color: var(--rp-text-2);
-    margin: 0 0 12px;
-    font-style: italic;
-  }
-  .rp-bullets {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .rp-bullets li {
-    position: relative;
-    padding-left: 20px;
-    font-size: 13.5px;
-    line-height: 1.55;
-    color: var(--rp-text-2);
-  }
-  .rp-bullets li::before {
-    content: "✦";
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: var(--rp-gold);
-    font-size: 11px;
-    line-height: 1.55;
-  }
-
-  /* ===== SKILLS ===== */
-  .rp-skill-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  @media (min-width: 600px) {
-    .rp-skill-grid { grid-template-columns: 160px 1fr; row-gap: 14px; column-gap: 18px; }
-  }
-  .rp-skill-cat {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.16em;
-    color: var(--rp-gold);
-    text-transform: uppercase;
-    align-self: start;
-    padding-top: 4px;
-  }
-  .rp-skill-list {
-    font-size: 13.5px;
-    line-height: 1.6;
-    color: var(--rp-text-2);
-    margin: 0 0 8px;
-  }
-
-  /* ===== PROJECT ===== */
-  .rp-project {
-    background: var(--rp-card);
-    border: 1px solid var(--rp-border);
-    border-radius: 14px;
-    padding: 22px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  .rp-project-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 6px;
-  }
-  .rp-project-name {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--rp-text);
-  }
-  .rp-project-url {
-    color: var(--rp-gold);
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-  }
-  .rp-project-url:hover { text-decoration: underline; }
-  .rp-project-role {
-    font-size: 12px;
-    color: var(--rp-text-3);
-    margin: 0 0 14px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  /* ===== EDUCATION ===== */
-  .rp-edu {
-    background: var(--rp-card);
-    border: 1px solid var(--rp-border);
-    border-radius: 14px;
-    padding: 20px 22px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  .rp-edu-degree {
-    margin: 0 0 4px;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--rp-text);
-  }
-  .rp-edu-school {
-    margin: 0;
-    font-size: 13px;
-    color: var(--rp-text-2);
+  .resume { min-height: 100vh; padding: 145px 24px 90px; background: radial-gradient(circle at 92% 5%, rgba(105,123,255,.12), transparent 28%), #080a0d; color: #f2f4f7; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+  .resume-inner { width: min(980px, 100%); margin: 0 auto; }
+  .resume-header { margin-bottom: 90px; }
+  .resume-kicker, .resume-section-title { color: #7f91ff; font: 650 .76rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .12em; text-transform: uppercase; }
+  .resume-name { margin: 20px 0 14px; font-size: clamp(3.7rem, 9vw, 6.8rem); line-height: .95; letter-spacing: -.07em; font-weight: 520; }
+  .resume-role { color: #a7aeba; font-size: 1.18rem; margin-bottom: 30px; }
+  .resume-contact { display: flex; flex-wrap: wrap; gap: 10px 22px; color: #7d8592; font-size: .84rem; }
+  .resume-contact a { color: #aab1bd; text-decoration: none; border-bottom: 1px solid #343a45; }
+  .resume-contact a:hover { color: #fff; }
+  .resume-section { display: grid; grid-template-columns: 190px minmax(0,1fr); gap: 45px; padding: 58px 0; border-top: 1px solid #252a33; }
+  .resume-summary { margin: 0; color: #b0b6c0; font-size: 1.08rem; line-height: 1.78; }
+  .resume-competencies { margin: 0; color: #a7aeba; line-height: 1.9; }
+  .resume-job { padding-bottom: 38px; margin-bottom: 38px; border-bottom: 1px solid #20242b; }
+  .resume-job:last-child { margin-bottom: 0; padding-bottom: 0; border: 0; }
+  .resume-job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; margin-bottom: 6px; }
+  .resume-job h3 { margin: 0; font-size: 1.08rem; font-weight: 680; letter-spacing: -.02em; }
+  .resume-company { color: #7f91ff; }
+  .resume-date { flex: none; color: #69717e; font: .72rem ui-monospace, monospace; letter-spacing: .04em; text-transform: uppercase; }
+  .resume-location { margin: 0 0 18px; color: #717987; font-size: .8rem; }
+  .resume-list { margin: 0; padding-left: 18px; color: #9da4b0; }
+  .resume-list li { padding-left: 7px; margin-bottom: 10px; line-height: 1.65; }
+  .resume-list li::marker { color: #6578ee; }
+  .resume-skills { display: grid; gap: 18px; }
+  .resume-skill { display: grid; grid-template-columns: 170px 1fr; gap: 24px; }
+  .resume-skill strong { color: #d8dbe1; font-size: .82rem; }
+  .resume-skill span { color: #929aa7; font-size: .88rem; line-height: 1.65; }
+  .resume-project-head, .resume-edu-head { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; margin-bottom: 12px; }
+  .resume-project h3, .resume-edu h3 { margin: 0; font-size: 1.3rem; letter-spacing: -.03em; }
+  .resume-project a { color: #7f91ff; text-decoration: none; font-size: .82rem; }
+  .resume-project-intro, .resume-edu p { color: #858d99; line-height: 1.65; }
+  @media (max-width: 720px) {
+    .resume { padding: 120px 16px 70px; }
+    .resume-header { margin-bottom: 70px; }
+    .resume-section { grid-template-columns: 1fr; gap: 26px; padding: 48px 0; }
+    .resume-job-head, .resume-project-head, .resume-edu-head { align-items: flex-start; flex-direction: column; gap: 7px; }
+    .resume-skill { grid-template-columns: 1fr; gap: 5px; }
   }
 `;
 
 export default function ResumePage() {
-  useEffect(() => {
-    document.title = "Resume · Rosendo Inzunza";
-  }, []);
-
+  useEffect(() => { document.title = "Resume — Rosendo Inzunza"; }, []);
   const { summary, competencies, experience, skills, project, education } = resumeData;
-
-  return (
-    <>
-      <style>{styles}</style>
-      <div className="rp-page">
-        <div className="rp-inner">
-
-          {/* HEADER */}
-          <header className="rp-header">
-            <div className="rp-eyebrow">Resume · Founders Edition</div>
-            <h1 className="rp-name">Rosendo Inzunza</h1>
-            <div className="rp-role">Software Engineer</div>
-            <div className="rp-contact-row">
-              <a href="mailto:rosendoinzunza@gmail.com">rosendoinzunza@gmail.com</a>
-              <a href="tel:+17143427492">714-342-7492</a>
-              <a href="https://github.com/roinzunza" target="_blank" rel="noopener noreferrer">github.com/roinzunza</a>
-              <a href="https://www.linkedin.com/in/rosendoinzunza" target="_blank" rel="noopener noreferrer">linkedin.com/in/rosendoinzunza</a>
-              <span>La Habra, CA</span>
-            </div>
-          </header>
-
-          {/* SUMMARY */}
-          <section className="rp-section">
-            <div className="rp-section-head">
-              <h2 className="rp-section-title">Summary</h2>
-              <div className="rp-section-rule" />
-            </div>
-            <p className="rp-bio">{summary}</p>
-          </section>
-
-          {/* CORE COMPETENCIES */}
-          <section className="rp-section">
-            <div className="rp-section-head">
-              <h2 className="rp-section-title">Core Competencies</h2>
-              <div className="rp-section-rule" />
-            </div>
-            <p className="rp-competencies">{competencies.join(" · ")}</p>
-          </section>
-
-          {/* EXPERIENCE */}
-          <section className="rp-section">
-            <div className="rp-section-head">
-              <h2 className="rp-section-title">Experience</h2>
-              <div className="rp-section-rule" />
-            </div>
-            {experience.map((job, i) => (
-              <article key={i} className="rp-job">
-                <div className="rp-job-head">
-                  <h3 className="rp-job-title">
-                    {job.title} <em>· {job.company}</em>
-                  </h3>
-                  <div className="rp-job-meta">{job.period}</div>
-                </div>
-                <p className="rp-job-location">{job.location}</p>
-                {job.summary && <p className="rp-job-summary">{job.summary}</p>}
-                <ul className="rp-bullets">
-                  {job.bullets.map((b, j) => <li key={j}>{b}</li>)}
-                </ul>
-              </article>
-            ))}
-          </section>
-
-          {/* SKILLS */}
-          <section className="rp-section">
-            <div className="rp-section-head">
-              <h2 className="rp-section-title">Technical Skills</h2>
-              <div className="rp-section-rule" />
-            </div>
-            <div className="rp-skill-grid">
-              {Object.entries(skills).map(([cat, items]) => (
-                <div key={cat} style={{ display: "contents" }}>
-                  <div className="rp-skill-cat">{cat}</div>
-                  <div className="rp-skill-list">{items.join(" · ")}</div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* PROJECTS */}
-          <section className="rp-section">
-            <div className="rp-section-head">
-              <h2 className="rp-section-title">Projects</h2>
-              <div className="rp-section-rule" />
-            </div>
-            <div className="rp-project">
-              <div className="rp-project-head">
-                <h3 className="rp-project-name">{project.name}</h3>
-                <a href={project.url} target="_blank" rel="noopener noreferrer" className="rp-project-url">
-                  {project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗
-                </a>
-              </div>
-              <p className="rp-project-role">{project.description}</p>
-              <ul className="rp-bullets">
-                {project.bullets.map((b, i) => <li key={i}>{b}</li>)}
-              </ul>
-            </div>
-          </section>
-
-          {/* EDUCATION */}
-          <section className="rp-section">
-            <div className="rp-section-head">
-              <h2 className="rp-section-title">Education</h2>
-              <div className="rp-section-rule" />
-            </div>
-            <div className="rp-edu">
-              <h3 className="rp-edu-degree">{education.degree}</h3>
-              <p className="rp-edu-school">{education.school}</p>
-            </div>
-          </section>
-
-        </div>
-      </div>
-    </>
-  );
+  return <><style>{styles}</style><main className="resume"><div className="resume-inner">
+    <header className="resume-header"><span className="resume-kicker">Resume / 2026</span><h1 className="resume-name">Rosendo Inzunza</h1><div className="resume-role">Systems Engineer</div><div className="resume-contact"><span>La Habra, CA</span><a href="tel:+17143427492">714-342-7492</a><a href="mailto:RosendoInzunza@gmail.com">RosendoInzunza@gmail.com</a><a href="https://linkedin.com/in/rosendoinzunza" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="https://github.com/roinzunza" target="_blank" rel="noreferrer">GitHub ↗</a></div></header>
+    <section className="resume-section"><h2 className="resume-section-title">Profile</h2><p className="resume-summary">{summary}</p></section>
+    <section className="resume-section"><h2 className="resume-section-title">Core competencies</h2><p className="resume-competencies">{competencies.join(" · ")}</p></section>
+    <section className="resume-section"><h2 className="resume-section-title">Experience</h2><div>{experience.map((job) => <article className="resume-job" key={job.company}><div className="resume-job-head"><h3>{job.title} <span className="resume-company">· {job.company}</span></h3><span className="resume-date">{job.period}</span></div><p className="resume-location">{job.location}</p><ul className="resume-list">{job.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul></article>)}</div></section>
+    <section className="resume-section"><h2 className="resume-section-title">Technical skills</h2><div className="resume-skills">{Object.entries(skills).map(([category, items]) => <div className="resume-skill" key={category}><strong>{category}</strong><span>{items.join(" · ")}</span></div>)}</div></section>
+    <section className="resume-section"><h2 className="resume-section-title">Project</h2><article className="resume-project"><div className="resume-project-head"><h3>{project.name}</h3><a href={project.url} target="_blank" rel="noreferrer">sidequestapp.io ↗</a></div><p className="resume-project-intro">{project.description}</p><ul className="resume-list">{project.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul></article></section>
+    <section className="resume-section"><h2 className="resume-section-title">Education</h2><article className="resume-edu"><div className="resume-edu-head"><h3>{education.degree}</h3><span className="resume-date">2019</span></div><p>California State University, Fullerton</p></article></section>
+  </div></main></>;
 }
