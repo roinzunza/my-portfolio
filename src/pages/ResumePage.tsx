@@ -131,6 +131,13 @@ const styles = `
     margin: 0;
   }
 
+  .rp-competencies {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--rp-text-2);
+    margin: 0;
+  }
+
   /* ===== JOB ===== */
   .rp-job {
     background: var(--rp-card);
@@ -295,7 +302,7 @@ export default function ResumePage() {
     document.title = "Resume · Rosendo Inzunza";
   }, []);
 
-  const { summary, experience, skills, project, education } = resumeData;
+  const { summary, competencies, experience, skills, project, education } = resumeData;
 
   return (
     <>
@@ -324,6 +331,15 @@ export default function ResumePage() {
               <div className="rp-section-rule" />
             </div>
             <p className="rp-bio">{summary}</p>
+          </section>
+
+          {/* CORE COMPETENCIES */}
+          <section className="rp-section">
+            <div className="rp-section-head">
+              <h2 className="rp-section-title">Core Competencies</h2>
+              <div className="rp-section-rule" />
+            </div>
+            <p className="rp-competencies">{competencies.join(" · ")}</p>
           </section>
 
           {/* EXPERIENCE */}
@@ -378,7 +394,7 @@ export default function ResumePage() {
                   {project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗
                 </a>
               </div>
-              <p className="rp-project-role">{project.role} · {project.tech}</p>
+              <p className="rp-project-role">{project.description}</p>
               <ul className="rp-bullets">
                 {project.bullets.map((b, i) => <li key={i}>{b}</li>)}
               </ul>
