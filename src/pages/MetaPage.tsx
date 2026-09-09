@@ -1009,7 +1009,7 @@ export default function MetaPage() {
                 <div className="ig-bio-name">
                   {name} <FaCheckCircle style={{ color: "#1d9bf0", marginLeft: 4 }} size={12} />
                 </div>
-                <div className="ig-bio-title">Systems Engineer · Founder @ SideQuest</div>
+                <div className="ig-bio-title">Software Engineer · Founder @ SideQuest</div>
                 <div>{summary}</div>
                 <div style={{ marginTop: 8 }}>
                   📍 California, US · ☕ Coffee · 🎮 Gamer · 🐕 Frenchie dad

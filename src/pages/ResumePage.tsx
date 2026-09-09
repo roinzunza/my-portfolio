@@ -314,7 +314,7 @@ export default function ResumePage() {
           <header className="rp-header">
             <div className="rp-eyebrow">Resume · Founders Edition</div>
             <h1 className="rp-name">Rosendo Inzunza</h1>
-            <div className="rp-role">Systems Engineer</div>
+            <div className="rp-role">Software Engineer</div>
             <div className="rp-contact-row">
               <a href="mailto:rosendoinzunza@gmail.com">rosendoinzunza@gmail.com</a>
               <a href="tel:+17143427492">714-342-7492</a>
