@@ -103,14 +103,14 @@ export default function PortfolioShell() {
           <div><h1>Rosendo Inzunza</h1><p>Software Engineer</p><small>Backend &amp; Distributed Systems</small></div>
         </header>
         <nav className="app-tabs" aria-label="Portfolio sections">
-          {(["work", "resume", "contact", "rogpt"] as Tab[]).map((item) => <button className={tab === item ? "active" : ""} key={item} onClick={() => selectTab(item)}>{item === "rogpt" ? "RoGPT" : item[0].toUpperCase() + item.slice(1)}</button>)}
+          {(["work", "resume", "contact", "rogpt"] as Tab[]).map((item) => <button className={tab === item ? "active" : ""} key={item} aria-pressed={tab === item} onClick={() => selectTab(item)}>{item === "rogpt" ? "RoGPT" : item[0].toUpperCase() + item.slice(1)}</button>)}
         </nav>
         <div className="sidebar-scroll">{tab === "contact" ? <ContactRows /> : tab === "work" ? <WorkRows selected={selectedId} onSelect={selectWork} /> : <div className="sidebar-note"><strong>{tab === "resume" ? "Professional overview" : "Ro's digital clone"}</strong><p>{tab === "resume" ? "Experience, skills, projects, and education in one view." : "Knows the resume."}</p></div>}</div>
       </aside>
-      <section className={"app-view " + (showMobileDetail ? "mobile-current" : "")} key={tab + selectedId}>
+      <section className={"app-view " + (tab === "rogpt" ? "chat-view " : "") + (showMobileDetail ? "mobile-current" : "")} key={tab + selectedId}>
         {tab === "work" && <WorkDetail item={selected} onBack={() => setShowMobileDetail(false)} />}
         {tab === "resume" && <ResumePanel onBack={() => setShowMobileDetail(false)} />}
-        {tab === "contact" && <div className="contact-detail"><button className="detail-back" onClick={() => setShowMobileDetail(false)}>← Back</button><p className="detail-kicker">Contact</p><h2>Let’s talk.</h2><p>I’m always happy to hear about an interesting systems problem, a thoughtful product, or a team doing ambitious engineering work.</p><a href={"mailto:" + resumeData.email}>{resumeData.email} ↗</a></div>}
+        {tab === "contact" && <div className="contact-detail"><button className="detail-back" onClick={() => setShowMobileDetail(false)}>← Back</button><p className="detail-kicker">Contact</p><h2>Let’s talk.</h2><p>I’m always happy to hear about an interesting systems problem, a thoughtful product, or a team doing ambitious engineering work.</p><a href={"mailto:" + resumeData.email}>{resumeData.email} ↗</a><div className="mobile-contact-links"><ContactRows /></div></div>}
         {tab === "rogpt" && <><button className="detail-back chat-back" onClick={() => setShowMobileDetail(false)}>← Back</button><RoGPT /></>}
       </section>
     </div>

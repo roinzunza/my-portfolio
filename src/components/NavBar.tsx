@@ -14,6 +14,7 @@ const styles = `
   .site-nav.on-dark .site-mark-icon { border-color: #303641; color: #8c9bff; }
   .site-nav.on-dark .site-link { color: #929aa7; }
   .site-nav.on-dark .site-contact { border-color: #303641; color: #e8eaf0; }
+  @media (max-width: 380px) { .site-mark { gap: 7px; font-size: .78rem; } .site-links { gap: 10px; } }
   @media (max-width: 760px) { .site-nav-inner { width: calc(100% - 32px); height: 72px; } .site-links { gap: 17px; } .site-link.hide-mobile { display: none; } .site-contact { padding: 9px 11px; } }
 `;
 

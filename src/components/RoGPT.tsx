@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { portfolioWork, resumeData, skillAnswer, type PortfolioWorkItem } from "../data/resumeData";
 
@@ -223,6 +223,11 @@ export default function RoGPT() {
     response: { body: "Hi! I'm Rosendo's portfolio assistant. Ask me anything about his work, projects, or experience." },
   }]);
   const [input, setInput] = useState("");
+  const messagesRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const lastMessage = messagesRef.current?.querySelector(".chat-message:last-of-type");
+    lastMessage?.scrollIntoView({ block: "nearest" });
+  }, [messages]);
   const inputRef = useRef<HTMLInputElement>(null);
   const time = new Intl.DateTimeFormat([], { hour: "numeric", minute: "2-digit" }).format(new Date());
 
@@ -242,7 +247,7 @@ export default function RoGPT() {
   return (
     <section className="app-chat" aria-label="RoGPT portfolio assistant">
       <div className="chat-top"><strong>RoGPT</strong><time>{time}</time></div>
-      <div className="chat-messages" aria-live="polite">
+      <div className="chat-messages" ref={messagesRef} aria-live="polite">
         {messages.map((message, index) => (
           <div className={"chat-message " + message.role} key={index}>
             <span>{message.role === "assistant" ? "RoGPT" : "You"}</span>

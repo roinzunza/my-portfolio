@@ -106,24 +106,50 @@ const styles = `
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   .portfolio-card button:focus-visible, .portfolio-card a:focus-visible, .portfolio-card input:focus-visible { outline: 2px solid #d0d0d2; outline-offset: 2px; }
   @media (prefers-reduced-motion: reduce) { .app-view { animation: none; } * { scroll-behavior: auto !important; } }
-  @media (max-width: 900px) {
-    .portfolio-page { display: block; padding: 0; background: #202124; }
-    .portfolio-card { width: 100%; height: 100svh; min-height: 0; grid-template-columns: 1fr; border: 0; border-radius: 0; box-shadow: none; }
-    .app-sidebar, .app-view { grid-area: 1 / 1; transition: opacity 180ms ease, transform 180ms ease; }
-    .app-sidebar { border-right: 0; }
-    .app-sidebar.mobile-away { opacity: 0; pointer-events: none; transform: translateX(-16px); }
-    .app-view { padding: 30px 22px; opacity: 0; pointer-events: none; transform: translateX(16px); }
-    .app-view.mobile-current { opacity: 1; pointer-events: auto; transform: none; }
-    .detail-back { display: block; }
-    .app-tabs { margin-bottom: 12px; }
-    .app-tabs { max-width: calc(100% - 44px); overflow-x: auto; scrollbar-width: none; }
-    .detail-featured { grid-template-columns: 1fr; }
-    .detail-featured section { min-height: auto; }
-    .chat-back { position: absolute; top: 30px; left: 22px; z-index: 2; }
-    .chat-back + .app-chat .chat-top { padding-left: 68px; }
-    .resume-panel-head { flex-direction: column; }
-    .resume-panel-skills > div { grid-template-columns: 1fr; gap: 5px; }
+  @media (min-width: 901px) and (max-width: 1200px) {
+    .portfolio-card { width: 100%; grid-template-columns: 38% 62%; }
+    .app-view { padding: 36px 32px; }
   }
+  @media (max-width: 900px) {
+    .portfolio-page { display: block; padding: 0; background: #232426; }
+    .portfolio-card { width: 100%; height: 100svh; height: 100dvh; min-height: 0; display: flex; flex-direction: column; border: 0; border-radius: 0; box-shadow: none; }
+    .app-sidebar { flex: none; border-right: 0; padding-top: env(safe-area-inset-top); }
+    .profile-header { margin: 16px 16px 12px; }
+    .profile-header > div { min-width: 0; }
+    .app-tabs { height: auto; flex-shrink: 0; margin: 0 16px 12px; }
+    .app-tabs button { min-width: 0; min-height: 44px; height: auto; padding: 8px 4px; font-size: 14px; }
+    .app-sidebar.mobile-away .sidebar-scroll { display: none; }
+    .sidebar-scroll { padding: 0 16px 16px; }
+    .app-view { display: none; flex: 1; padding: 20px max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); overflow-wrap: anywhere; }
+    .app-view.mobile-current { display: block; }
+    .detail-back { display: inline-flex; align-items: center; min-height: 44px; margin: -8px 0 16px; font-size: 14px; }
+    .detail-header { gap: 16px; }
+    .detail-featured section { min-height: auto; }
+    .contact-detail { padding-top: 0; }
+    .mobile-contact-links { margin-top: 24px; }
+    .resume-panel-head { flex-direction: column; gap: 16px; }
+    .resume-line { flex-direction: column; gap: 6px; }
+    .resume-line strong { font-size: 14px; }
+    .resume-line span, .resume-line time, .resume-panel-skills strong, .resume-panel-skills span { font-size: 13px; }
+    .resume-panel-skills > div { grid-template-columns: 1fr; gap: 5px; }
+    .app-view.chat-view.mobile-current { display: flex; flex-direction: column; overflow: hidden; }
+    .chat-back { flex: none; margin-bottom: 8px; align-self: flex-start; }
+    .app-chat { min-height: 0; flex: 1; }
+    .chat-top { flex: none; }
+    .chat-messages { min-height: 0; overflow-y: auto; padding: 24px 0 16px; overscroll-behavior: contain; }
+    .chat-message { max-width: 94%; overflow-wrap: anywhere; }
+    .chat-prompts button { min-height: 44px; font-size: 13px; text-align: left; }
+    .chat-input { position: static; flex: none; grid-template-columns: minmax(0, 1fr) 44px; padding: 6px 6px 6px 14px; }
+    .chat-input input { font-size: 16px; }
+    .chat-input button { width: 44px; height: 44px; }
+    .detail-link, .response-link { min-height: 44px; align-content: center; }
+  }
+  @media (min-width: 901px) { .mobile-contact-links { display: none; } }
+  @media (max-width: 900px) and (max-height: 500px) {
+    .profile-header { display: none; }
+    .app-tabs { margin-top: 8px; }
+  }
+
 `;
 
 export default function HomePage() {
