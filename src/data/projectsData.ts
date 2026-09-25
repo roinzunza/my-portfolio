@@ -1,9 +1,9 @@
 export const projectsData = [
   {
-    title: "SideQuest",
+    title: "TraderPost",
     description:
-      "A local job discovery app built with React Native and Rust. Supports messaging, profile swiping. Currently building. Prepping to launch MVP Late September.",
-    tech: ["React-native", "Rust", "Axum", "SeaORM", "S3", "SNS"],
-    link: "www.sidequestapp.io",
+      "A peer-to-peer trading card marketplace for iOS and Android. Collectors list the cards they own, search who nearby has the card they want, and negotiate trades in app with daily market pricing and a trade fairness calculator.",
+    tech: ["React Native", "Expo", "Rust", "Axum", "SeaORM", "PostgreSQL"],
+    link: "www.traderpost.app",
   },
 ];

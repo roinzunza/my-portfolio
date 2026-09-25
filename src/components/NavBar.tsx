@@ -24,7 +24,7 @@ export default function NavBar() {
   return <><style>{styles}</style><nav className={`site-nav ${pathname === "/" ? "" : "on-dark"}`} aria-label="Primary"><div className="site-nav-inner">
     <Link className="site-mark" to="/"><span className="site-mark-icon">RI</span><span>Rosendo Inzunza</span></Link>
     <div className="site-links">
-      <NavLink className="site-link" to="/" end>Work</NavLink>
+      <NavLink className="site-link" to="/" end>Projects</NavLink>
       <a className="site-link hide-mobile" href="/#about">About</a>
       <NavLink className="site-link hide-mobile" to="/resume">Resume</NavLink>
       <a className="site-link site-contact" href="mailto:RosendoInzunza@gmail.com">Contact</a>

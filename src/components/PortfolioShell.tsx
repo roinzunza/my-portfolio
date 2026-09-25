@@ -2,7 +2,7 @@ import { useState } from "react";
 import { portfolioWork, resumeData, type PortfolioWorkItem } from "../data/resumeData";
 import RoGPT from "./RoGPT";
 
-type Tab = "work" | "resume" | "contact" | "rogpt";
+type Tab = "projects" | "resume" | "contact" | "rogpt";
 
 const contactItems = [
   { label: "Email", caption: "Open email", href: "mailto:" + resumeData.email },
@@ -10,11 +10,11 @@ const contactItems = [
   { label: "Instagram", caption: resumeData.social.instagram ? "Follow me" : "URL not configured", href: resumeData.social.instagram },
   { label: "GitHub", caption: "View my code", href: resumeData.social.github },
 ];
-const visibleWork = portfolioWork.filter((item) => item.id === "sidequest");
+const visibleProjects = portfolioWork.filter((item) => item.id === "traderpost");
 
-function WorkRows({ selected, onSelect }: { selected: string; onSelect: (id: string) => void }) {
-  return <div className="app-list" aria-label="Work experience">
-    {visibleWork.map((item) => (
+function ProjectRows({ selected, onSelect }: { selected: string; onSelect: (id: string) => void }) {
+  return <div className="app-list" aria-label="Projects">
+    {visibleProjects.map((item) => (
       <button className={"app-row " + (selected === item.id ? "selected" : "")} key={item.id} onClick={() => onSelect(item.id)} aria-pressed={selected === item.id}>
         <span className="row-copy"><strong>{item.name}</strong><small>{item.role}</small></span>
         <span className="row-date">{item.dates.includes("to") ? item.dates.replace(/^0[0-9]\//, "").replace(/0[0-9]\//, "") : ""}</span>
@@ -35,11 +35,11 @@ function ContactRows() {
   </div>;
 }
 
-function WorkDetail({ item, onBack }: { item: PortfolioWorkItem; onBack: () => void }) {
+function ProjectDetail({ item, onBack }: { item: PortfolioWorkItem; onBack: () => void }) {
   const lead = item.highlights.slice(0, 2);
   const supporting = item.highlights.slice(2);
   return <article className="work-detail">
-    <button className="detail-back" onClick={onBack}>← Work</button>
+    <button className="detail-back" onClick={onBack}>← Projects</button>
     <header className="detail-header">
       <div><p className="detail-kicker">{item.dates}</p><h2>{item.name}</h2><p className="detail-role">{item.role}</p></div>
     </header>
@@ -62,11 +62,11 @@ function ResumePanel({ onBack }: { onBack: () => void }) {
     <p className="resume-panel-summary">{resumeData.summary}</p>
     <section className="resume-panel-section">
       <h3>Experience</h3>
-      {portfolioWork.filter((item) => item.id !== "sidequest").map((item) => <div className="resume-line" key={item.id}><div><strong>{item.name}</strong><span>{item.role}</span></div><time>{item.dates}</time></div>)}
+      {portfolioWork.filter((item) => item.id !== "traderpost").map((item) => <div className="resume-line" key={item.id}><div><strong>{item.name}</strong><span>{item.role}</span></div><time>{item.dates}</time></div>)}
     </section>
     <section className="resume-panel-section">
       <h3>Selected project</h3>
-      <div className="resume-line"><div><strong>SideQuest</strong><span>Founder / Software Engineer · iOS job marketplace</span></div></div>
+      <div className="resume-line"><div><strong>{resumeData.project.name}</strong><span>{resumeData.project.role} · peer-to-peer trading card marketplace</span></div></div>
     </section>
     <section className="resume-panel-section">
       <h3>Skills</h3>
@@ -80,19 +80,19 @@ function ResumePanel({ onBack }: { onBack: () => void }) {
 }
 
 export default function PortfolioShell() {
-  const [tab, setTab] = useState<Tab>("work");
-  const [selectedId, setSelectedId] = useState(visibleWork[0].id);
+  const [tab, setTab] = useState<Tab>("projects");
+  const [selectedId, setSelectedId] = useState(visibleProjects[0].id);
   const [showMobileDetail, setShowMobileDetail] = useState(false);
-  const selected = visibleWork.find((item) => item.id === selectedId) ?? visibleWork[0];
+  const selected = visibleProjects.find((item) => item.id === selectedId) ?? visibleProjects[0];
 
-  function selectWork(id: string) {
+  function selectProject(id: string) {
     setSelectedId(id);
     setShowMobileDetail(true);
   }
 
   function selectTab(next: Tab) {
     setTab(next);
-    setShowMobileDetail(next !== "work");
+    setShowMobileDetail(next !== "projects");
   }
 
   return <main className="portfolio-page">
@@ -103,12 +103,12 @@ export default function PortfolioShell() {
           <div><h1>Rosendo Inzunza</h1><p>Software Engineer</p><small>Backend &amp; Distributed Systems</small></div>
         </header>
         <nav className="app-tabs" aria-label="Portfolio sections">
-          {(["work", "resume", "contact", "rogpt"] as Tab[]).map((item) => <button className={tab === item ? "active" : ""} key={item} aria-pressed={tab === item} onClick={() => selectTab(item)}>{item === "rogpt" ? "RoGPT" : item[0].toUpperCase() + item.slice(1)}</button>)}
+          {(["projects", "resume", "contact", "rogpt"] as Tab[]).map((item) => <button className={tab === item ? "active" : ""} key={item} aria-pressed={tab === item} onClick={() => selectTab(item)}>{item === "rogpt" ? "RoGPT" : item[0].toUpperCase() + item.slice(1)}</button>)}
         </nav>
-        <div className="sidebar-scroll">{tab === "contact" ? <ContactRows /> : tab === "work" ? <WorkRows selected={selectedId} onSelect={selectWork} /> : <div className="sidebar-note"><strong>{tab === "resume" ? "Professional overview" : "Ro's digital clone"}</strong><p>{tab === "resume" ? "Experience, skills, projects, and education in one view." : "Knows the resume."}</p></div>}</div>
+        <div className="sidebar-scroll">{tab === "contact" ? <ContactRows /> : tab === "projects" ? <ProjectRows selected={selectedId} onSelect={selectProject} /> : <div className="sidebar-note"><strong>{tab === "resume" ? "Professional overview" : "Ro's digital clone"}</strong><p>{tab === "resume" ? "Experience, skills, projects, and education in one view." : "Knows the resume."}</p></div>}</div>
       </aside>
       <section className={"app-view " + (tab === "rogpt" ? "chat-view " : "") + (showMobileDetail ? "mobile-current" : "")} key={tab + selectedId}>
-        {tab === "work" && <WorkDetail item={selected} onBack={() => setShowMobileDetail(false)} />}
+        {tab === "projects" && <ProjectDetail item={selected} onBack={() => setShowMobileDetail(false)} />}
         {tab === "resume" && <ResumePanel onBack={() => setShowMobileDetail(false)} />}
         {tab === "contact" && <div className="contact-detail"><button className="detail-back" onClick={() => setShowMobileDetail(false)}>← Back</button><p className="detail-kicker">Contact</p><h2>Let’s talk.</h2><p>I’m always happy to hear about an interesting systems problem, a thoughtful product, or a team doing ambitious engineering work.</p><a href={"mailto:" + resumeData.email}>{resumeData.email} ↗</a><div className="mobile-contact-links"><ContactRows /></div></div>}
         {tab === "rogpt" && <><button className="detail-back chat-back" onClick={() => setShowMobileDetail(false)}>← Back</button><RoGPT /></>}

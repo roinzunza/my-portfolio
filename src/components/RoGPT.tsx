@@ -18,7 +18,7 @@ type Message =
 const fallback: AssistantResponse = {
   body: "RoGPT only knows information Rosendo has shared here. Type /help to see what you can ask.",
 };
-const suggestedPrompts = ["Where did he work in 2026?", "What has he built with Rust?", "What's his coffee order?", "What is he playing?"];
+const suggestedPrompts = ["Where did he work in 2026?", "What is TraderPost?", "What's his coffee order?", "What is he playing?"];
 let gameResponseIndex = 0;
 
 const stopWords = new Set(["a", "about", "and", "at", "did", "do", "does", "experience", "have", "he", "his", "in", "is", "me", "rosendo", "tell", "the", "what", "where", "with", "work", "you"]);
@@ -28,6 +28,7 @@ const aliases: Record<string, string> = {
   "machine learning": "ml infrastructure",
   sre: "site reliability",
   dft: "digital force",
+  "trader post": "traderpost",
 };
 
 function normalize(value: string) {
@@ -63,7 +64,7 @@ function companyResponse(item: PortfolioWorkItem): AssistantResponse {
     body: item.shortSummary,
     highlights: item.highlights.slice(0, 5),
     technologies: item.technologies,
-    link: item.id === "sidequest" && item.url ? { href: item.url, label: "www.sidequestapp.io ↗" } : undefined,
+    link: item.id === "traderpost" && item.url ? { href: item.url, label: "www.traderpost.app ↗" } : undefined,
   };
 }
 
@@ -78,21 +79,21 @@ function technologyResponse(technology: string, matches: PortfolioWorkItem[]): A
     body: "Rosendo used " + technology + " across " + relevant.map((item) => item.name).join(", ") + ".",
     highlights,
     technologies: [technology],
-    link: relevant.some((item) => item.id === "sidequest")
-      ? { href: resumeData.project.url, label: "www.sidequestapp.io ↗" }
+    link: relevant.some((item) => item.id === "traderpost")
+      ? { href: resumeData.project.url, label: "www.traderpost.app ↗" }
       : undefined,
   };
 }
 
 function distributedSystemsResponse(): AssistantResponse {
-  const ids = ["cloudflare", "tiktok", "sidequest"];
+  const ids = ["cloudflare", "tiktok", "traderpost"];
   const items = ids.map((id) => portfolioWork.find((item) => item.id === id)).filter((item): item is PortfolioWorkItem => Boolean(item));
   return {
     title: "Distributed systems",
     body: skillAnswer.shortSummary,
     highlights: items.map((item) => item.name + ": " + item.shortSummary),
-    technologies: ["Rust", "Kafka", "Redis", "Kubernetes", "PostgreSQL", "WebSockets"],
-    link: { href: resumeData.project.url, label: "www.sidequestapp.io ↗" },
+    technologies: ["Rust", "Kafka", "Redis", "Kubernetes", "PostgreSQL", "Axum"],
+    link: { href: resumeData.project.url, label: "www.traderpost.app ↗" },
   };
 }
 
@@ -104,7 +105,7 @@ function answer(question: string): AssistantResponse {
       title: "Try asking me about…",
       body: "I know Rosendo's resume, projects, tools, and a few things he enjoys off the clock.",
       highlights: [
-        "Work: Cloudflare, TikTok, SideQuest, Digital Force, or CoreLogic",
+        "Roles and projects: Cloudflare, TikTok, TraderPost, Digital Force, or CoreLogic",
         "Skills: Rust, Kafka, Kubernetes, Terraform, or distributed systems",
         "Background: languages, backend experience, or ML infrastructure",
         "Easter eggs: coffee, running, workouts, or what he's playing",
@@ -201,8 +202,8 @@ function answer(question: string): AssistantResponse {
     body: "The closest matches in Rosendo's resume are " + top.map((item) => item.name).join(" and ") + ".",
     highlights: top.map((item) => item.name + ": " + item.highlights[0]),
     technologies: Array.from(new Set(top.flatMap((item) => item.technologies))).slice(0, 6),
-    link: top.some((item) => item.id === "sidequest")
-      ? { href: resumeData.project.url, label: "www.sidequestapp.io ↗" }
+    link: top.some((item) => item.id === "traderpost")
+      ? { href: resumeData.project.url, label: "www.traderpost.app ↗" }
       : undefined,
   };
 }
