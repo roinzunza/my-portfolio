@@ -18,7 +18,7 @@ type Message =
 const fallback: AssistantResponse = {
   body: "RoGPT only knows information Rosendo has shared here. Type /help to see what you can ask.",
 };
-const suggestedPrompts = ["Where did he work in 2026?", "What is TraderPost?", "What's his coffee order?", "What is he playing?"];
+const suggestedPrompts = ["Where did he work in 2026?", "What is TraderPost?", "What is stackscape?", "What's his coffee order?", "What is he playing?"];
 let gameResponseIndex = 0;
 
 const stopWords = new Set(["a", "about", "and", "at", "did", "do", "does", "experience", "have", "he", "his", "in", "is", "me", "rosendo", "tell", "the", "what", "where", "with", "work", "you"]);
@@ -29,6 +29,7 @@ const aliases: Record<string, string> = {
   sre: "site reliability",
   dft: "digital force",
   "trader post": "traderpost",
+  "stack scape": "stackscape",
 };
 
 function normalize(value: string) {
@@ -57,6 +58,15 @@ function metadata(item: PortfolioWorkItem) {
   return item.role + " · " + item.dates;
 }
 
+function projectLink(item: PortfolioWorkItem) {
+  return item.url ? { href: item.url, label: item.url.replace(/^https?:\/\//, "").replace(/\/$/, "") + " ↗" } : undefined;
+}
+
+function firstProjectLink(items: PortfolioWorkItem[]) {
+  const project = items.find((item) => item.id === "traderpost" || item.id === "stackscape");
+  return project ? projectLink(project) : undefined;
+}
+
 function companyResponse(item: PortfolioWorkItem): AssistantResponse {
   return {
     title: item.name,
@@ -64,7 +74,7 @@ function companyResponse(item: PortfolioWorkItem): AssistantResponse {
     body: item.shortSummary,
     highlights: item.highlights.slice(0, 5),
     technologies: item.technologies,
-    link: item.id === "traderpost" && item.url ? { href: item.url, label: "www.traderpost.app ↗" } : undefined,
+    link: projectLink(item),
   };
 }
 
@@ -79,9 +89,7 @@ function technologyResponse(technology: string, matches: PortfolioWorkItem[]): A
     body: "Rosendo used " + technology + " across " + relevant.map((item) => item.name).join(", ") + ".",
     highlights,
     technologies: [technology],
-    link: relevant.some((item) => item.id === "traderpost")
-      ? { href: resumeData.project.url, label: "www.traderpost.app ↗" }
-      : undefined,
+    link: firstProjectLink(relevant),
   };
 }
 
@@ -105,7 +113,7 @@ function answer(question: string): AssistantResponse {
       title: "Try asking me about…",
       body: "I know Rosendo's resume, projects, tools, and a few things he enjoys off the clock.",
       highlights: [
-        "Roles and projects: Cloudflare, TikTok, TraderPost, Digital Force, or CoreLogic",
+        "Roles and projects: Cloudflare, TikTok, TraderPost, stackscape, Digital Force, or CoreLogic",
         "Skills: Rust, Kafka, Kubernetes, Terraform, or distributed systems",
         "Background: languages, backend experience, or ML infrastructure",
         "Easter eggs: coffee, running, workouts, or what he's playing",
@@ -202,9 +210,7 @@ function answer(question: string): AssistantResponse {
     body: "The closest matches in Rosendo's resume are " + top.map((item) => item.name).join(" and ") + ".",
     highlights: top.map((item) => item.name + ": " + item.highlights[0]),
     technologies: Array.from(new Set(top.flatMap((item) => item.technologies))).slice(0, 6),
-    link: top.some((item) => item.id === "traderpost")
-      ? { href: resumeData.project.url, label: "www.traderpost.app ↗" }
-      : undefined,
+    link: firstProjectLink(top),
   };
 }
 

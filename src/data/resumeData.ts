@@ -1,3 +1,7 @@
+import stackscapeDemo from "../assets/stackscape-demo.gif";
+import traderpostReel from "../assets/traderpost-reel-realcards.mp4";
+import traderpostPoster from "../assets/traderpost-reel-poster.png";
+
 export const resumeData = {
   name: "Rosendo Inzunza",
   email: "RosendoInzunza@gmail.com",
@@ -178,6 +182,9 @@ export type PortfolioWorkItem = {
   technologies: string[];
   tags: string[];
   url?: string;
+  linkLabel?: string;
+  install?: { note: string; steps: { label: string; command: string }[] };
+  media?: { src: string; alt: string; kind?: "image" | "video"; poster?: string };
 };
 
 const experienceTags: Record<string, string[]> = {
@@ -208,6 +215,35 @@ export const portfolioWork: PortfolioWorkItem[] = [
     technologies: ["Rust", "Axum", "PostgreSQL", "SeaORM", "React Native", "Expo", "iOS", "Android"],
     tags: ["traderpost", "project", "founder", "trading cards", "collectibles", "marketplace", "pokemon", "magic the gathering", "lorcana", "one piece", "riftbound", "react native", "expo", "mobile", "ios", "android", "rust", "axum", "postgres", "postgresql", "seaorm", "backend"],
     url: resumeData.project.url,
+    media: { src: traderpostReel, kind: "video", poster: traderpostPoster, alt: "TraderPost app reel: trading cards from nearby collectors, with prices and distance, and the Discover screen" },
+  },
+  {
+    id: "stackscape",
+    name: "stackscape",
+    role: "Creator / Open Source",
+    dates: "Open-source CLI",
+    shortSummary: "See how your system fits together, drawn from your repo. stackscape reads your code and config, works out what runs where and what talks to what, and opens an interactive 3D map in your browser. Every connection links to the file and line it came from. No account, no setup, and nothing leaves your machine.",
+    highlights: [
+      "Built a static analyzer that reads code and infrastructure config to work out what runs where and what talks to what, citing the file and line behind every edge.",
+      "Rendered the map as an interactive 3D scene with React Three Fiber, with search, a 2D view, dark mode, and export to a single shareable HTML file.",
+      "Supports most backend and app stacks, from TypeScript, Python, Go, Rust, and Java to native iOS and Android.",
+      "Understands Docker Compose, Kubernetes, Helm, Terraform, CloudFormation, CDK, Pulumi, Cloudflare, Vercel, and Fly.io deployments.",
+      "Shipped as a zero-install npx CLI bundled with esbuild, with the viewer packed into one self-contained HTML file.",
+    ],
+    technologies: ["TypeScript", "Node.js", "React", "Three.js", "React Three Fiber", "esbuild", "Vite"],
+    tags: ["stackscape", "project", "open source", "cli", "npx", "npm", "3d", "diagram", "visualization", "system design", "architecture", "devtools", "three.js", "react three fiber", "typescript", "node"],
+    url: "https://github.com/roinzunza/stackscape",
+    linkLabel: "View on GitHub ↗",
+    install: {
+      note: "Requires Node.js 20 or newer and git. Run it inside the repo you want to map.",
+      steps: [
+        { label: "Run without installing", command: "npx stackscape" },
+        { label: "Or install it globally", command: "npm install -g stackscape" },
+        { label: "Map another folder", command: "stackscape ~/code/my-app" },
+        { label: "Save a shareable map", command: "stackscape -o architecture.html" },
+      ],
+    },
+    media: { src: stackscapeDemo, alt: "stackscape running in a terminal, then the interactive 3D map of the system it opens" },
   },
   ...resumeData.experience.slice(2).map((job) => ({
     id: job.id,

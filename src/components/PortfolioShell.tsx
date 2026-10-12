@@ -10,7 +10,8 @@ const contactItems = [
   { label: "Instagram", caption: resumeData.social.instagram ? "Follow me" : "URL not configured", href: resumeData.social.instagram },
   { label: "GitHub", caption: "View my code", href: resumeData.social.github },
 ];
-const visibleProjects = portfolioWork.filter((item) => item.id === "traderpost");
+const projectIds = ["stackscape", "traderpost"];
+const visibleProjects = projectIds.map((id) => portfolioWork.find((item) => item.id === id)).filter((item): item is PortfolioWorkItem => Boolean(item));
 
 function ProjectRows({ selected, onSelect }: { selected: string; onSelect: (id: string) => void }) {
   return <div className="app-list" aria-label="Projects">
@@ -35,6 +36,18 @@ function ContactRows() {
   </div>;
 }
 
+function ProjectMedia({ media }: { media: NonNullable<PortfolioWorkItem["media"]> }) {
+  const [muted, setMuted] = useState(true);
+  if (media.kind !== "video") return <figure className="detail-media"><img src={media.src} alt={media.alt} loading="lazy" decoding="async" /></figure>;
+  const reduceMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return <figure className="detail-reel">
+    <div className="reel-phone">
+      <video src={media.src} poster={media.poster} aria-label={media.alt} autoPlay={!reduceMotion} controls={reduceMotion} muted={muted} loop playsInline preload="metadata" />
+      {!reduceMotion && <button className="reel-sound" onClick={() => setMuted((value) => !value)} aria-pressed={!muted}>{muted ? "Sound off" : "Sound on"}</button>}
+    </div>
+  </figure>;
+}
+
 function ProjectDetail({ item, onBack }: { item: PortfolioWorkItem; onBack: () => void }) {
   const lead = item.highlights.slice(0, 2);
   const supporting = item.highlights.slice(2);
@@ -42,14 +55,17 @@ function ProjectDetail({ item, onBack }: { item: PortfolioWorkItem; onBack: () =
     <button className="detail-back" onClick={onBack}>← Projects</button>
     <header className="detail-header">
       <div><p className="detail-kicker">{item.dates}</p><h2>{item.name}</h2><p className="detail-role">{item.role}</p></div>
+      {item.url && <a className="detail-header-link" href={item.url} target="_blank" rel="noreferrer">{item.linkLabel ?? "Visit project ↗"}</a>}
     </header>
     <p className="detail-intro">{item.shortSummary}</p>
+    {item.media && <ProjectMedia media={item.media} />}
+    {item.install && <section className="detail-install"><h3>Install</h3><p>{item.install.note}</p>{item.install.steps.map((step) => <div key={step.command}><span>{step.label}</span><code><b aria-hidden>$</b>{step.command}</code></div>)}</section>}
     <div className="detail-featured">
       {lead.map((point, index) => <section key={point}><span>0{index + 1}</span><p>{point}</p></section>)}
     </div>
     {supporting.length > 0 && <section className="detail-more"><h3>More of the work</h3>{supporting.map((point) => <p key={point}>{point}</p>)}</section>}
     <section className="detail-tech"><h3>Technologies</h3><div>{item.technologies.map((technology) => <span key={technology}>{technology}</span>)}</div></section>
-    {item.url && <a className="detail-link" href={item.url} target="_blank" rel="noreferrer">Visit project ↗</a>}
+    {item.url && <a className="detail-link" href={item.url} target="_blank" rel="noreferrer">{item.linkLabel ?? "Visit project ↗"}</a>}
   </article>;
 }
 
@@ -62,11 +78,11 @@ function ResumePanel({ onBack }: { onBack: () => void }) {
     <p className="resume-panel-summary">{resumeData.summary}</p>
     <section className="resume-panel-section">
       <h3>Experience</h3>
-      {portfolioWork.filter((item) => item.id !== "traderpost").map((item) => <div className="resume-line" key={item.id}><div><strong>{item.name}</strong><span>{item.role}</span></div><time>{item.dates}</time></div>)}
+      {portfolioWork.filter((item) => !projectIds.includes(item.id)).map((item) => <div className="resume-line" key={item.id}><div><strong>{item.name}</strong><span>{item.role}</span></div><time>{item.dates}</time></div>)}
     </section>
     <section className="resume-panel-section">
-      <h3>Selected project</h3>
-      <div className="resume-line"><div><strong>{resumeData.project.name}</strong><span>{resumeData.project.role} · peer-to-peer trading card marketplace</span></div></div>
+      <h3>Selected projects</h3>
+      {visibleProjects.map((item) => <div className="resume-line" key={item.id}><div><strong>{item.name}</strong><span>{item.role} · {item.id === "traderpost" ? "peer-to-peer trading card marketplace" : "3D system design maps from your repo"}</span></div></div>)}
     </section>
     <section className="resume-panel-section">
       <h3>Skills</h3>

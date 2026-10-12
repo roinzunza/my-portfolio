@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { resumeData } from "../data/resumeData";
+import { portfolioWork, resumeData } from "../data/resumeData";
 
 const styles = `
   .resume { min-height: 100vh; padding: 145px 24px 90px; background: radial-gradient(circle at 92% 5%, rgba(105,123,255,.12), transparent 28%), #080a0d; color: #f2f4f7; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
@@ -29,6 +29,7 @@ const styles = `
   .resume-skill strong { color: #d8dbe1; font-size: .82rem; }
   .resume-skill span { color: #929aa7; font-size: .88rem; line-height: 1.65; }
   .resume-project-head, .resume-edu-head { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; margin-bottom: 12px; }
+  .resume-project + .resume-project { margin-top: 42px; padding-top: 42px; border-top: 1px solid #20242b; }
   .resume-project h3, .resume-edu h3 { margin: 0; font-size: 1.3rem; letter-spacing: -.03em; }
   .resume-project a { color: #7f91ff; text-decoration: none; font-size: .82rem; }
   .resume-project-intro, .resume-edu p { color: #858d99; line-height: 1.65; }
@@ -44,13 +45,14 @@ const styles = `
 export default function ResumePage() {
   useEffect(() => { document.title = "Resume — Rosendo Inzunza"; }, []);
   const { summary, competencies, experience, skills, project, education } = resumeData;
+  const stackscape = portfolioWork.find((item) => item.id === "stackscape");
   return <><style>{styles}</style><main className="resume"><div className="resume-inner">
     <header className="resume-header"><span className="resume-kicker">Resume / 2026</span><h1 className="resume-name">Rosendo Inzunza</h1><div className="resume-role">Systems Engineer</div><div className="resume-contact"><span>La Habra, CA</span><a href="tel:+17143427492">714-342-7492</a><a href="mailto:RosendoInzunza@gmail.com">RosendoInzunza@gmail.com</a><a href="https://linkedin.com/in/rosendoinzunza" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="https://github.com/roinzunza" target="_blank" rel="noreferrer">GitHub ↗</a></div></header>
     <section className="resume-section"><h2 className="resume-section-title">Profile</h2><p className="resume-summary">{summary}</p></section>
     <section className="resume-section"><h2 className="resume-section-title">Core competencies</h2><p className="resume-competencies">{competencies.join(" · ")}</p></section>
     <section className="resume-section"><h2 className="resume-section-title">Experience</h2><div>{experience.map((job) => <article className="resume-job" key={job.company}><div className="resume-job-head"><h3>{job.title} <span className="resume-company">· {job.company}</span></h3><span className="resume-date">{job.period}</span></div><p className="resume-location">{job.location}</p><ul className="resume-list">{job.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul></article>)}</div></section>
     <section className="resume-section"><h2 className="resume-section-title">Technical skills</h2><div className="resume-skills">{Object.entries(skills).map(([category, items]) => <div className="resume-skill" key={category}><strong>{category}</strong><span>{items.join(" · ")}</span></div>)}</div></section>
-    <section className="resume-section"><h2 className="resume-section-title">Project</h2><article className="resume-project"><div className="resume-project-head"><h3>{project.name}</h3><a href={project.url} target="_blank" rel="noreferrer">traderpost.app ↗</a></div><p className="resume-project-intro">{project.description}</p><ul className="resume-list">{project.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul></article></section>
+    <section className="resume-section"><h2 className="resume-section-title">Projects</h2><div><article className="resume-project"><div className="resume-project-head"><h3>{project.name}</h3><a href={project.url} target="_blank" rel="noreferrer">traderpost.app ↗</a></div><p className="resume-project-intro">{project.description}</p><ul className="resume-list">{project.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul></article>{stackscape && <article className="resume-project"><div className="resume-project-head"><h3>{stackscape.name}</h3><a href={stackscape.url} target="_blank" rel="noreferrer">GitHub ↗</a></div><p className="resume-project-intro">{stackscape.shortSummary}</p><ul className="resume-list">{stackscape.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}</ul></article>}</div></section>
     <section className="resume-section"><h2 className="resume-section-title">Education</h2><article className="resume-edu"><div className="resume-edu-head"><h3>{education.degree}</h3><span className="resume-date">2019</span></div><p>California State University, Fullerton</p></article></section>
   </div></main></>;
 }
