@@ -73,7 +73,7 @@ function ResumePanel({ onBack }: { onBack: () => void }) {
   return <article className="resume-panel">
     <button className="detail-back" onClick={onBack}>← Back</button>
     <header className="resume-panel-head">
-      <div><p className="detail-kicker">Resume · 2026</p><h2>Rosendo Inzunza</h2><p>Software Engineer · Backend &amp; Distributed Systems</p></div>
+      <div><p className="detail-kicker">Resume · 2026</p><h2>Rosendo Inzunza</h2><p>Software &amp; AI Engineer · Backend, Distributed Systems &amp; Agentic AI</p></div>
     </header>
     <p className="resume-panel-summary">{resumeData.summary}</p>
     <section className="resume-panel-section">
@@ -116,7 +116,7 @@ export default function PortfolioShell() {
       <aside className={"app-sidebar " + (showMobileDetail ? "mobile-away" : "")}>
         <header className="profile-header">
           <img src="/ro.jpg" alt="" />
-          <div><h1>Rosendo Inzunza</h1><p>Software Engineer</p><small>Backend &amp; Distributed Systems</small></div>
+          <div><h1>Rosendo Inzunza</h1><p>Software &amp; AI Engineer</p><small>Backend, Distributed Systems &amp; Agentic AI</small></div>
         </header>
         <nav className="app-tabs" aria-label="Portfolio sections">
           {(["projects", "resume", "contact", "rogpt"] as Tab[]).map((item) => <button className={tab === item ? "active" : ""} key={item} aria-pressed={tab === item} onClick={() => selectTab(item)}>{item === "rogpt" ? "RoGPT" : item[0].toUpperCase() + item.slice(1)}</button>)}

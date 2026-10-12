@@ -22,7 +22,7 @@ export const resumeData = {
   },
 
   summary:
-    "Software engineer with 6+ years building backend and distributed systems across Cloudflare and TikTok, including control planes, data planes, and ML infrastructure. Drives cross-team architectural change end to end, from RFC and stakeholder alignment through implementation and production delivery. Combines backend and infrastructure depth to scale core systems for performance and reliability, building APIs, event-driven architectures, and tooling adopted by 200+ engineers.",
+    "Software engineer with 6+ years building backend and distributed systems across Cloudflare and TikTok, including control planes, data planes, and ML infrastructure. Drives cross-team architectural change end to end, from RFC and stakeholder alignment through implementation and production delivery. Combines backend and infrastructure depth to scale core systems for performance and reliability, building APIs, event-driven architectures, and tooling adopted by 200+ engineers. Brings that same production discipline to AI engineering, designing agentic systems around orchestration, reliability, auditability, durable state, failover, and deployment.",
 
   competencies: [
     "Backend Engineering",
@@ -34,6 +34,7 @@ export const resumeData = {
     "Site Reliability Engineering (SRE)",
     "Infrastructure as Code (IaC)",
     "ML Infrastructure",
+    "AI Engineering & Agentic Orchestration",
     "Incident Response & On-Call",
     "Cross-Team Technical Leadership",
   ],
@@ -141,6 +142,7 @@ export const resumeData = {
     Cloud: ["AWS (S3, EC2, DynamoDB, RDS, Athena, Glue, Firehose, Kinesis, SageMaker)", "Cloudflare R2"],
     Observability: ["Prometheus", "Grafana", "Splunk", "Sentry"],
     "Machine Learning": ["TensorFlow", "PyTorch"],
+    "AI Engineering": ["Agentic orchestration", "Durable agent state", "Audit trails", "Failover & retries", "Agent deployment", "MCP"],
   },
 
   project: {
@@ -261,6 +263,6 @@ export const skillAnswer = {
   id: "skills",
   title: "Technical skills",
   tags: ["skills", "languages", "language", "technologies", "tech stack", "backend experience", "backend engineering", "distributed systems", "what do you know"],
-  shortSummary: "Rosendo works across backend engineering, distributed systems, infrastructure, and machine learning systems.",
+  shortSummary: "Rosendo works across backend engineering, distributed systems, infrastructure, machine learning systems, and agentic AI.",
   technologies: Object.values(resumeData.skills).flat(),
 };

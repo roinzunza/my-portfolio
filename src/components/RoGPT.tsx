@@ -114,7 +114,7 @@ function answer(question: string): AssistantResponse {
       body: "I know Rosendo's resume, projects, tools, and a few things he enjoys off the clock.",
       highlights: [
         "Roles and projects: Cloudflare, TikTok, TraderPost, stackscape, Digital Force, or CoreLogic",
-        "Skills: Rust, Kafka, Kubernetes, Terraform, or distributed systems",
+        "Skills: Rust, Kafka, Kubernetes, Terraform, distributed systems, or AI engineering",
         "Background: languages, backend experience, or ML infrastructure",
         "Easter eggs: coffee, running, workouts, or what he's playing",
       ],
@@ -167,6 +167,21 @@ function answer(question: string): AssistantResponse {
       title: "Off the clock",
       body: "Outside of engineering, Rosendo enjoys " + resumeData.personal.activities.map((activity) => activity.toLowerCase()).join(", ") + ".",
       highlights: ["Current game rotation: " + resumeData.personal.games.join(" · ")],
+    };
+  }
+
+  if (/\b(ai|agent|agents|agentic|llm|llms|orchestration)\b/.test(normalized)) {
+    return {
+      title: "AI engineering",
+      body: "Rosendo brings his distributed systems background to AI engineering, designing agentic systems the same way he builds production infrastructure.",
+      highlights: [
+        "Orchestration: coordinating agents and tools as reliable, observable workflows",
+        "Reliability: retries, failover, and graceful recovery when a step or model call fails",
+        "Auditability: a traceable record of what each agent did and why",
+        "Persistence: durable agent state that survives restarts and long-running tasks",
+        "Deployment: shipping and operating agents in production",
+      ],
+      technologies: resumeData.skills["AI Engineering"],
     };
   }
 
